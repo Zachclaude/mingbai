@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>明白 · 下一步怎么办，一张清单写明白。</title>
+<meta name="description" content="把办事通知整理成一张能带走、能核对、照着做的清单。离线、可打印。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2322456b'/%3E%3Ctext x='32' y='45' font-family='Microsoft YaHei,PingFang SC,sans-serif' font-size='36' font-weight='700' text-anchor='middle' fill='%23ffffff'%3E明%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --paper:#faf8f4; --sheet:#fffdf9; --ink:#1c1b19; --ink2:#43413c; --ink3:#6b665e;
+    --rule:#e3ded4; --rule2:#efeae0; --rule3:#cfc8bb;
+    --blue:#22456b; --blue-ink:#16324f; --blue-wash:#edf1f6; --blue-line:#c9d6e5;
+    --amber:#7a5312; --amber-wash:#fbf4e6;
+    --red:#8f2f22; --red-wash:#fbefec;
+    --green:#2c5a41; --green-wash:#eef4ef;
+    --fs:18px;
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,"Times New Roman",serif;
+    --sans:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans SC",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  html[data-fs="lg"]{--fs:21px}
+  html[data-fs="xl"]{--fs:25px}
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font:var(--fs)/1.78 var(--sans);-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit}
+  a{color:var(--blue)}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  h1:focus,h1:focus-visible,h2:focus,h2:focus-visible{outline:none}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .page{max-width:980px;margin:0 auto;padding:0 32px 80px}
+  .view[hidden]{display:none}
+  [hidden]{display:none!important}
+  @media(max-width:640px){.page{padding:0 20px 64px}}
+
+  /* ---------- masthead ---------- */
+  .masthead{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:26px 0 18px;border-bottom:1px solid var(--rule)}
+  .brand{display:flex;align-items:baseline;gap:12px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+  .wordmark{font-family:var(--serif);font-size:1.55em;font-weight:700;letter-spacing:.14em;color:var(--blue-ink);line-height:1}
+  .brand-sub{font-size:.72em;letter-spacing:.22em;color:var(--ink3)}
+  .controls{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .ctl-group{display:inline-flex;align-items:center;gap:2px}
+  .ctl-label{font-size:.72em;letter-spacing:.14em;color:var(--ink3);margin-right:4px}
+  .ctl{background:none;border:0;padding:8px 9px;color:var(--ink2);font-size:.84em;cursor:pointer;border-bottom:1px solid transparent;min-height:40px}
+  .ctl:hover{color:var(--ink)}
+  .ctl[aria-pressed="true"]{color:var(--blue-ink);border-bottom-color:var(--blue);font-weight:700}
+  @media(max-width:640px){
+    .masthead{flex-wrap:wrap;row-gap:8px}
+    .brand{width:100%}
+    .controls{width:100%;justify-content:space-between;gap:10px}
+  }
+
+  /* ---------- type ---------- */
+  .eyebrow{margin:0 0 14px;font-size:.7em;letter-spacing:.26em;color:var(--ink3)}
+  h1{margin:0;font-family:var(--serif);font-size:2.02em;line-height:1.42;font-weight:600;letter-spacing:.01em}
+  .lede{margin:16px 0 0;color:var(--ink2);font-size:.97em;max-width:29em}
+  .fineprint{font-size:.82em;color:var(--ink3);line-height:1.7}
+  .sec-label{margin:0 0 14px;font-size:.72em;font-weight:700;letter-spacing:.2em;color:var(--ink3)}
+  .section{border-top:1px solid var(--rule);margin-top:40px;padding-top:26px}
+  .quiet{color:var(--ink2)}
+
+  /* ---------- buttons ---------- */
+  .btn-primary{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);border:1px solid var(--blue);color:#fff;border-radius:2px;min-height:54px;padding:0 26px;font-size:1em;font-weight:600;letter-spacing:.02em;cursor:pointer}
+  .btn-primary:hover{background:var(--blue-ink);border-color:var(--blue-ink)}
+  .btn-quiet{display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--rule3);color:var(--ink2);border-radius:2px;min-height:54px;padding:0 20px;font-size:.94em;cursor:pointer}
+  .btn-quiet:hover{border-color:var(--blue);color:var(--blue-ink)}
+  .cta .btn-quiet{border:0;background:none;padding:0;min-height:54px;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px;color:var(--ink2)}
+  .linkbtn{background:none;border:0;padding:6px 0;color:var(--blue);text-decoration:underline;text-underline-offset:4px;cursor:pointer;font-size:.9em;min-height:44px}
+  .textbtn{background:none;border:0;padding:10px 2px;color:var(--ink2);cursor:pointer;font-size:.9em;display:inline-flex;align-items:center;gap:7px;min-height:44px}
+  .textbtn:hover{color:var(--blue-ink)}
+  .textbtn svg{flex:none}
+  @media(max-width:640px){
+    .cta{display:grid;gap:8px}
+    .cta .btn-primary{width:100%}
+    .cta .btn-quiet{justify-self:start;padding:8px 0}
+  }
+
+  /* ---------- home ---------- */
+  .home-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:64px;padding:52px 0 8px;align-items:start}
+  @media(max-width:900px){.home-grid{grid-template-columns:1fr;gap:34px;padding-top:36px}}
+  .home-lead .cta{margin-top:30px;display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+  .home-lead .fineprint{margin-top:18px;max-width:26em}
+
+  /* the sample sheet: the core visual image */
+  .sample{background:var(--sheet);border:1px solid var(--rule3);border-radius:2px;padding:30px 28px 24px;position:relative}
+  .sample::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--blue)}
+  .sample-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .sample-tag{font-size:.68em;letter-spacing:.2em;color:var(--blue-ink);border:1px solid var(--blue-line);background:var(--blue-wash);padding:2px 7px;border-radius:2px}
+  .sample-title{font-size:.76em;letter-spacing:.18em;color:var(--ink3)}
+  .sample-date{display:flex;align-items:baseline;gap:6px 10px;flex-wrap:wrap;margin:14px 0 16px;padding-bottom:14px;border-bottom:1px solid var(--rule2)}
+  .sample-date .d{font-family:var(--serif);font-size:1.45em;font-weight:600;color:var(--ink)}
+  .sample-date .t{font-size:.8em;color:var(--ink3)}
+  .sample-sec{margin:16px 0 0}
+  .sample-sec h3{margin:0 0 8px;font-size:.68em;font-weight:700;letter-spacing:.2em;color:var(--ink3)}
+  .sample-lines{list-style:none;margin:0;padding:0}
+  .sample-lines li{display:flex;gap:10px;align-items:flex-start;padding:5px 0;font-size:.92em;line-height:1.5}
+  .tick{width:17px;height:17px;flex:none;border:1px solid var(--ink3);border-radius:1px;margin-top:.3em;position:relative}
+  .tick.on{background:var(--green);border-color:var(--green)}
+  .tick.on::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:9px;border:solid #fff;border-width:0 1.6px 1.6px 0;transform:rotate(42deg)}
+  .sample-bring{margin:0;font-size:.9em;color:var(--ink2);line-height:1.9;display:flex;flex-wrap:wrap;gap:0 2px}
+  .sample-bring .it{white-space:nowrap}
+  .sample-bring .sep{color:var(--rule3);margin:0 .45em}
+  .sample-foot{margin-top:18px;padding-top:14px;border-top:1px solid var(--rule2);font-size:.8em;color:var(--ink3)}
+  .sample-foot b{font-weight:600;color:var(--amber)}
+
+  /* contents list */
+  .toc{list-style:none;margin:0;padding:0}
+  .toc li{border-bottom:1px solid var(--rule2)}
+  .toc button{display:grid;grid-template-columns:2.2em 1fr auto;align-items:baseline;gap:14px;width:100%;text-align:left;background:none;border:0;padding:16px 2px;cursor:pointer;min-height:56px}
+  .toc button:hover .toc-name{color:var(--blue-ink)}
+  .toc button[aria-pressed="true"]{box-shadow:inset 2px 0 0 var(--blue);padding-left:12px}
+  .toc button[aria-pressed="true"] .toc-name{color:var(--blue-ink)}
+  .toc-no{font-size:.76em;color:var(--ink3);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+  .toc-name{font-size:1em;font-weight:600;color:var(--ink)}
+  .toc-desc{display:block;font-size:.82em;font-weight:400;color:var(--ink3);margin-top:2px}
+  .toc-tag{font-size:.72em;color:var(--ink3);letter-spacing:.1em;white-space:nowrap}
+
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+  @media(max-width:760px){.how{grid-template-columns:1fr;gap:14px}}
+  .how-step{border-top:1px solid var(--rule2);padding-top:12px}
+  .how-step b{display:block;font-size:.95em;font-weight:600;margin-bottom:3px}
+  .how-step span{display:block;font-size:.86em;color:var(--ink3);line-height:1.65}
+
+  .trust{font-size:.82em;color:var(--ink3);line-height:1.8}
+  .trust b{display:block;color:var(--ink2);font-weight:600}
+
+  details.about{margin-top:26px;border-top:1px solid var(--rule2);padding-top:14px}
+  details.about summary{cursor:pointer;font-size:.84em;color:var(--ink2);list-style:none;text-decoration:underline;text-underline-offset:4px}
+  details.about summary::-webkit-details-marker{display:none}
+  details.about .body{margin-top:12px;font-size:.85em;color:var(--ink2);line-height:1.8;max-width:44em}
+  details.about h4{margin:16px 0 4px;font-size:.95em;color:var(--ink)}
+  details.about ul{margin:4px 0 0;padding-left:1.2em}
+  details.about li{margin:3px 0}
+
+  /* ---------- page heads ---------- */
+  .backlink{display:inline-flex;align-items:center;gap:6px;margin:20px 0 0;background:none;border:0;padding:6px 0;color:var(--ink2);font-size:.85em;cursor:pointer;min-height:44px}
+  .backlink:hover{color:var(--blue-ink)}
+  .pagehead{padding:24px 0 0}
+  .pagehead h1{font-size:1.9em}
+  .pagehead .lede{max-width:34em}
+
+  /* ---------- task page ---------- */
+  .task-head{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding:24px 0 20px;border-bottom:1px solid var(--rule)}
+  @media(max-width:700px){.task-head{grid-template-columns:1fr}}
+  .task-kind{font-size:.72em;letter-spacing:.24em;color:var(--ink3);margin:0 0 10px}
+  .task-date{font-family:var(--serif);font-size:2.4em;line-height:1.22;font-weight:600;margin:0}
+  .task-date.over{color:var(--red)}
+  .task-date small{display:block;font-family:var(--sans);font-size:.4em;font-weight:400;color:var(--ink3);letter-spacing:.02em;margin-top:8px;line-height:1.6}
+  .task-meta{font-size:.86em;color:var(--ink2);text-align:right;line-height:1.9}
+  @media(max-width:700px){.task-meta{text-align:left}}
+  .task-meta .lab{font-size:.74em;letter-spacing:.14em;color:var(--ink3);display:block;margin-bottom:1px}
+  .task-meta strong{font-weight:600;display:block}
+
+  .next{border-left:3px solid var(--blue);background:var(--sheet);padding:22px 26px;margin:28px 0 0}
+  .next .lab{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:.7em;letter-spacing:.22em;color:var(--blue-ink);margin-bottom:8px}
+  .next .lab .when{letter-spacing:.02em;color:var(--ink3);font-size:1.05em}
+  .next.done{border-left-color:var(--green)}
+  .next.done .lab{color:var(--green)}
+  .next h2{margin:0;font-size:1.2em;font-weight:600;line-height:1.5}
+  .next p{margin:8px 0 0;font-size:.9em;color:var(--ink2);line-height:1.7}
+  .next .askline{margin:10px 0 0;font-size:.86em;color:var(--amber)}
+
+  .group{margin-top:38px;border-top:1px solid var(--rule);padding-top:22px}
+  .group-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:4px}
+  .group-head .sec-label{margin:0}
+  .count{font-size:.8em;color:var(--ink3);font-variant-numeric:tabular-nums}
+
+  .schedule{list-style:none;margin:0;padding:0}
+  .sched-item{display:grid;grid-template-columns:5.4em 1fr;gap:16px;align-items:start;padding:15px 0;border-bottom:1px solid var(--rule2);cursor:pointer;position:relative}
+  .sched-item:last-child{border-bottom:0}
+  .sched-when{font-size:.78em;color:var(--ink3);padding-top:.3em;font-variant-numeric:tabular-nums}
+  .sched-when.over{color:var(--red);font-weight:600}
+  .sched-body{min-width:0}
+  .sched-title{display:flex;gap:11px;align-items:flex-start;font-size:1em;font-weight:600;line-height:1.55}
+  .sched-title .tick{margin-top:.3em}
+  .sched-hint{display:block;margin:4px 0 0 26px;font-size:.86em;color:var(--ink2);line-height:1.65}
+  .sched-note{display:block;margin:4px 0 0 26px;font-size:.82em;color:var(--amber);line-height:1.6}
+  .sched-item.done{opacity:.55}
+  .sched-item.done .sched-title{text-decoration:line-through;text-decoration-thickness:1px}
+  input.hidden-box{position:absolute;opacity:0;width:1px;height:1px}
+  input.hidden-box:focus-visible + .sched-body .tick{outline:2px solid var(--blue);outline-offset:3px}
+
+  .flatlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 28px}
+  @media(max-width:640px){.flatlist{grid-template-columns:1fr}}
+  .flatlist li{display:flex;gap:10px;align-items:flex-start;font-size:.94em;line-height:1.65;padding:6px 0}
+  .flatlist .tick{margin-top:.3em}
+
+  .confirmlist{list-style:none;margin:0;padding:0}
+  .confirmlist li{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule2);font-size:.94em;line-height:1.65}
+  .confirmlist li:last-child{border-bottom:0}
+  .confirmlist .q{color:var(--amber);font-weight:700;font-size:.82em;letter-spacing:.06em;white-space:nowrap;padding-top:.15em}
+
+  .actions{margin-top:34px;border-top:1px solid var(--rule);padding-top:22px;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+  .actions .spacer{flex:1}
+  @media(max-width:640px){.actions{display:grid;gap:12px}.actions .btn-primary{width:100%}}
+  .more{margin-top:14px;display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+  .more .mlabel{font-size:.78em;color:var(--ink3);letter-spacing:.14em}
+  .editline{margin-top:20px;font-size:.86em;color:var(--ink3)}
+  .voice{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-top:16px;font-size:.8em;color:var(--ink3)}
+  .voice label{display:inline-flex;align-items:center;gap:8px}
+  .voice select{font:inherit;font-size:1em;padding:6px 8px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:2px;min-height:40px;max-width:20em}
+  .note{border-left:2px solid var(--blue-line);padding:2px 0 2px 14px;font-size:.86em;color:var(--ink2);margin:16px 0 0;line-height:1.7}
+  .banner{margin:16px 0 0;padding:12px 16px;border:1px solid #bcd0c2;background:var(--green-wash);font-size:.86em;color:#244c37;display:flex;gap:12px;align-items:flex-start}
+  .banner[hidden]{display:none}
+  .banner button{margin-left:auto;background:none;border:0;color:#244c37;text-decoration:underline;cursor:pointer;flex:none;font-size:.92em}
+
+  /* ---------- letter / form ---------- */
+  .typebody{margin-top:38px}
+  .typebody h2{font-size:.72em;font-weight:700;letter-spacing:.2em;color:var(--ink3);margin:0 0 12px;font-family:var(--sans)}
+  .numlist{list-style:none;margin:0;padding:0;counter-reset:n;border-top:1px solid var(--rule2)}
+  .numlist li{position:relative;padding:13px 0 13px 34px;counter-increment:n;border-bottom:1px solid var(--rule2);font-size:.96em}
+  .numlist li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;top:14px;font-size:.74em;font-weight:700;color:var(--ink3);letter-spacing:.06em}
+  .numlist .sub{display:block;font-size:.86em;color:var(--ink3);margin-top:3px;line-height:1.6}
+  .status{display:inline-block;font-size:.7em;font-weight:700;letter-spacing:.06em;padding:1px 6px;border-radius:2px;margin-right:8px;vertical-align:.08em}
+  .status.ok{color:var(--green);background:var(--green-wash)}
+  .status.sug{color:var(--blue-ink);background:var(--blue-wash)}
+  .status.ask{color:var(--amber);background:var(--amber-wash)}
+
+  .formblock{margin-top:38px;border-top:1px solid var(--rule);padding-top:22px}
+  .formblock .flabel{display:block;font-size:.72em;font-weight:700;letter-spacing:.2em;color:var(--ink3);margin-bottom:10px}
+  .opt{display:flex;gap:14px;align-items:flex-start;padding:13px 2px;border-bottom:1px solid var(--rule2);cursor:pointer}
+  .opt:first-of-type{border-top:1px solid var(--rule2)}
+  .opt input{margin:0;width:18px;height:18px;flex:none;accent-color:var(--blue);margin-top:.25em}
+  .opt b{display:block;font-weight:600;font-size:.96em}
+  .opt span.d{display:block;font-size:.84em;color:var(--ink3);margin-top:2px;line-height:1.6}
+  .opt:has(input:checked){box-shadow:inset 2px 0 0 var(--blue);padding-left:12px}
+  .opt:has(input:checked) b{color:var(--blue-ink)}
+  .field{display:grid;grid-template-columns:9em 1fr;gap:16px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--rule2)}
+  @media(max-width:600px){.field{grid-template-columns:1fr;gap:6px}}
+  .field label{font-size:.88em;font-weight:600}
+  .field .hint{display:block;font-size:.8em;color:var(--ink3);font-weight:400;margin-top:2px}
+  .field input{width:100%;padding:12px;font:inherit;font-size:1em;border:1px solid var(--rule3);background:var(--sheet);color:var(--ink);border-radius:2px;min-height:50px}
+  .field input:focus{border-color:var(--blue);outline:2px solid var(--blue-wash);outline-offset:0}
+  .formcta{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:28px}
+  @media(max-width:640px){.formcta{display:grid}.formcta .btn-primary{width:100%}}
+
+  /* ---------- call / scam / help ---------- */
+  .script{border-top:1px solid var(--rule);margin-top:32px;padding-top:20px}
+  .script .lab{display:block;font-size:.7em;letter-spacing:.22em;color:var(--ink3);margin-bottom:10px}
+  .say{font-size:1.02em;line-height:1.85;padding-left:18px;border-left:2px solid var(--blue)}
+  .say b{color:var(--blue-ink)}
+  .qa{margin:0;border-top:1px solid var(--rule2)}
+  .qaitem{display:grid;grid-template-columns:1fr 1.25fr;gap:20px;padding:13px 0;border-bottom:1px solid var(--rule2);font-size:.92em}
+  @media(max-width:640px){.qaitem{grid-template-columns:1fr;gap:4px}}
+  .qaitem b{font-weight:600}
+  .qaitem span{color:var(--ink2)}
+  .wline{border-bottom:1px solid var(--rule3);height:2.1em}
+  .wlabel{font-size:.8em;color:var(--ink3);margin-top:14px}
+
+  .scamq{padding:16px 0;border-bottom:1px solid var(--rule2)}
+  .scamq:first-child{border-top:1px solid var(--rule2)}
+  .scamq .q{display:grid;grid-template-columns:auto 1fr auto;gap:10px 14px;align-items:baseline;font-size:.96em;line-height:1.65}
+  @media(max-width:640px){.scamq .q{grid-template-columns:auto 1fr}.yn{grid-column:2;justify-self:start;margin-top:4px}}
+  .scamq .qn{font-size:.76em;color:var(--ink3);font-variant-numeric:tabular-nums}
+  .scamq .text{grid-column:2}
+  .yn{display:flex;gap:8px;justify-self:end;align-self:start}
+  .yn button{background:var(--sheet);border:1px solid var(--rule3);border-radius:2px;padding:8px 14px;font-size:.86em;color:var(--ink2);cursor:pointer;min-height:44px;min-width:64px}
+  .yn button:hover{color:var(--ink)}
+  .yn button[aria-pressed="true"]{color:#fff;font-weight:700;background:var(--blue);border-color:var(--blue)}
+  .yn button[aria-pressed="true"].bad{color:#fff;background:var(--red);border-color:var(--red)}
+  .verdict{margin-top:22px;padding:15px 18px;font-size:.94em;line-height:1.75;border:1px solid var(--rule3);border-left-width:3px}
+  .verdict.good{border-color:#bcd0c2;border-left-color:var(--green);background:var(--green-wash);color:#244c37}
+  .verdict.bad{border-color:#e0bdb6;border-left-color:var(--red);background:var(--red-wash);color:#6f2318}
+  .verdict.tmp{border-left-color:var(--ink3);background:var(--sheet);color:var(--ink2)}
+
+  .helplist{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule2)}
+  .helplist li{padding:13px 0;border-bottom:1px solid var(--rule2);font-size:.95em;line-height:1.65}
+
+  .foot{margin-top:54px;border-top:1px solid var(--rule);padding-top:18px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.78em;color:var(--ink3)}
+
+  /* ---------- print ---------- */
+  #printsheet{display:none}
+  .ps{color:#000;background:#fff;font-family:var(--sans);font-size:10.5pt;line-height:1.5}
+  .ps h1{font-family:var(--serif);font-size:19pt;font-weight:600;margin:0 0 4pt;padding-bottom:4pt;border-bottom:1.4pt solid #000}
+  .ps .kicker{font-size:8.5pt;letter-spacing:.16em;color:#555;margin-bottom:6pt}
+  .ps .fine{font-size:8.8pt;color:#444;margin:0 0 8pt}
+  .ps .psrow{font-size:9.8pt;margin:2pt 0;padding-bottom:2pt;border-bottom:.5pt solid #ddd}
+  .ps .psrow b{display:inline-block;min-width:52pt;color:#333}
+  .ps h2{font-size:10.5pt;font-weight:700;margin:10pt 0 4pt;padding-bottom:2pt;border-bottom:1pt solid #000;letter-spacing:.06em}
+  .ps ul{list-style:none;padding:0;margin:3pt 0}
+  .ps ul.bring{column-count:2;column-gap:14pt}
+  .ps li{font-size:10.2pt;margin:2.4pt 0;padding-left:15pt;position:relative}
+  .ps li .bx{position:absolute;left:0;top:1.6pt;width:9.5pt;height:9.5pt;border:.9pt solid #000}
+  .ps li .h{color:#555;font-size:8.8pt}
+  .ps .lines div{border-bottom:.7pt solid #aaa;height:14pt}
+  .ps .warnbox{border:.9pt solid #000;padding:5pt 7pt;font-size:8.8pt;margin-top:7pt}
+  .ps .footline{font-size:8pt;color:#555;margin-top:6pt}
+  @media print{
+    @page{margin:13mm}
+    body{background:#fff}
+    .page{display:none!important}
+    #printsheet{display:block!important;position:static}
+  }
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 16px;border-radius:2px;font-size:.85em;opacity:0;pointer-events:none;transition:opacity .18s;max-width:calc(100% - 32px);text-align:center;z-index:60}
+  .toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <button class="brand" onclick="go('home')" aria-label="回到首页">
+      <span class="wordmark">明白</span>
+      <span class="brand-sub" id="tag">办事助手</span>
+    </button>
+    <div class="controls">
+      <span class="ctl-group">
+        <button class="ctl" id="lzh" aria-pressed="true" onclick="setLang('zh')">中文</button>
+        <button class="ctl" id="len" aria-pressed="false" onclick="setLang('en')">EN</button>
+      </span>
+      <span class="ctl-group">
+        <span class="ctl-label" id="size-label">字号</span>
+        <button class="ctl" id="sz0" data-sz="" aria-pressed="true" onclick="setSize('',this)">标准</button>
+        <button class="ctl" id="sz1" data-sz="lg" aria-pressed="false" onclick="setSize('lg',this)">大</button>
+        <button class="ctl" id="sz2" data-sz="xl" aria-pressed="false" onclick="setSize('xl',this)">特大</button>
+      </span>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <main class="view" id="v-home">
+    <div class="home-grid">
+      <section class="home-lead">
+        <p class="eyebrow" id="h-eyebrow"></p>
+        <h1 id="h-title"></h1>
+        <p class="lede" id="h-sub"></p>
+        <div class="cta">
+          <button class="btn-primary" onclick="startNew()" id="h-start"></button>
+          <button class="btn-quiet" onclick="loadDemo()" id="h-demo"></button>
+        </div>
+        <p class="fineprint" id="h-fine"></p>
+      </section>
+
+      <aside class="sample" aria-label="清单示例">
+        <div class="sample-head">
+          <span class="sample-tag" id="h-s-tag"></span>
+          <span class="sample-title" id="h-s-title"></span>
+        </div>
+        <div class="sample-date">
+          <span class="d" id="h-s-date"></span>
+          <span class="t" id="h-s-place"></span>
+        </div>
+        <div class="sample-sec">
+          <h3 id="h-s-first"></h3>
+          <ul class="sample-lines">
+            <li><span class="tick on" aria-hidden="true"></span><span id="h-s-1"></span></li>
+            <li><span class="tick" aria-hidden="true"></span><span id="h-s-2"></span></li>
+          </ul>
+        </div>
+        <div class="sample-sec">
+          <h3 id="h-s-bringH"></h3>
+          <p class="sample-bring" id="h-s-bring"></p>
+        </div>
+        <div class="sample-foot" id="h-s-foot"></div>
+      </aside>
+    </div>
+
+    <section class="section">
+      <h2 class="sec-label" id="h-others-h"></h2>
+      <ul class="toc" id="h-others"></ul>
+    </section>
+
+    <section class="section">
+      <h2 class="sec-label" id="h-how-h"></h2>
+      <div class="how" id="h-how"></div>
+    </section>
+
+    <section class="section">
+      <div class="trust">
+        <b id="h-trust-h"></b><span id="h-trust-b"></span>
+      </div>
+      <details class="about">
+        <summary id="about-sum"></summary>
+        <div class="body" id="about-body"></div>
+      </details>
+    </section>
+  </main>
+
+  <!-- LETTER -->
+  <main class="view" id="v-letter" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead">
+      <h1 id="l-title"></h1>
+      <p class="lede" id="l-sub"></p>
+    </div>
+    <p class="note" id="l-note"></p>
+    <ul class="toc toc-main" id="l-types" role="group"></ul>
+    <div id="l-detail"></div>
+    <div id="l-form" hidden>
+      <div class="formblock">
+        <span class="flabel" id="f-date-k"></span>
+        <div id="f-dtypes"></div>
+        <div class="field" id="f-date-wrap">
+          <label for="f-date"><span id="f-date-l"></span><span class="hint" id="f-date-h"></span></label>
+          <input id="f-date" type="date">
+        </div>
+      </div>
+      <div class="formblock">
+        <span class="flabel" id="f-known-k"></span>
+        <p class="fineprint" id="f-known-h" style="margin:0 0 8px"></p>
+        <div id="f-known"></div>
+      </div>
+      <div class="formblock">
+        <span class="flabel" id="f-place-k"></span>
+        <div class="field">
+          <label for="f-place" id="f-place-l"></label>
+          <div><input id="f-place" type="text" autocomplete="off"><span class="hint" id="f-place-h"></span></div>
+        </div>
+        <div class="field">
+          <label for="f-phone" id="f-phone-l"></label>
+          <div><input id="f-phone" type="tel" inputmode="tel" autocomplete="off"><span class="hint" id="f-phone-h"></span></div>
+        </div>
+      </div>
+      <div class="formcta">
+        <button class="btn-primary" onclick="makeTasks()" id="f-go"></button>
+        <button class="linkbtn" onclick="skipForm()" id="f-skip"></button>
+      </div>
+    </div>
+  </main>
+
+  <!-- TASKS -->
+  <main class="view" id="v-tasks" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="task-head">
+      <div>
+        <p class="task-kind" id="t-kind"></p>
+        <h1 class="task-date" id="t-date"></h1>
+      </div>
+      <div class="task-meta" id="t-meta"></div>
+    </div>
+    <p class="banner" id="t-banner" hidden></p>
+    <p class="note" id="t-note"></p>
+
+    <section class="next" id="t-next" hidden></section>
+
+    <section class="group">
+      <div class="group-head"><h2 class="sec-label" id="t-list-h"></h2><span class="count" id="t-count"></span></div>
+      <ol class="schedule" id="t-list"></ol>
+    </section>
+
+    <section class="group">
+      <h2 class="sec-label" id="t-bring-h"></h2>
+      <ul class="flatlist" id="t-bring"></ul>
+    </section>
+
+    <section class="group" id="t-confirm-wrap">
+      <h2 class="sec-label" id="t-confirm-h"></h2>
+      <ul class="confirmlist" id="t-confirm"></ul>
+    </section>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="doPrint()" id="t-print"></button>
+      <button class="textbtn" onclick="copyFamily(this)" id="t-copy"></button>
+      <button class="textbtn" onclick="readAll(this)" id="t-read"></button>
+    </div>
+    <div class="more">
+      <span class="mlabel" id="t-more"></span>
+      <button class="textbtn" onclick="exportICS()" id="t-ics"></button>
+      <button class="textbtn" onclick="copyFamilyLink(this)" id="t-link"></button>
+      <button class="textbtn" onclick="saveNow(this)" id="t-save"></button>
+      <button class="textbtn" onclick="clearSaved()" id="t-clear"></button>
+    </div>
+    <p class="editline" id="t-edit"></p>
+    <div class="voice" id="t-voice"></div>
+    <p class="after" id="t-saved" hidden style="margin-top:12px;color:var(--green);font-size:.84em"></p>
+  </main>
+
+  <!-- CALL -->
+  <main class="view" id="v-call" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead"><h1 id="c-title"></h1><p class="lede" id="c-sub"></p></div>
+    <div class="script">
+      <span class="lab" id="c-open-k"></span>
+      <div class="say" id="c-offline"></div>
+    </div>
+    <div class="script">
+      <span class="lab" id="c-ask-k"></span>
+      <ul class="numlist" id="c-ask"></ul>
+      <div class="voice" id="c-voice"></div>
+      <div style="margin-top:14px"><button class="textbtn" onclick="readCall(this)" id="c-read"></button></div>
+    </div>
+    <div class="script">
+      <span class="lab" id="c-ans-k"></span>
+      <div class="qa" id="c-qa"></div>
+    </div>
+    <div class="script">
+      <span class="lab" id="c-write-k"></span>
+      <div id="c-write"></div>
+      <p class="fineprint" id="c-write-hint" style="margin-top:10px"></p>
+    </div>
+  </main>
+
+  <!-- SCAM -->
+  <main class="view" id="v-scam" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead"><h1 id="s-title"></h1><p class="lede" id="s-sub"></p></div>
+    <div id="s-panel" style="margin-top:20px"></div>
+    <div id="s-verdict"></div>
+    <div style="margin-top:18px"><button class="linkbtn" onclick="resetScam()" id="s-reset"></button></div>
+  </main>
+
+  <!-- HELP -->
+  <main class="view" id="v-help" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead"><h1 id="hp-title"></h1><p class="lede" id="hp-sub"></p></div>
+    <section class="group" style="margin-top:28px"><h2 class="sec-label" id="hp-k1"></h2><ul class="helplist" id="hp-list"></ul></section>
+    <section class="group"><h2 class="sec-label" id="hp-k2"></h2><ul class="helplist" id="hp-who"></ul></section>
+    <p class="note" id="hp-note"></p>
+  </main>
+
+  <footer class="foot">
+    <span id="foot1"></span>
+    <span id="foot2"></span>
+  </footer>
+</div>
+
+<section id="printsheet" class="ps" aria-hidden="true"></section>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* 明白 v3 — a well-set errand sheet.
+   Offline, no account, no medical advice. Everything stays in this browser. */
+
+const T = {
+zh:{
+  tag:"办事助手",
+  sizeLabel:"字号", sizeStd:"标准", sizeLg:"大", sizeXl:"特大",
+  sDate:"11月20日", sPlace:"上午 · 社区服务中心",
+  when_today:"今天", when_d3:"前 3 天", when_d2:"前 2 天", when_d1:"前一天",
+  when_due:"截止日", when_appt:"预约日", when_follow:"复诊日",
+  eyebrow:"收到通知之后",
+  title:"下一步怎么办，<br>一张清单写明白。",
+  sub:"把办事通知整理成一张能带走、能核对、照着做的清单。可以打印，也可以存进手机。",
+  start:"整理我的通知",
+  demo:"先看一份示例",
+  fine:"不用注册，不联网。填错随时改。",
+  sTag:"示例", sSheet:"照护评估",
+  sTitle:"照护评估",
+  sFirst:"先做",
+  s1:"确认评估的时间和地点",
+  s2:"带上病历和用药清单",
+  sBringH:"要带",
+  sBring:["病历","用药清单","身份证","医保卡"],
+  sFoot:"还有 2 项待确认，可以打印带走",
+  othersH:"其他类型的通知",
+  fullTag:"完整流程",
+  tplTag:"模板",
+  howH:"清单是怎么排出来的",
+  how:[["照着通知填","日期、地点、要带什么，三个空"],["按常见做法排","每项标注：写明 / 建议 / 待确认"],["带走照做","打印，勾掉，打完电话记下来"]],
+  trustH:"不收费，也不问验证码。",
+  trustB:"你填的内容只存在这台设备里：不联网、不上传、不收集个人信息。不提供医疗、用药或法律建议。",
+  aboutSum:"为什么这样设计 · 方法与局限",
+  back:"返回",
+  lTitle:"先看是哪一类通知",
+  lSub:"选一类，看看通常要准备什么，再把通知上的信息填进去。",
+  lNote:"下面这些是常见办理准备，供你核对。具体要求以通知原文和经办机构的确认为准。",
+  whatItIs:"这是什么",
+  stepsH:"通常要办的事",
+  bringH:"一般要带",
+  whoH:"一般找谁",
+  fDateK:"通知里的时间",
+  dtypes:[["deadline","最后提交期限","过了这个日期，可能就办不了"],["appoint","约好的办理时间","通知上写了哪天去"],["followup","复诊 / 复查","医院或评估机构约的时间"],["unknown","通知里没写清楚","先打电话问，再排日程"]],
+  fDateL:"日期", fDateH:"通知上写的日期；不确定就空着",
+  fKnownK:"通知里已经写了什么",
+  fKnownH:"勾上的标「已写明」；没勾的会提醒你先问清楚。",
+  known:[["time","写了时间和地点"],["docs","写了要带哪些材料"],["what","写了要办什么事"]],
+  fPlaceK:"去哪里、打哪个电话",
+  placeL:"地点", placeH:"窗口、社区中心或医院（可空）",
+  phoneL:"电话", phoneH:"通知上的电话，或当地服务热线（可空）",
+  go:"生成我的清单", skip:"先不填，直接看清单",
+  nextLab:"先做这一件",
+  nextAsk:"这件事需要先问清楚，再往下走。",
+  allDoneH:"清单完成", allDone:"都做完了。这张纸留着，电话里记的东西也在上面。",
+  listH:"接下来",
+  count:"已完成 {d} / {n}",
+  bringTitle:"要带的东西",
+  confirmH:"还没确认",
+  confirmQ:"要问",
+  tNote:"以下是常见办理准备，具体要求以通知原文和经办机构的确认为准。",
+  tNoteTpl:"这类通知流程差别较大，这里只给通用准备，不排日期。具体步骤以通知为准。",
+  needDate:"还没填日期：补上后，清单才会自动排时间。",
+  unknownH:"时间还没定",
+  unknownSub:"先打电话问清楚时间和地点",
+  overdueH:"已过期",
+  overdueSub:"先打电话确认还能不能办",
+  daysLeft:"还有 {n} 天",
+  isToday:"就是今天",
+  isTomorrow:"明天",
+  print:"打印，带去窗口",
+  copy:"发给家人",
+  read:"朗读给我听",
+  readStop:"停止朗读",
+  more:"也可以",
+  ics:"加进手机日历",
+  link:"复制给家人的链接",
+  save:"存在这台设备",
+  clear:"清除我的数据",
+  saved:"已保存在本机浏览器",
+  edit:"日期、地点或电话填错了？回去改一改。",
+  editBtn:"修改信息",
+  bannerDemo:"这是一份示例，可以随便改。",
+  dismiss:"知道了",
+  fromFamily:"这是家人替你填好的清单",
+  icsDone:"日历文件已下载，打开就能导入", icsNoDate:"这份清单还没有具体日期，先确认时间",
+  linkCopied:"链接已复制，发给家人就能打开", linkFile:"链接要网页上线后才能分享；现在是本机文件",
+  copyOk:"已复制，可以粘到微信", copyFail:"复制失败，请长按下面的文字手动复制",
+  saveToast:"已保存到本机", clearToast:"已清除本机数据",
+  cTitle:"打电话之前，先想好这几句",
+  cSub:"照着念就行。对方是真人，不用紧张。",
+  cOpenK:"第一句：说明来意", cAskK:"然后问这五个问题", cRead:"朗读这一页",
+  cAnsK:"对方可能会问，你可以这样答", cWriteK:"边打边记",
+  cWriteHint:"打印这一页，用笔填。打电话时别只靠记忆。",
+  cw1:"对方姓名 / 工号", cw2:"还要补什么材料", cw3:"下次时间、地点",
+  sTitle:"先查一下：这是不是骗局",
+  sSub:"五个问题。只要有一个「有」，就先停下来。",
+  sQ:["对方让你把钱转到“安全账户”，或取现金交给某个人？","对方让你点一个链接、下载 App，或者共享手机屏幕？","对方说“不要告诉家人”，或者催你“今天必须办完”？","对方自称社保、医保、公安或银行，却让你用手机银行操作？","对方要你念短信验证码、银行卡密码，或拍身份证正反面？"],
+  yes:"有", no:"没有",
+  sBad:"停一下。这就是典型骗局的做法。挂断电话，用通知上或官方的号码回拨，先告诉家人：不要转账、不要点链接、不要给验证码。",
+  sGood:"五个问题都没有典型红旗。但涉及转账，仍然要用官方电话回拨核实。",
+  sTmp:"已回答 {n} / 5。",
+  sReset:"重新检查",
+  hpTitle:"这些情况，请直接找真人",
+  hpSub:"清单只能帮你把事排清楚，不能替你做决定。",
+  hpK1:"先停下来，找人", hpK2:"可以找谁",
+  hpList:["涉及用药、剂量、副作用 → 医生或药师","涉及诊断、检查结果 → 医生","金额、资格、申诉 → 经办窗口或社工","有人催你转账、要验证码 → 先挂断，再核实"],
+  hpWho:["社区服务中心：社工可以陪同办理，也能帮你填表","医院社工部 / 医务社工","当地政务服务热线（如 12345；社保 12333）","家人或信任的邻居，一起去"],
+  hpNote:"如果一件事让你觉得「被催着做决定」，那多半不该现在做。可以先回家，明天再办。",
+  foot1:"明白 · 办事助手", foot2:"v3.0 · 2026",
+  status:{ok:"已写明",sug:"建议准备",ask:"待确认"},
+  askInline:"通知里可能没写，先打电话确认。",
+  overdueInline:"这个日期已经过了，先打电话确认还能不能办。",
+  noWhen:"时间确认后再排",
+  weekday:["星期日","星期一","星期二","星期三","星期四","星期五","星期六"],
+  vTitle:"朗读", vVoice:"声音", vRate:"语速", slow:"慢", normal:"正常", fast:"快一点", noVoice:"这台设备没有可用的语音",
+  printKicker:"办事清单 · 打印后带去窗口",
+  printFine:"以下为常见办理准备，具体要求以通知原文和经办机构确认为准。",
+  printA:"要带的东西", printB:"要办的事", printC:"要问的问题", printD:"记录",
+  printE:"防骗提醒", printF:"家人电话",
+  printWarn:"任何人让你转账、给验证码、点链接，先挂断，用官方电话回拨。",
+  printFoot:"办完把这张纸拍照留底。",
+  copyHeader:"【办事清单】", copyDue:"时间：", copyWhere:"地点：", copyTel:"电话：", copyToDo:"要做的：", copyAsk:"要问的：",
+  about:`<h4>它解决什么问题</h4><p>办事办不成，常常不是看不懂字，而是材料没带全、顺序记不住、被人催着做了错误决定。所以它不解释政策，只给你三样能用的东西：一张排好日期的清单、一段能照着念的电话稿、一张能打印能写字的纸。</p>
+<h4>为什么先只做「照护评估」</h4><p>养老金、医保、出院、用药的流程差别很大，用同一套排期会出错。所以完整流程先做照护评估；其他类型只给通用准备，并明确标注是模板、不排日期。</p>
+<h4>为什么每项都标状态</h4><p>程序没有读你的通知，只能给常见做法。所以每项标：已写明 / 建议准备 / 待确认，提醒你对照原文，别把模板当规定。</p>
+<h4>视觉依据</h4><p>按工信部《互联网网站适老化通用设计规范》：不用阴影、透视、纹理；正文 18px 起，可放大到 25px；对比度不低于 4.5:1；点击区域不小于 44px；首页只留一个主按钮和一个示例。</p>
+<h4>它不做什么</h4><ul><li>不读通知原文，不判断资格，不给用药或医疗建议</li><li>不联网、不上传、不保存到服务器</li><li>不替你做决定，也不代替窗口和医生</li></ul>
+<h4>已知局限</h4><p>完整流程只有照护评估一类；日期规则是常识排期，不代表官方流程；语音取决于设备；家属链接需要网页已上线；还没有做真实用户的可用性测试。</p>`
+},
+en:{
+  tag:"paperwork, plain",
+  sizeLabel:"Size", sizeStd:"Standard", sizeLg:"Large", sizeXl:"Extra large",
+  sDate:"20 Nov", sPlace:"Morning · Community centre",
+  when_today:"Today", when_d3:"3 days before", when_d2:"2 days before", when_d1:"Day before",
+  when_due:"Deadline", when_appt:"Appointment", when_follow:"Follow-up",
+  eyebrow:"After the notice arrives",
+  title:"What comes next,<br>written on one sheet.",
+  sub:"Turn the notice into one list you can carry, check and follow. Print it, or keep it on your phone.",
+  start:"Sort out my notice",
+  demo:"See an example first",
+  fine:"No sign-up, no network. Change anything later.",
+  sTag:"Example", sSheet:"Care assessment",
+  sTitle:"Care assessment",
+  sFirst:"Do first",
+  s1:"Confirm the time and place",
+  s2:"Bring records and medication list",
+  sBringH:"Bring",
+  sBring:["Records","Medication list","ID card","Insurance card"],
+  sFoot:"2 items still to confirm — printable",
+  othersH:"Other kinds of notice",
+  fullTag:"full flow",
+  tplTag:"template",
+  howH:"How the list is made",
+  how:[["Fill in from the notice","Date, place, what to bring — three blanks"],["Order by common practice","Each item marked: stated / suggested / to confirm"],["Take it and work through","Print, tick, write down the phone call"]],
+  trustH:"No fees, and it never asks for a verification code.",
+  trustB:"What you type stays on this device: no network, no upload, no personal data collected. No medical, medication or legal advice.",
+  aboutSum:"Why it is built this way · method and limits",
+  back:"Back",
+  lTitle:"Which kind of notice is it?",
+  lSub:"Pick one to see what is usually needed, then copy the details from the notice.",
+  lNote:"These are common preparations to check against your notice. The notice and the office decide what actually applies.",
+  whatItIs:"What it is",
+  stepsH:"What is usually involved",
+  bringH:"What is usually needed",
+  whoH:"Who to ask",
+  fDateK:"The date on the notice",
+  dtypes:[["deadline","A final deadline","Miss it and the chance may be gone"],["appoint","A booked appointment","The notice gives a day to go"],["followup","A follow-up visit","Set by the hospital or assessor"],["unknown","The notice is not clear","Call first, then plan"]],
+  fDateL:"Date", fDateH:"As printed on the notice; leave empty if unsure",
+  fKnownK:"What the notice already says",
+  fKnownH:"Ticked items are marked \"stated\"; the rest remind you to confirm first.",
+  known:[["time","It gives the time and place"],["docs","It lists the documents"],["what","It says what to do"]],
+  fPlaceK:"Where to go, and which number",
+  placeL:"Place", placeH:"Office, community centre or hospital (optional)",
+  phoneL:"Phone", phoneH:"The number on the notice, or the local hotline (optional)",
+  go:"Build my list", skip:"Skip and show the list",
+  nextLab:"Do this first",
+  nextAsk:"This one needs a phone call before anything else.",
+  allDoneH:"All done", allDone:"Everything on the list is done. Keep the sheet — your notes from the call are on it.",
+  listH:"Then",
+  count:"{d} of {n} done",
+  bringTitle:"What to bring",
+  confirmH:"Still to confirm",
+  confirmQ:"Ask",
+  tNote:"These are common preparations to check against your notice; the notice and the office decide what applies.",
+  tNoteTpl:"Processes differ a lot for this kind of notice, so this is general preparation without dates. Follow the notice itself.",
+  needDate:"No date yet — add one and the list will schedule itself.",
+  unknownH:"Time not set",
+  unknownSub:"Call first to get the time and place",
+  overdueH:"Overdue",
+  overdueSub:"Call first to check whether it can still be done",
+  daysLeft:"in {n} days",
+  isToday:"today",
+  isTomorrow:"tomorrow",
+  print:"Print and take it",
+  copy:"Send to family",
+  read:"Read this aloud",
+  readStop:"Stop reading",
+  more:"Also",
+  ics:"Add to phone calendar",
+  link:"Copy a link for family",
+  save:"Save on this device",
+  clear:"Clear my data",
+  saved:"Saved in this browser",
+  edit:"Wrong date, place or number? Go back and change it.",
+  editBtn:"Edit details",
+  bannerDemo:"This is an example — change anything.",
+  dismiss:"Got it",
+  fromFamily:"Your family filled this in for you",
+  icsDone:"Calendar file downloaded — open it to import", icsNoDate:"No set date yet; confirm the time first",
+  linkCopied:"Link copied — send it to your family", linkFile:"Shareable links need a hosted page; this is a local file",
+  copyOk:"Copied — paste it into WeChat", copyFail:"Copy failed — long-press the text below",
+  saveToast:"Saved on this device", clearToast:"Local data cleared",
+  cTitle:"Before you call, have these lines ready",
+  cSub:"Read them out. The other side is a person; nothing to be nervous about.",
+  cOpenK:"Line one: why you are calling", cAskK:"Then ask these five questions", cRead:"Read this page aloud",
+  cAnsK:"What they may ask, and what you can say", cWriteK:"Notes while you call",
+  cWriteHint:"Print this page and use a pen. Do not rely on memory during a call.",
+  cw1:"Name / staff number", cw2:"Documents still missing", cw3:"Next time and place",
+  sTitle:"First: is this a scam?",
+  sSub:"Five questions. If any answer is yes, stop.",
+  sQ:["Asked you to move money to a \"safe account\", or hand cash to someone?","Asked you to click a link, install an app, or share your screen?","Said \"don't tell your family\", or pushed you to finish today?","Claimed to be an agency or bank, but wants you in your banking app?","Asked for an SMS code, a card PIN, or photos of your ID?"],
+  yes:"Yes", no:"No",
+  sBad:"Stop. This is how a classic scam works. Hang up, call back on the official number, tell your family first: no transfer, no links, no codes.",
+  sGood:"No classic red flags. Anything involving a transfer still needs a callback on the official number.",
+  sTmp:"{n} of 5 answered.",
+  sReset:"Check again",
+  hpTitle:"In these situations, talk to a person",
+  hpSub:"A list can organise the work. It cannot make the decision.",
+  hpK1:"Stop and find someone", hpK2:"Who to contact",
+  hpList:["Medication, dose or side effects → doctor or pharmacist","Diagnosis or test results → doctor","Amounts, eligibility or appeals → the counter officer or a social worker","Someone rushing you to pay or share a code → hang up, then verify"],
+  hpWho:["Community service centre: a social worker can go with you","Hospital medical social work department","The local government hotline (e.g. 12345)","A family member or trusted neighbour, to come along"],
+  hpNote:"If a decision makes you feel rushed, it probably should not be made today. Go home; come back tomorrow.",
+  foot1:"明白 · paperwork, plain", foot2:"v3.0 · 2026",
+  status:{ok:"Stated",sug:"Suggested",ask:"To confirm"},
+  askInline:"The notice may not say this; call to confirm first.",
+  overdueInline:"This date has passed. Call first to check.",
+  noWhen:"Scheduled once the date is confirmed",
+  weekday:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+  vTitle:"Reading", vVoice:"Voice", vRate:"Speed", slow:"Slow", normal:"Normal", fast:"Faster", noVoice:"No voice on this device",
+  printKicker:"Things to do · print and take it with you",
+  printFine:"Common preparations only. The notice and the office decide what applies.",
+  printA:"What to bring", printB:"What to do", printC:"What to ask", printD:"Notes",
+  printE:"Scam check", printF:"Family phone",
+  printWarn:"If anyone asks you to transfer money, share a code or click a link: hang up and call the official number.",
+  printFoot:"Photograph this sheet after the visit.",
+  copyHeader:"[Things to do] ", copyDue:"When: ", copyWhere:"Where: ", copyTel:"Phone: ", copyToDo:"To do:", copyAsk:"To ask:",
+  about:`<h4>The problem</h4><p>Paperwork rarely fails because people cannot read. It fails because documents are missing, the order is forgotten, or a decision is made under pressure. So this tool does not explain policy. It gives three usable things: a dated list, a phone script, and a sheet you can print and write on.</p>
+<h4>Why care assessment first</h4><p>Pension, insurance, discharge and medication follow very different processes; one scheduling rule would be wrong for most of them. So the full flow covers care assessment, and the other types are explicitly labelled templates with no dates.</p>
+<h4>Why every item has a status</h4><p>The program does not read your notice. It can only offer common practice. Each item is marked stated / suggested / to confirm — a reminder to check the original.</p>
+<h4>Visual basis</h4><p>Follows China's MIIT accessibility guidance: no shadows, perspective or textures; body text from 18px up to 25px; contrast at or above 4.5:1; targets at least 44px; one primary button and one example on the home screen.</p>
+<h4>What it refuses to do</h4><ul><li>Does not read your notice, decide eligibility, or give medical or medication advice</li><li>No network, no upload, no server storage</li><li>Does not decide for you, and does not replace the counter or the doctor</li></ul>
+<h4>Known limits</h4><p>Only the care assessment has a full flow; date rules are common-sense sequencing, not official procedure; voice depends on the device; family links need a hosted page; no usability testing with real users yet.</p>`
+}};
+
+/* ---------------- scenarios ---------------- */
+const GENERIC_EN = [
+  {t:"Read the notice once, pen in hand", h:"Underline the date, the place and the phone number."},
+  {t:"Put the documents in one bag", h:"Whatever the notice lists, plus ID. Leave the bag by the door."},
+  {t:"Call and confirm three things", h:"What to bring, opening hours, whether someone can go for you."}
+];
+const GENERIC_ZH = [
+  {t:"把通知读一遍，手里拿支笔", h:"把日期、地点、电话画出来。"},
+  {t:"把材料装进一个袋子", h:"通知上写的材料，加上身份证；袋子放门口。"},
+  {t:"打电话确认三件事", h:"要带什么、几点办公、能不能代办。"}
+];
+function genericTasks(){
+  const src = lang==="zh" ? GENERIC_ZH : GENERIC_EN;
+  return src.map(x=>({t:x.t,hint:x.h,status:"sug",when:null}));
+}
+
+const SCEN = {
+care:{
+  full:true,
+  zh:{name:"照护评估", short:"长期护理 / 失能评估", sum:"要你去做一次评估，或者通知你评估结果。", bring:["病历","用药清单","身份证","医保卡"], who:"社区服务中心 / 长护险经办机构",
+    steps:[{t:"确认评估的时间和地点",h:"通知上写了就抄下来；没写就打电话问",status:"ask"},
+           {t:"准备最近一年的病历和用药清单",h:"正在吃的药，连药名和剂量一起记",status:"sug"},
+           {t:"请家人陪同，写下三件「现在做不了」的事",h:"比如洗澡、做饭、一个人出门",status:"sug"},
+           {t:"带齐材料去评估",h:"把材料装进一个袋子，放在门口",status:"sug"}],
+    tasks:[{t:"确认评估的时间和地点",hint:"从通知上抄到这张清单上；没写就打电话问。",status:"ask",when:"today"},
+           {t:"准备最近一年的病历和用药清单",hint:"把正在吃的药盒拍照，或者把药名和剂量抄下来。",status:"sug",when:"d3"},
+           {t:"请家人陪同，并写下三件「现在做不了」的事",hint:"比如洗澡、做饭、一个人出门。写具体的事，不写「不方便」。",status:"sug",when:"d2"},
+           {t:"提前一天把材料装进一个袋子",hint:"病历、用药清单、身份证、医保卡，放在门口。",status:"sug",when:"d1"},
+           {t:"评估当天：把困难一条一条说清楚",hint:"说不清就说「这件事我做不了」，不需要解释原因。",status:"sug",when:"due"},
+           {t:"结束后：记下结论和下一步",hint:"问清楚：结果什么时候出、下一步找谁。",status:"ask",when:"due"}]},
+  en:{name:"Care assessment", short:"Long-term care assessment", sum:"Asks you to attend an assessment, or reports its result.", bring:["Medical records","Medication list","ID card","Insurance card"], who:"Community service centre / long-term care office",
+    steps:[{t:"Confirm the time and place",h:"Copy it from the notice; if missing, call",status:"ask"},
+           {t:"Gather the last year of records and medicines",h:"Note the names and doses you take",status:"sug"},
+           {t:"Ask a family member to come; write down three things you can no longer do",h:"Bathing, cooking, going out alone",status:"sug"},
+           {t:"Take the documents to the assessment",h:"One bag, left by the door",status:"sug"}],
+    tasks:[{t:"Confirm the time and place of the assessment",hint:"Copy it onto this list; call if the notice does not say.",status:"ask",when:"today"},
+           {t:"Gather the last year of records and a medication list",hint:"Photograph the boxes, or write down names and doses.",status:"sug",when:"d3"},
+           {t:"Ask a family member to come, and write down three things you can no longer do",hint:"Bathing, cooking, going out alone. Name the task, not \"it is difficult\".",status:"sug",when:"d2"},
+           {t:"The day before, put everything in one bag",hint:"Records, medication list, ID, insurance card — by the door.",status:"sug",when:"d1"},
+           {t:"On the day: state each difficulty, one at a time",hint:"If stuck, say \"I cannot do this any more\". No explanation needed.",status:"sug",when:"due"},
+           {t:"Afterwards: note the result and the next step",hint:"Ask when the result comes, and who to contact next.",status:"ask",when:"due"}]}
+},
+pension:{full:false, zh:{name:"养老金 / 退休金", short:"金额或发放时间有变化", sum:"告诉你每月发多少、从哪个月开始变。", bring:["身份证","社保卡","通知原件"], who:"当地社保中心 / 养老金经办窗口", steps:[], tasks:[]},
+  en:{name:"Pension", short:"Amount or payment date changed", sum:"How much is paid each month, and when a change starts.", bring:["ID card","Social security card","The original notice"], who:"Local pension office", steps:[], tasks:[]}},
+medical:{full:false, zh:{name:"医保报销", short:"哪些报了、哪些自付", sum:"告诉你哪些费用报了、哪些要自己付。", bring:["发票","费用清单","出院记录"], who:"医保经办窗口 / 医院医保办", steps:[], tasks:[]},
+  en:{name:"Medical reimbursement", short:"What is covered, what you pay", sum:"Which costs were covered, and which you pay yourself.", bring:["Receipts","Itemised bill","Discharge record"], who:"Medical insurance office / hospital billing desk", steps:[], tasks:[]}},
+meds:{full:false, zh:{name:"用药调整", short:"药或剂量有变化", sum:"医生改了药或剂量。确认，但不要自己改。", bring:["现在的药盒","新旧药单"], who:"开药的医生 / 医院药师", steps:[], tasks:[]},
+  en:{name:"Medication change", short:"A medicine or dose changed", sum:"A medicine or dose has changed. Confirm it, but do not adjust it yourself.", bring:["Current boxes","Old and new lists"], who:"Prescribing doctor / pharmacist", steps:[], tasks:[]}},
+discharge:{full:false, zh:{name:"出院小结", short:"回家后要做什么", sum:"住院结束后的总结，以及回家后要做什么。", bring:["出院小结","出院带药"], who:"主治医生 / 社区护士", steps:[], tasks:[]},
+  en:{name:"Discharge summary", short:"What to do at home", sum:"A summary after a hospital stay, and what to do at home.", bring:["Discharge summary","Take-home medicines"], who:"Treating doctor / community nurse", steps:[], tasks:[]}},
+referral:{full:false, zh:{name:"社区照护转介", short:"日间照料 / 上门服务", sum:"把转介到社区服务，比如日间照料或上门服务。", bring:["评估结果","身份证","医保卡"], who:"社区服务中心 / 社工", steps:[], tasks:[]},
+  en:{name:"Community care referral", short:"Day care or home help", sum:"A referral to community services such as day care or home help.", bring:["Assessment result","ID card","Insurance card"], who:"Community service centre / social worker", steps:[], tasks:[]}}
+};
+
+const Q = [
+  {zh:"通知上写的具体要求是什么？",en:"What exactly does the notice require?"},
+  {zh:"时间、地点是哪一天、在哪里？",en:"When and where is it?"},
+  {zh:"我需要带哪些材料？",en:"Which documents do I need to bring?"},
+  {zh:"办公时间是几点到几点？",en:"What are your opening hours?"},
+  {zh:"可以请家人代办吗？要什么委托材料？",en:"Can a family member act for me? What authorisation is needed?"}
+];
+const CALLANS = [
+  {zh:["请说一下身份证号","我手边有身份证。号码我在窗口当面提供，电话里先不念。"],en:["Could you give me your ID number?","I have it with me. I will show it at the counter rather than read it over the phone."]},
+  {zh:["您是本人吗？","是本人。需要的话我可以带身份证到窗口。"],en:["Are you the person concerned?","Yes. I can bring my ID to the counter if needed."]},
+  {zh:["您具体要办哪一项？","我要办的是通知上写的那一项，名字我照着念给您。"],en:["Which item exactly?","The one named in the notice. Let me read the name to you."]},
+  {zh:["您方便什么时候来？","我可以在通知写的时间前来。具体哪天请您帮我确认。"],en:["When can you come?","I can come before the time on the notice. Please confirm which day."]}
+];
+const WRITE = [{zh:"对方姓名 / 工号",en:"Name / staff number"},{zh:"还要补什么材料",en:"Documents still missing"},{zh:"下次时间、地点",en:"Next time and place"}];
+const SCAMQ = [{zh:"对方让你把钱转到“安全账户”，或取现金交给某个人？",en:"Move money to a \"safe account\", or hand cash to someone?"},
+  {zh:"对方让你点一个链接、下载 App，或者共享手机屏幕？",en:"Click a link, install an app, or share your screen?"},
+  {zh:"对方说“不要告诉家人”，或者催你“今天必须办完”？",en:"\"Don't tell your family\", or \"finish today\"?"},
+  {zh:"对方自称社保、医保、公安或银行，却让你用手机银行操作？",en:"Claims to be an agency or bank, but wants you in your banking app?"},
+  {zh:"对方要你念短信验证码、银行卡密码，或拍身份证正反面？",en:"Asks for an SMS code, a card PIN, or photos of your ID?"}];
+const HELP = {
+  zh:{list:["涉及用药、剂量、副作用 → 医生或药师","涉及诊断、检查结果 → 医生","金额、资格、申诉 → 经办窗口或社工","有人催你转账、要验证码 → 先挂断，再核实"],
+      who:["社区服务中心：社工可以陪同办理，也能帮你填表","医院社工部 / 医务社工","当地政务服务热线（如 12345；社保 12333）","家人或信任的邻居，一起去"]},
+  en:{list:["Medication, dose or side effects → doctor or pharmacist","Diagnosis or test results → doctor","Amounts, eligibility or appeals → the counter officer or a social worker","Someone rushing you to pay or share a code → hang up, then verify"],
+      who:["Community service centre: a social worker can go with you","Hospital medical social work department","The local government hotline (e.g. 12345)","A family member or trusted neighbour, to come along"]}
+};
+
+/* ---------------- state ---------------- */
+const $ = id => document.getElementById(id);
+let lang = ((navigator.language||"zh").toLowerCase().startsWith("zh")) ? "zh" : "en";
+let state = { scen:"care", dtype:"unknown", date:"", place:"", phone:"", known:{}, checks:{}, scam:{}, fromFamily:false, voice:"", rate:0.92 };
+const t = k => T[lang][k];
+const S = () => SCEN[state.scen][lang];
+const full = () => !!SCEN[state.scen].full;
+
+function toast(m){ const el=$("toast"); el.textContent=m; el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),2800); }
+function setLang(l){ lang=l; document.documentElement.lang=(l==="zh"?"zh-CN":"en"); $("lzh").setAttribute("aria-pressed",l==="zh"); $("len").setAttribute("aria-pressed",l==="en"); paint(); }
+function setSize(v,btn){
+  if(v) document.documentElement.dataset.fs=v; else document.documentElement.removeAttribute("data-fs");
+  document.querySelectorAll(".controls [data-sz]").forEach(b=>b.setAttribute("aria-pressed","false"));
+  if(btn) btn.setAttribute("aria-pressed","true");
+}
+function go(v){
+  ["home","letter","tasks","call","scam","help"].forEach(x=>{ $("v-"+x).hidden=(x!==v); });
+  window.scrollTo({top:0,behavior:"smooth"});
+  const h=$("v-"+v).querySelector("h1"); if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
+}
+function colon(){ return lang==="zh" ? "：" : ": "; }
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmtDate(d){ return lang==="zh" ? (d.getMonth()+1)+"月"+d.getDate()+"日" : d.getDate()+" "+MONTHS[d.getMonth()]; }
+function fmtWeekday(d){ return t("weekday")[d.getDay()]; }
+
+/* ---------------- paint ---------------- */
+function captureForm(){
+  if($("l-form").hidden) return;
+  if(state.dtype!=="unknown"){ const dv=$("f-date"); if(dv) state.date=dv.value||""; }
+  const pv=$("f-place"); if(pv) state.place=pv.value.trim();
+  const hv=$("f-phone"); if(hv) state.phone=hv.value.trim();
+}
+function paint(){
+  captureForm();
+  document.title = lang==="zh" ? "明白 · 下一步怎么办，一张清单写明白。" : "明白 · What comes next, written on one sheet.";
+  $("tag").textContent=t("tag");
+  $("h-eyebrow").textContent=t("eyebrow");
+  $("h-title").innerHTML=t("title");
+  $("h-sub").textContent=t("sub");
+  $("h-start").textContent=t("start");
+  $("h-demo").textContent=t("demo");
+  $("h-fine").textContent=t("fine");
+
+  $("h-s-tag").textContent=t("sTag");
+  $("h-s-title").textContent=t("sSheet");
+  $("h-s-date").textContent=t("sDate");
+  $("h-s-place").textContent=t("sPlace");
+  $("h-s-first").textContent=t("sFirst");
+  $("h-s-1").textContent=t("s1");
+  $("h-s-2").textContent=t("s2");
+  $("h-s-bringH").textContent=t("sBringH");
+  $("h-s-bring").innerHTML=t("sBring").map((x,i)=>(i?'<span class="sep">·</span>':'')+'<span class="it">'+esc(x)+'</span>').join("");
+  $("h-s-foot").textContent=t("sFoot");
+
+  $("h-others-h").textContent=t("othersH");
+  $("h-others").innerHTML=Object.keys(SCEN).filter(k=>k!=="care").map((k,i)=>{
+    const d=SCEN[k][lang];
+    return `<li><button onclick="startWith('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span><span class="toc-tag">${t("tplTag")}</span></button></li>`;
+  }).join("");
+  $("h-how-h").textContent=t("howH");
+  $("h-how").innerHTML=t("how").map(x=>`<div class="how-step"><b>${x[0]}</b><span>${x[1]}</span></div>`).join("");
+  $("h-trust-h").textContent=t("trustH");
+  $("h-trust-b").textContent=t("trustB");
+  $("about-sum").textContent=t("aboutSum");
+  $("about-body").innerHTML=t("about");
+
+  $("size-label").textContent=t("sizeLabel");
+  $("sz0").textContent=t("sizeStd"); $("sz1").textContent=t("sizeLg"); $("sz2").textContent=t("sizeXl");
+  const szLabels=lang==="zh"?["标准字号","大字号","特大字号"]:["Standard text size","Large text size","Extra large text size"];
+  document.querySelectorAll(".controls [data-sz]").forEach((b,i)=>b.setAttribute("aria-label",szLabels[i]));
+  $("lzh").setAttribute("aria-label","中文"); $("len").setAttribute("aria-label","English");
+  document.querySelectorAll(".back-t").forEach(b=>b.textContent=t("back"));
+  $("foot1").textContent=t("foot1"); $("foot2").textContent=t("foot2");
+
+  // letter
+  $("l-title").textContent=t("lTitle");
+  $("l-sub").textContent=t("lSub");
+  $("l-note").textContent=t("lNote");
+  $("f-date-k").textContent=t("fDateK");
+  $("f-known-k").textContent=t("fKnownK");
+  $("f-known-h").textContent=t("fKnownH");
+  $("f-place-k").textContent=t("fPlaceK");
+  $("f-date-l").textContent=t("fDateL");
+  $("f-date-h").textContent=t("fDateH");
+  $("f-place-l").textContent=t("placeL");
+  $("f-phone-l").textContent=t("phoneL");
+  $("f-place-h").textContent=t("placeH");
+  $("f-phone-h").textContent=t("phoneH");
+  $("f-go").textContent=t("go"); $("f-skip").textContent=t("skip");
+  $("f-place").setAttribute("aria-label",t("placeL"));
+  $("f-phone").setAttribute("aria-label",t("phoneL"));
+
+  // tasks
+  $("t-list-h").textContent=t("listH");
+  $("t-bring-h").textContent=t("bringTitle");
+  $("t-confirm-h").textContent=t("confirmH");
+  $("t-print").textContent=t("print");
+  $("t-copy").textContent=t("copy");
+  $("t-read").textContent=t("read");
+  $("t-more").textContent=t("more");
+  $("t-ics").textContent=t("ics");
+  $("t-link").textContent=t("link");
+  $("t-save").textContent=t("save");
+  $("t-clear").textContent=t("clear");
+  $("t-edit").innerHTML=`${t("edit")} <button class="linkbtn" onclick="go('letter')">${t("editBtn")}</button>`;
+
+  // call
+  $("c-title").textContent=t("cTitle"); $("c-sub").textContent=t("cSub");
+  $("c-open-k").textContent=t("cOpenK"); $("c-ask-k").textContent=t("cAskK"); $("c-ans-k").textContent=t("cAnsK");
+  $("c-write-k").textContent=t("cWriteK"); $("c-read").textContent=t("cRead");
+  // scam / help
+  $("s-title").textContent=t("sTitle"); $("s-sub").textContent=t("sSub"); $("s-reset").textContent=t("sReset");
+  $("hp-title").textContent=t("hpTitle"); $("hp-sub").textContent=t("hpSub");
+  $("hp-k1").textContent=t("hpK1"); $("hp-k2").textContent=t("hpK2"); $("hp-note").textContent=t("hpNote");
+
+  renderVoice();
+  if(!$("v-letter").hidden){ renderTypes(); renderDetail(); renderForm(); }
+  if(!$("v-tasks").hidden) renderTasks();
+  if(!$("v-call").hidden) renderCall();
+  if(!$("v-scam").hidden) renderScam();
+  if(!$("v-help").hidden) renderHelp();
+}
+
+/* ---------------- letter ---------------- */
+function startNew(){ state.scen="care"; openLetter(); }
+function startWith(k){ state.scen=k; openLetter(); }
+function openLetter(){ go("letter"); renderTypes(); renderDetail(); renderForm(); }
+function renderTypes(){
+  $("l-types").innerHTML=Object.keys(SCEN).map((k,i)=>{
+    const d=SCEN[k][lang], tag=SCEN[k].full?t("fullTag"):t("tplTag");
+    return `<li><button aria-pressed="${state.scen===k}" onclick="pick('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span><span class="toc-tag">${tag}</span></button></li>`;
+  }).join("");
+}
+function pick(k){ state.scen=k; state.checks={}; renderTypes(); renderDetail(); renderForm(); }
+function statusTag(s){ return `<span class="status ${s||"sug"}">${t("status")[s||"sug"]}</span>`; }
+function renderDetail(){
+  const d=S();
+  let stepsHtml="";
+  if(full() && d.steps.length){
+    stepsHtml=`<ul class="numlist">${d.steps.map(x=>`<li>${statusTag(x.status)}${x.t}<span class="sub">${x.h}</span></li>`).join("")}</ul>`;
+  }else{
+    stepsHtml=`<p class="fineprint" style="margin:0 0 10px">${t("tNoteTpl")}</p><ul class="numlist">${genericTasks().map(x=>`<li>${x.t}<span class="sub">${x.hint}</span></li>`).join("")}</ul>`;
+  }
+  $("l-detail").innerHTML=`
+    <div class="typebody">
+      <h2>${t("whatItIs")}</h2>
+      <p class="quiet" style="margin:0"><b>${d.name}</b> · ${d.sum}</p>
+    </div>
+    <div class="typebody">
+      <h2>${t("stepsH")}</h2>${stepsHtml}
+    </div>
+    <div class="typebody">
+      <h2>${t("bringH")}</h2>
+      <p class="quiet" style="margin:0">${d.bring.join(lang==="zh"?" · ":" · ")}</p>
+      <p class="fineprint" style="margin:10px 0 0">${t("whoH")}：${d.who}</p>
+    </div>`;
+}
+function renderForm(){
+  $("l-form").hidden=false;
+  $("f-dtypes").innerHTML=t("dtypes").map(x=>`<label class="opt"><input type="radio" name="dtype" value="${x[0]}" ${state.dtype===x[0]?"checked":""} onchange="setDtype('${x[0]}')"><span><b>${x[1]}</b><span class="d">${x[2]}</span></span></label>`).join("");
+  $("f-known").innerHTML=t("known").map(x=>`<label class="opt"><input type="checkbox" ${state.known[x[0]]?"checked":""} onchange="setKnown('${x[0]}',this.checked)"><span><b>${x[1]}</b></span></label>`).join("");
+  $("f-date-wrap").hidden=(state.dtype==="unknown");
+  $("f-date").value=state.date;
+}
+function setDtype(v){ state.dtype=v; $("f-date-wrap").hidden=(v==="unknown"); }
+function setKnown(k,v){ state.known[k]=v; }
+function makeTasks(){
+  state.date = state.dtype==="unknown" ? "" : ($("f-date").value||"");
+  state.place=$("f-place").value.trim();
+  state.phone=$("f-phone").value.trim();
+  state.checks={}; saveLocal(); renderTasks(); go("tasks");
+}
+function skipForm(){ state.dtype=state.dtype||"unknown"; makeTasks(); }
+
+/* ---------------- scheduling ---------------- */
+function today0(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+function parseDate(s){ if(!s) return null; const d=new Date(s+"T00:00:00"); return isNaN(d)?null:d; }
+function offsetDate(base,days){ const d=new Date(base); d.setDate(d.getDate()+days); return d; }
+function schedule(when){
+  if(!full() || state.dtype==="unknown") return null;
+  if(when==="today") return today0();
+  const due=parseDate(state.date); if(!due) return null;
+  const map={d3:-3,d2:-2,d1:-1,due:0}; const off=map[when];
+  if(off===undefined) return null;
+  return offsetDate(due,off);
+}
+function whenLabel(when){
+  const d=schedule(when);
+  const base = when==="due" ? (state.dtype==="appoint"?t("when_appt"):state.dtype==="followup"?t("when_follow"):t("when_due")) : (t("when_"+when)||"");
+  if(!d) return base;
+  return base;
+}
+function whenDate(when){
+  const d=schedule(when);
+  if(!d) return "";
+  return fmtDate(d);
+}
+function isToday(when){ const d=schedule(when); if(!d) return false; const x=new Date(d); x.setHours(0,0,0,0); return x.getTime()===today0().getTime(); }
+function isOverdue(when){ const d=schedule(when); if(!d) return false; const t0=today0(); d.setHours(0,0,0,0); return d.getTime()<t0.getTime(); }
+function daysUntil(d){ const t0=today0(); const x=new Date(d); x.setHours(0,0,0,0); return Math.round((x-t0)/86400000); }
+
+/* ---------------- tasks ---------------- */
+function taskList(){
+  if(!full()) return genericTasks();
+  const out=S().tasks.map(x=>({t:x.t,hint:x.hint,status:x.status,when:x.when}));
+  if(state.dtype==="unknown") out.forEach(o=>{ o.when=null; });
+  return out;
+}
+function resolved(x){
+  if(x.status!=="ask") return true;
+  if(x.when==="today") return !!state.known.time;
+  if(x.when==="d3") return !!state.known.docs;
+  return false;
+}
+function renderTasks(){
+  const d=S(), list=taskList(), total=list.length;
+  const doneCount=list.filter((_,i)=>state.checks[i]).length;
+
+  // head
+  $("t-kind").textContent=d.name;
+  const due=parseDate(state.date);
+  const titleEl=$("t-date");
+  const over = due ? (()=>{const x=new Date(due); x.setHours(0,0,0,0); return x.getTime()<today0().getTime();})() : false;
+  const hasDate = full() && state.dtype!=="unknown" && !!due;
+  const subLine = !hasDate ? t("unknownSub")
+    : (()=>{
+        const n=daysUntil(due);
+        const when = n===0 ? t("isToday") : n===1 ? t("isTomorrow") : t("daysLeft").replace("{n}",n);
+        return (over ? t("overdueH")+" · " : "") + fmtWeekday(due) + " · " + (over ? t("overdueSub") : when);
+      })();
+  titleEl.textContent = hasDate ? fmtDate(due) : t("unknownH");
+  const subEl=document.createElement("small");
+  subEl.textContent=subLine;
+  titleEl.appendChild(subEl);
+  titleEl.classList.toggle("over", over);
+
+  // meta
+  const metaBits=[];
+  if(state.place) metaBits.push(`<span><span class="lab">${t("placeL")}</span><strong>${esc(state.place)}</strong></span>`);
+  if(state.phone) metaBits.push(`<span><span class="lab">${t("phoneL")}</span><strong>${esc(state.phone)}</strong></span>`);
+  if(!metaBits.length) metaBits.push(`<span class="fineprint">${t("fine")}</span>`);
+  $("t-meta").innerHTML=metaBits.join("");
+
+  $("t-note").textContent=(full()?t("tNote"):t("tNoteTpl"))+((full()&&state.dtype!=="unknown"&&!state.date)?" "+t("needDate"):"");
+
+  // partition: next action / confirm items / rest
+  const idx=list.map((x,i)=>i);
+  const nextIdx=idx.find(i=>!state.checks[i]) ?? -1;
+  const confirmIdx=idx.filter(i=>!state.checks[i] && i!==nextIdx && !resolved(list[i]));
+  const restIdx=idx.filter(i=>i!==nextIdx && !confirmIdx.includes(i));
+
+  // next block
+  const nb=$("t-next");
+  if(nextIdx>=0){
+    const x=list[nextIdx];
+    const over2=isOverdue(x.when);
+    const nxDate = x.when ? (isToday(x.when) ? t("when_today") : whenDate(x.when)) : "";
+    nb.hidden=false; nb.classList.remove("done");
+    nb.innerHTML=`<span class="lab">${t("nextLab")}${nxDate?`<span class="when">${nxDate}</span>`:""}</span>
+      <h2>${esc(x.t)}</h2>
+      <p>${esc(x.hint)}</p>`;
+  } else {
+    nb.hidden=false; nb.classList.add("done");
+    nb.innerHTML=`<span class="lab">${t("allDoneH")}</span><p>${t("allDone")}</p>`;
+  }
+
+  // schedule list (rest)
+  $("t-count").textContent=t("count").replace("{d}",doneCount).replace("{n}",total);
+  $("t-list").innerHTML=restIdx.map(i=>{
+    const x=list[i];
+    const when = x.when ? whenDate(x.when) : (full()&&state.dtype==="unknown" ? t("noWhen") : (full()?"":  ""));
+    const over3=isOverdue(x.when);
+    return `<li class="sched-item ${state.checks[i]?"done":""}">
+      <input class="hidden-box" type="checkbox" id="tk${i}" ${state.checks[i]?"checked":""} onchange="toggleTask(${i},this.checked)">
+      <label class="sched-when ${over3?"over":""}" for="tk${i}">${x.when?(when||whenLabel(x.when)):(full()?t("noWhen"):"")}</label>
+      <div class="sched-body">
+        <label class="sched-title" for="tk${i}"><span class="tick ${state.checks[i]?"on":""}" aria-hidden="true"></span><span>${esc(x.t)}</span></label>
+        <span class="sched-hint">${esc(x.hint)}</span>
+        ${x.status==="ask"&&!state.checks[i]?`<span class="sched-note">${t("askInline")}</span>`:""}
+      </div></li>`;
+  }).join("");
+
+  // bring
+  $("t-bring").innerHTML=d.bring.map(b=>`<li><span class="tick" aria-hidden="true"></span><span>${esc(b)}</span></li>`).join("");
+
+  // confirm
+  const cw=$("t-confirm-wrap");
+  if(confirmIdx.length){
+    cw.hidden=false;
+    $("t-confirm").innerHTML=confirmIdx.map(i=>{
+      const x=list[i];
+      return `<li><span class="q">${t("confirmQ")}</span><span>${esc(x.t)}${x.hint?`<span class="fineprint" style="display:block;margin-top:2px">${esc(x.hint)}</span>`:""}</span></li>`;
+    }).join("");
+  } else cw.hidden=true;
+
+  renderVoice();
+}
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function toggleTask(i,on){ state.checks[i]=on; renderTasks(); saveLocal(); }
+
+/* ---------------- print ---------------- */
+function buildPrintSheet(){
+  const d=S(), list=taskList();
+  const pd=parseDate(state.date);
+  const dstr = pd ? fmtDate(pd) : "＿＿＿＿＿＿";
+  const rows=[[t("copyDue").replace(/[：: ].*$/,""), dstr],[t("placeL"), state.place||"＿＿＿＿＿＿"],[t("phoneL"), state.phone||"＿＿＿＿＿＿"]];
+  $("printsheet").innerHTML=`
+    <div class="kicker">${t("printKicker")}</div>
+    <h1>${esc(d.name)}</h1>
+    <div class="fine">${t("printFine")}</div>
+    ${rows.map(r=>`<div class="psrow"><b>${r[0]}</b>${esc(r[1])}</div>`).join("")}
+    <h2>${t("printA")}</h2><ul class="bring">${d.bring.map(x=>`<li><span class="bx"></span>${esc(x)}</li>`).join("")}</ul>
+    <h2>${t("printB")}</h2><ul>${list.map(x=>`<li><span class="bx"></span>${esc(x.t)}<span class="h"> · ${esc(x.hint)}</span></li>`).join("")}</ul>
+    <h2>${t("printC")}</h2><ul>${Q.map(q=>`<li><span class="bx"></span>${esc(q[lang])}</li>`).join("")}</ul>
+    <h2>${t("printD")}</h2><div class="lines"><div></div><div></div><div></div></div>
+    <div class="warnbox"><b>${t("printE")}${colon()}</b>${t("printWarn")}<br><br><b>${t("printF")}${colon()}</b>＿＿＿＿＿＿＿＿＿＿</div>
+    <div class="footline">${t("printFoot")}</div>`;
+}
+function doPrint(){ buildPrintSheet(); window.print(); }
+
+/* ---------------- copy ---------------- */
+function familyText(){
+  const d=S(), list=taskList();
+  const meta=[state.date?t("copyDue")+state.date:"",state.place?t("copyWhere")+state.place:"",state.phone?t("copyTel")+state.phone:""].filter(Boolean).join("  ");
+  return t("copyHeader")+d.name+"\n"+meta+"\n\n"+t("copyToDo")+"\n"+list.map(x=>"· "+x.t).join("\n")+"\n\n"+t("copyAsk")+"\n"+Q.slice(0,4).map(q=>"· "+q[lang]).join("\n");
+}
+function copyText(txt){
+  return new Promise(resolve=>{
+    const fallback=()=>{ try{ const ta=document.createElement("textarea"); ta.value=txt; ta.setAttribute("readonly","");
+      ta.style.position="fixed"; ta.style.left="-9999px"; document.body.appendChild(ta); ta.select();
+      const ok=document.execCommand("copy"); ta.remove(); resolve(!!ok); }catch(e){ resolve(false); } };
+    if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(txt).then(()=>resolve(true)).catch(fallback); }
+    else fallback();
+  });
+}
+function copyFamily(btn){
+  copyText(familyText()).then(ok=>{
+    toast(ok?t("copyOk"):t("copyFail"));
+    const old=btn.textContent; btn.textContent=ok?t("copyOk"):t("copyFail"); setTimeout(()=>{btn.textContent=old;},1800);
+    if(!ok){ const box=document.createElement("div"); box.className="note"; box.style.marginTop="14px";
+      const ta=document.createElement("textarea"); ta.value=familyText(); ta.style.width="100%"; ta.style.minHeight="150px"; ta.style.font="inherit";
+      box.appendChild(ta); btn.parentElement.parentElement.appendChild(box); ta.select(); box.scrollIntoView({block:"nearest"}); }
+  });
+}
+
+/* ---------------- family link ---------------- */
+function b64e(s){ const b=new TextEncoder().encode(s); let bin=""; b.forEach(x=>bin+=String.fromCharCode(x)); return btoa(bin); }
+function b64d(x){ const bin=atob(x); const b=Uint8Array.from(bin,c=>c.charCodeAt(0)); return new TextDecoder().decode(b); }
+function encodeState(){ return b64e(JSON.stringify({v:3,l:state.scen,dt:state.dtype,d:state.date,p:state.place,t:state.phone,k:state.known})); }
+function validState(o){
+  if(!o||typeof o!=="object") return false;
+  if(!SCEN[o.l]) return false;
+  if(["deadline","appoint","followup","unknown"].indexOf(o.dt)<0) return false;
+  if(o.d && !/^\d{4}-\d{2}-\d{2}$/.test(o.d)) return false;
+  if(typeof o.p==="string" && o.p.length>60) return false;
+  if(typeof o.t==="string" && o.t.length>40) return false;
+  return true;
+}
+function loadFromHash(){
+  const m=location.hash.match(/#f=([^&]+)/); if(!m) return false;
+  try{
+    const o=JSON.parse(b64d(decodeURIComponent(m[1])));
+    if(!validState(o)) return false;
+    state.scen=o.l; state.dtype=o.dt; state.date=o.d||""; state.place=(o.p||"").slice(0,60); state.phone=(o.t||"").slice(0,40);
+    state.known=o.k||{}; state.checks={}; state.fromFamily=true;
+    try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+    saveLocal(); return true;
+  }catch(e){ return false; }
+}
+function copyFamilyLink(btn){
+  if(location.protocol==="file:"){ toast(t("linkFile")); return; }
+  const url=location.href.split("#")[0]+"#f="+encodeURIComponent(encodeState());
+  copyText(url).then(ok=>{ toast(ok?t("linkCopied"):t("copyFail")); if(ok){ const o=btn.textContent; btn.textContent=t("linkCopied"); setTimeout(()=>{btn.textContent=o;},1800); } });
+}
+
+/* ---------------- calendar ---------------- */
+function pad(n){ return String(n).padStart(2,"0"); }
+function ymd(d){ return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate()); }
+function icsText(s){ return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
+function fold(line){ const enc=new TextEncoder(); let out="",buf="",n=0;
+  for(const ch of line){ const b=enc.encode(ch).length; if(n+b>70){ out+=buf+"\r\n "; buf=ch; n=b; } else { buf+=ch; n+=b; } }
+  return out+buf; }
+function exportICS(){
+  if(!full()||state.dtype==="unknown"||!state.date){ toast(t("icsNoDate")); return; }
+  const d=S(), list=taskList();
+  const evs=list.map(x=>({x,dt:schedule(x.when)})).filter(e=>e.dt);
+  if(!evs.length){ toast(t("icsNoDate")); return; }
+  const stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+  let out="BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Mingbai//v3.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n";
+  evs.forEach((e,i)=>{ const dt=ymd(e.dt);
+    out+="BEGIN:VEVENT\r\n"+fold("UID:mingbai-"+dt+"-"+i+"@mingbai.local")+"\r\nDTSTAMP:"+stamp+"\r\n";
+    out+="DTSTART:"+dt+"T090000\r\nDTEND:"+dt+"T093000\r\n";
+    out+=fold("SUMMARY:"+icsText(e.x.t))+"\r\n"+fold("DESCRIPTION:"+icsText(d.name+" · "+e.x.hint))+"\r\n";
+    out+="BEGIN:VALARM\r\nTRIGGER:-PT30M\r\nACTION:DISPLAY\r\n"+fold("DESCRIPTION:"+icsText(d.name))+"\r\nEND:VALARM\r\nEND:VEVENT\r\n";
+  });
+  out+="END:VCALENDAR\r\n";
+  const blob=new Blob([out],{type:"text/calendar;charset=utf-8"}), url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="mingbai-tasks.ics"; document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url); a.remove();},600); toast(t("icsDone"));
+}
+
+/* ---------------- speech ---------------- */
+let voices=[], speaking=false;
+function loadVoices(){ if(!("speechSynthesis" in window)) return; voices=window.speechSynthesis.getVoices()||[]; renderVoice(); }
+if("speechSynthesis" in window){ loadVoices(); window.speechSynthesis.onvoiceschanged=loadVoices; }
+function bestVoice(){ if(state.voice){ const f=voices.find(v=>v.name===state.voice); if(f) return f; }
+  const want=lang==="zh"?["zh-CN","zh-HK","zh"]:["en-US","en-GB","en"];
+  for(const w of want){ const f=voices.find(v=>(v.lang||"").toLowerCase().startsWith(w.toLowerCase())); if(f) return f; }
+  return voices[0]||null; }
+function renderVoice(){
+  const want = lang==="zh" ? /^(zh|yue)/i : /^en/i;
+  let list=voices.filter(v=>want.test(v.lang||""));
+  if(!list.length) list=voices;
+  const opts=list.map(v=>`<option value="${v.name.replace(/"/g,"&quot;")}"${state.voice===v.name?" selected":""}>${v.name}${v.lang?" · "+v.lang:""}</option>`).join("");
+  document.querySelectorAll(".voice").forEach(bar=>{
+    bar.innerHTML=`<span>${t("vTitle")}</span>
+      <label>${t("vVoice")} <select class="vsel">${opts||"<option>"+t("noVoice")+"</option>"}</select></label>
+      <label>${t("vRate")} <select class="rsel"><option value="0.8"${state.rate===0.8?" selected":""}>${t("slow")}</option><option value="0.92"${state.rate===0.92?" selected":""}>${t("normal")}</option><option value="1.05"${state.rate===1.05?" selected":""}>${t("fast")}</option></select></label>`;
+    const vs=bar.querySelector(".vsel"), rs=bar.querySelector(".rsel");
+    if(vs) vs.onchange=()=>{state.voice=vs.value;};
+    if(rs) rs.onchange=()=>{state.rate=parseFloat(rs.value);};
+  });
+}
+function speak(text,btn,labelKey){
+  const back=labelKey||"read";
+  if(!("speechSynthesis" in window)){ toast(t("noVoice")); return; }
+  if(speaking){ window.speechSynthesis.cancel(); speaking=false; if(btn) btn.textContent=t(back); return; }
+  const u=new SpeechSynthesisUtterance(text), v=bestVoice();
+  if(v) u.voice=v; u.lang=v?v.lang:(lang==="zh"?"zh-CN":"en-US"); u.rate=state.rate||0.92;
+  u.onend=()=>{ speaking=false; if(btn) btn.textContent=t(back); };
+  window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); speaking=true; if(btn) btn.textContent=t("readStop");
+}
+function readAll(btn){
+  const d=S(), list=taskList();
+  const stop=lang==="zh"?"。":". ", sep=lang==="zh"?"、":", ";
+  speak(d.name+stop+list.map((x,i)=>(i+1)+sep+x.t+stop+x.hint).join(stop)+stop,btn,"read");
+}
+function readCall(btn){
+  const d=S();
+  const offline=$("c-offline").textContent||"";
+  const qs=[...$("c-ask").querySelectorAll("li")].map(li=>li.textContent).join(lang==="zh"?"。":". ");
+  const ans=[...$("c-qa").querySelectorAll(".qaitem")].map(x=>x.textContent).join(lang==="zh"?"。":". ");
+  const stop=lang==="zh"?"。":". ";
+  speak(d.name+stop+offline+stop+qs+stop+ans,btn,"cRead");
+}
+
+/* ---------------- call ---------------- */
+function openCall(){ renderCall(); go("call"); }
+function renderCall(){
+  const d=S();
+  $("c-offline").innerHTML = lang==="zh"
+    ? `您好，我想咨询<b>${d.name}</b>的事。我收到一份通知，想确认要带什么材料、去哪里办。${state.date?"时间是 <b>"+fmtDate(parseDate(state.date))+"</b>。":""}`
+    : `Hello, I would like to ask about <b>${d.name}</b>. I received a notice and want to confirm what to bring and where to go.${state.date?" The date is <b>"+fmtDate(parseDate(state.date))+"</b>.":""}`;
+  $("c-ask").innerHTML=Q.map(q=>`<li>${q[lang]}</li>`).join("");
+  $("c-qa").innerHTML=CALLANS.map(a=>`<div class="qaitem"><b>${a[lang][0]}</b><span>${a[lang][1]}</span></div>`).join("");
+  $("c-write").innerHTML=WRITE.map(w=>`<div class="wlabel">${w[lang]}</div><div class="wline"></div>`).join("");
+  $("c-write-hint").textContent=t("cWriteHint");
+}
+
+/* ---------------- scam ---------------- */
+function openScam(){ renderScam(); go("scam"); }
+function renderScam(){
+  $("s-panel").innerHTML=SCAMQ.map((q,i)=>`
+    <div class="scamq"><div class="q"><span class="qn">${pad(i+1)}</span><span class="text">${q[lang]}</span>
+      <span class="yn">
+        <button class="${state.scam[i]===true?"bad":""}" aria-pressed="${state.scam[i]===true}" onclick="answerScam(${i},true,this)">${t("yes")}</button>
+        <button aria-pressed="${state.scam[i]===false}" onclick="answerScam(${i},false,this)">${t("no")}</button>
+      </span></div></div>`).join("");
+  renderVerdict();
+}
+function answerScam(i,v,btn){
+  state.scam[i]=v;
+  btn.parentElement.querySelectorAll("button").forEach(b=>{ b.setAttribute("aria-pressed","false"); b.classList.remove("bad"); });
+  btn.setAttribute("aria-pressed","true"); if(v) btn.classList.add("bad");
+  renderVerdict();
+}
+function renderVerdict(){
+  const answered=Object.keys(state.scam).length;
+  const anyYes=Object.values(state.scam).some(v=>v===true);
+  if(anyYes){ $("s-verdict").innerHTML=`<div class="verdict bad">${t("sBad")}</div>`; return; }
+  if(answered===0){ $("s-verdict").innerHTML=""; return; }
+  if(answered<SCAMQ.length){ $("s-verdict").innerHTML=`<div class="verdict tmp">${t("sTmp").replace("{n}",answered)}</div>`; return; }
+  $("s-verdict").innerHTML=`<div class="verdict good">${t("sGood")}</div>`;
+}
+function resetScam(){ state.scam={}; renderScam(); }
+
+/* ---------------- help ---------------- */
+function openHelp(){ renderHelp(); go("help"); }
+function renderHelp(){ $("hp-list").innerHTML=HELP[lang].list.map(x=>`<li>${x}</li>`).join(""); $("hp-who").innerHTML=HELP[lang].who.map(x=>`<li>${x}</li>`).join(""); }
+
+/* ---------------- storage ---------------- */
+const KEY="mingbai.v3";
+function saveLocal(){ try{ localStorage.setItem(KEY,JSON.stringify({scen:state.scen,dtype:state.dtype,date:state.date,place:state.place,phone:state.phone,known:state.known,checks:state.checks})); }catch(e){} }
+function loadLocal(){
+  try{ const raw=localStorage.getItem(KEY); if(!raw) return false;
+    const o=JSON.parse(raw); if(!SCEN[o.scen]) return false;
+    state.scen=o.scen; state.dtype=o.dtype||"unknown"; state.date=o.date||""; state.place=o.place||""; state.phone=o.phone||"";
+    state.known=o.known||{}; state.checks=o.checks||{}; return true;
+  }catch(e){ return false; }
+}
+function saveNow(){ saveLocal(); const st=$("t-saved"); st.hidden=false; st.textContent=t("saved"); setTimeout(()=>{st.hidden=true;},2600); toast(t("saveToast")); }
+function clearSaved(){ try{ localStorage.removeItem(KEY); }catch(e){}
+  state={scen:"care",dtype:"unknown",date:"",place:"",phone:"",known:{},checks:{},scam:{},fromFamily:false,voice:"",rate:0.92};
+  toast(t("clearToast")); go("home"); }
+
+/* ---------------- demo ---------------- */
+function loadDemo(){
+  state.scen="care"; state.dtype="appoint"; state.date="2026-11-20";
+  state.place=lang==="zh"?"社区服务中心 2 楼":"Community service centre, 2F";
+  state.phone="12333"; state.known={time:true,docs:true,what:true}; state.checks={};
+  renderTasks(); go("tasks");
+  const b=$("t-banner"); b.hidden=false;
+  b.innerHTML=`<span>${t("bannerDemo")}</span><button onclick="this.parentElement.hidden=true">${t("dismiss")}</button>`;
+}
+
+/* ---------------- init ---------------- */
+const fromFamily=loadFromHash();
+if(!fromFamily) loadLocal();
+setLang(lang);
+if(fromFamily){
+  renderTasks(); go("tasks");
+  const b=$("t-banner"); b.hidden=false;
+  b.innerHTML=`<span><b>${t("fromFamily")}</b> · ${S().name}${state.date?" · "+state.date:""}</span><button onclick="this.parentElement.hidden=true">${t("dismiss")}</button>`;
+} else go("home");
+
+</script>
+</body>
+</html>
