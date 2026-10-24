@@ -1,5 +1,7 @@
 ﻿# 明白 · 办事助手
 
+Live demo: https://zachclaude.github.io/mingbai/
+
 把办事通知整理成一张能带走、能核对、照着做的清单。离线优先，单文件，无后端。
 
 - 直接打开 index.html 即可使用，也可以放到任意静态托管
