@@ -1411,17 +1411,21 @@ const DOCS = {
   zh:["身份证","医保卡","社保卡","户口本","低保证","残疾证","病历","出院小结","出院记录","用药清单","诊断证明","费用清单","发票","银行卡","证件照","委托书","评估结果","收入证明","居住证明","检查报告"],
   en:["ID card","insurance card","social security card","household register","low-income certificate","disability certificate","medical records","discharge summary","discharge record","medication list","diagnosis","itemised bill","receipts","bank card","passport photos","authorisation","assessment result","proof of income","residence proof","test report"]
 };
+/* Type scoring. Generic papers that almost every notice asks you to bring
+   (ID card, insurance card, social security card, household register, records)
+   deliberately do NOT appear here — they are extracted as materials, not used
+   as type evidence. The card type only fires on card-specific actions. */
 const TYPE_WORDS = [
-  ["care", ["照护评估","护理评估","能力评估","失能","长护","长期护理","护理等级","评估机构","评估结果","care assessment","long-term care","care needs","care level"]],
-  ["pension", ["养老金","退休金","养老待遇","退休待遇","待遇资格","领取待遇","资格认证","养老金发放","pension","superannuation","retirement pay","monthly payment"]],
-  ["medical", ["医保报销","医疗费用","报销","自付","自费","住院费用","医保结算","费用清单","reimbursement","medical insurance","health insurance","claim","itemised bill","covered cost"]],
-  ["meds", ["用药调整","剂量","处方","换药","停药","药品","用药清单","medication","dose","prescription","pharmacy","tablets"]],
-  ["discharge", ["出院小结","出院","住院","复诊","复查","出院带药","discharge","hospital stay","admitted","follow-up visit","follow up"]],
-  ["referral", ["社区照护转介","转介","日间照料","上门服务","居家养老","照护服务","referral","day care","home help","home care"]],
-  ["aid", ["低保","困难救助","临时救助","困难补助","特困","救助申请","低收入","困难家庭","hardship","low-income","welfare","emergency grant","social assistance"]],
-  ["disability", ["残疾证","残疾评定","残联","残疾人","残疾等级","disability certificate","disability federation","disability assessment","disability allowance"]],
-  ["card", ["社保卡","医保卡","换卡","挂失","金融功能","卡片激活","补卡","social security card","insurance card","replace the card","report it lost","activate the card"]],
-  ["service", ["助餐","助浴","适老化","无障碍改造","老年餐","上门照护","居家改造","装扶手","meals on wheels","bathing help","home adaptation","grab bar","home visit"]]
+  ["care", ["照护评估","护理评估","能力评估","失能","长护险","长护","长期护理","护理保险","护理等级","照护","护理","评估机构","评估结果","参加评估","评估室","上门评估","入住评估","机构评估","评估","care assessment","long-term care","care needs","care level","assessment","care home"]],
+  ["pension", ["养老金","退休金","养老待遇","退休待遇","待遇资格","领取待遇","资格认证","养老金认证","待遇资格认证","养老金发放","养老保险","养老认证","退休","pension","superannuation","retirement pay","monthly payment","retirement"]],
+  ["medical", ["医保报销","医疗费用","医保结算","医保窗口","医保待遇","费用清单","门诊统筹","报销","自付","自费","住院费用","医保","医疗","特病","慢病","病种","门诊","reimbursement","medical insurance","health insurance","itemised bill","covered cost","outpatient","claim"]],
+  ["meds", ["用药调整","调整用药","用药方案","用药计划","剂量","处方","换药","停药","药品","用药","药量","取药","药房","配药","服药","药师","medication","prescription","pharmacy","tablets","dose"]],
+  ["discharge", ["出院小结","出院带药","出院记录","出院","住院","复诊","复查","随访","discharge","hospital stay","admitted","follow-up visit","follow up"]],
+  ["referral", ["社区照护转介","日间照料","上门服务","居家养老","照护服务","居家照护","转介","referral","day care","home help","home care"]],
+  ["aid", ["困难救助","临时救助","困难补助","救助申请","社会救助","困难家庭","低收入","低保","特困","救助","hardship","low-income","welfare","emergency grant","social assistance"]],
+  ["disability", ["残疾证","残疾评定","残疾等级","残疾补贴","残疾人","残联","残疾","disability certificate","disability federation","disability assessment","disability allowance","disability"]],
+  ["card", ["办理社保卡","办理医保卡","社保卡激活","社保卡换卡","社保卡补卡","社保卡挂失","社保卡换发","社保卡补办","医保卡激活","医保卡挂失","医保卡换卡","医保卡补卡","医保卡补办","卡片激活","金融功能","金融账户","挂失","补办","补卡","换卡","换发","激活","绑定","领卡","replace the card","report it lost","activate the card","card activation","lost card","new card"]],
+  ["service", ["适老化改造","无障碍改造","社区食堂","长者食堂","家庭养老床位","助餐服务","助浴服务","上门照护","居家改造","助餐","助浴","适老化","老年餐","装扶手","meals on wheels","bathing help","home adaptation","grab bar","home visit","meal delivery","home modification"]]
 ];
 function normNotice(s){
   return String(s||"")
@@ -1611,7 +1615,7 @@ function guessScenario(text){
     for(const w of words){ if(low.indexOf(w.toLowerCase())>=0) score+=w.length; }
     if(score>bestScore){ bestScore=score; best=key; }
   }
-  return bestScore>=2?best:"";
+  return bestScore>=3?best:"";
 }
 function guessDtype(text, dateInfo){
   if(/复诊|复查|随访/.test(text)) return "followup";
