@@ -285,6 +285,7 @@
   .ps li{font-size:10.2pt;margin:2.4pt 0;padding-left:15pt;position:relative}
   .ps li .bx{position:absolute;left:0;top:1.6pt;width:9.5pt;height:9.5pt;border:.9pt solid #000}
   .ps li .h{color:#555;font-size:8.8pt}
+  .ps li .bx.checked::after{content:"✓";position:absolute;left:0;top:-4pt;font-size:11pt;font-weight:700;color:#000}
   .ps .lines div{border-bottom:.7pt solid #aaa;height:14pt}
   .ps .warnbox{border:.9pt solid #000;padding:5pt 7pt;font-size:8.8pt;margin-top:7pt}
   .ps .footline{font-size:8pt;color:#555;margin-top:6pt}
@@ -423,6 +424,22 @@
   @media(max-width:640px){.page{padding:0 18px 64px}.masthead{align-items:center}.brand{width:auto}.controls{justify-content:flex-start}.home-grid{gap:24px}.toc{grid-template-columns:1fr}.toc button{min-height:68px}.pasteform,.detect,.sample{padding:22px 20px}h1{font-size:1.72em}.how{grid-template-columns:1fr}.how-step{padding:14px 16px}.homelinks .btn-quiet{max-width:none}.cta .btn-quiet{justify-self:stretch;padding:10px 18px;width:100%}.sample-date .d{font-size:1.45em}}
 }
 
+
+/* Editorial service design: clear entry points, warm paper, visible steps. */
+@media screen{
+ :root{--paper:#f7f5f0;--sheet:#fff;--ink:#172c29;--ink2:#405650;--ink3:#53655e;--blue:#174e45;--blue-ink:#123d37;--blue-wash:#edf4ef;--blue-line:#b7cec2;--green:#315f49;--rule:#d4ded5;--rule2:#e5eae4;--rule3:#b9c9bd}
+ .page{max-width:1160px;padding-inline:34px}.masthead{padding:22px 0;border-color:#cfdcd1}.brand .wordmark{font-size:1.8em;letter-spacing:.1em}.brand-sub{font-size:.72em}
+ .welcome{display:grid;grid-template-columns:1.4fr .6fr;align-items:center;gap:40px;padding:70px 0 62px}.welcome-copy{max-width:660px}.welcome h1{font-size:clamp(2em,4.2vw,2.8em);line-height:1.36;letter-spacing:.025em}.welcome .lede{max-width:30em;font-size:1em;margin-top:20px}.welcome-assurance{font-size:.88em;color:var(--ink2);margin:24px 0 0}.promise{margin-top:12px}
+ .welcome-art{width:260px;height:260px;position:relative;justify-self:center;display:grid;place-items:center}.art-ring{position:absolute;inset:8px;border:1px solid #9ab6a4;border-radius:50%}.art-square{position:absolute;inset:30px;background:#dce9dc;border-radius:48% 52% 48% 52%;transform:rotate(-14deg)}.art-mark{position:relative;z-index:1;color:#1c5849;font:600 5em/1 var(--serif)}.art-rule{position:absolute;bottom:20px;width:58px;height:3px;background:#bd8955}.art-caption{position:absolute;right:-10px;bottom:8px;font:600 10px/1.4 var(--sans);letter-spacing:.15em;color:#496b5b}
+ .section-kicker{margin:0 0 5px;font-size:.72em;letter-spacing:.14em;color:#5b7868;font-weight:700}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:22px;margin-bottom:20px}.section-heading h2,.sample-copy h2,.steps-section h2,.support-links h2{font-family:var(--serif);font-size:1.5em;line-height:1.4;color:#183f37;margin:0}.section-heading>p{font-size:.88em;color:var(--ink2);margin:0;max-width:23em}
+ .start-section{padding:30px 0 56px;border-top:1px solid var(--rule)}.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.start-card{background:#fff;border:1px solid #d3e0d5;border-radius:12px;padding:28px;display:flex;flex-direction:column;align-items:flex-start;min-height:265px;box-shadow:0 8px 24px rgba(23,58,46,.04)}.primary-card{background:#eaf3e9;border-color:#c9ddce}.card-top{display:flex;width:100%;justify-content:space-between;align-items:center}.card-number{font-size:.72em;letter-spacing:.15em;color:#527263;font-weight:700}.card-icon{font-size:1.25em;color:#416d58}.start-card h3{font-family:var(--serif);font-size:1.3em;color:#173f37;margin:10px 0 4px}.start-card p{color:#465b52;font-size:.9em;margin:0 0 20px;line-height:1.7}.start-card button{margin-top:auto;min-height:54px}
+ .sample-section{background:#e8efe6;border-radius:14px;padding:38px;display:grid;grid-template-columns:.8fr 1fr;gap:38px;align-items:center}.sample-copy p:not(.section-kicker){color:#405850;max-width:22em}.sample-copy button{margin-top:10px}.sample{box-shadow:0 8px 24px rgba(23,58,46,.08);max-width:none}
+ .topic-section{margin-top:62px}.topic-section .toc{grid-template-columns:repeat(3,minmax(0,1fr))}.toc button{min-height:82px}.toc-desc{line-height:1.45}.steps-section .how{margin-top:20px}.support-section{display:grid;grid-template-columns:1.15fr .85fr;gap:24px}.support-section .about{grid-column:1/-1}.support-links h2{font-size:1.15em}.support-links .tools{display:grid;gap:0}.support-links .tools button{text-align:left;font-size:.9em}
+ .pagehead{padding-top:18px}.pagehead h1{font-size:1.8em}.type-picker,.details-guide{margin-top:24px;border:1px solid #c9dacc;border-radius:10px;background:#fff;padding:16px 20px}.type-picker summary,.details-guide summary{font-weight:700;color:#174e45;cursor:pointer;min-height:44px;display:flex;align-items:center}.type-picker summary::before,.details-guide summary::before{content:"＋";margin-right:10px}.type-picker[open] summary::before,.details-guide[open] summary::before{content:"−"}.type-picker .toc{margin-top:12px}.selected-type{margin-top:20px;background:#e8f2e7;color:#214d40;font-weight:700;padding:14px 18px;border-radius:8px}.formblock{margin-top:24px;padding-top:18px}.formblock .flabel{font-size:.9em;letter-spacing:.04em;color:#244b41}.opt{min-height:58px}.typebody{margin-top:22px}.details-guide{margin-top:30px}
+ .task-head{background:#eaf3e9;border:1px solid #d2e2d1;border-radius:12px;margin-top:16px;padding:24px}.task-meta{display:grid;gap:10px}.next{border-radius:8px;background:#fff9eb;border-left-color:#b8884c}.sched-item{background:#fff;border:1px solid #e1e8df;border-radius:8px;margin:8px 0;padding:16px}.sched-title{font-size:1em}.sched-hint{color:#405650}.bringitem{min-height:52px}.actions{background:#edf4ec;border-radius:10px;padding:16px;margin-top:24px}.editline{font-size:1em}
+ @media(max-width:760px){.page{padding-inline:20px}.welcome{grid-template-columns:1fr;padding:42px 0 36px}.welcome-art{display:none}.welcome h1{font-size:1.9em}.start-section{padding:24px 0 38px}.start-grid{grid-template-columns:1fr}.start-card{min-height:0;padding:22px}.start-card button{width:100%}.section-heading{display:block}.section-heading>p{margin-top:8px}.sample-section{grid-template-columns:1fr;padding:24px;gap:24px}.topic-section .toc{grid-template-columns:1fr}.support-section{grid-template-columns:1fr}.support-section .about{grid-column:auto}.task-head{padding:20px}.task-meta{text-align:left}.sched-item{grid-template-columns:4.8em 1fr;gap:8px}.type-picker,.details-guide{padding:12px 14px}}
+}
+
 </style>
 </head>
 <body>
@@ -448,28 +465,22 @@
 
   <!-- HOME -->
   <main class="view" id="v-home">
-    <div class="resume" id="h-resume" hidden>
-      <span class="rt" id="h-resume-t"></span>
-      <span class="ra">
-        <button class="btn-primary" onclick="resumeLast()" id="h-resume-go"></button>
-        <button class="linkbtn" onclick="dismissResume(this)" id="h-resume-no"></button>
-      </span>
-    </div>
-    <div class="home-grid">
-      <section class="home-lead">
-        <p class="eyebrow" id="h-eyebrow"></p>
-        <h1 id="h-title"></h1>
-        <p class="lede" id="h-sub"></p>
-        <div class="cta">
-          <button class="btn-primary" onclick="openPaste()" id="h-start"></button>
-          <button class="btn-quiet" onclick="loadDemo()" id="h-demo"></button>
-        </div>
-        <p class="fineprint" id="h-fine"></p>
-        <div class="promise" id="h-promise"></div>
-        <div class="homelinks"><button class="btn-quiet" onclick="openLetter()" id="h-types"></button></div>
-      </section>
-
-      <aside class="sample" aria-label="清单示例">
+    <div class="resume" id="h-resume" hidden><span class="rt" id="h-resume-t"></span><span class="ra"><button class="btn-primary" onclick="resumeLast()" id="h-resume-go"></button><button class="linkbtn" onclick="dismissResume(this)" id="h-resume-no"></button></span></div>
+    <section class="welcome">
+      <div class="welcome-copy">
+        <p class="eyebrow" id="h-eyebrow"></p><h1 id="h-title"></h1><p class="lede" id="h-sub"></p>
+        <p class="welcome-assurance" id="h-fine"></p><div class="promise" id="h-promise"></div>
+      </div>
+      <div class="welcome-art" aria-hidden="true"><span class="art-ring"></span><span class="art-square"></span><span class="art-mark">明</span><span class="art-rule"></span><span class="art-caption">ONE STEP<br>AT A TIME</span></div>
+    </section>
+    <section class="start-section" aria-labelledby="start-heading">
+      <div class="section-heading"><div><p class="section-kicker" id="h-start-kicker"></p><h2 id="start-heading"></h2></div><p id="h-start-sub"></p></div>
+      <div class="start-grid">
+        <article class="start-card primary-card"><div class="card-top"><span class="card-number">01</span><span class="card-icon" aria-hidden="true">✎</span></div><h3 id="h-card1-title"></h3><p id="h-card1-desc"></p><button class="btn-primary" onclick="openPaste()" id="h-start"></button></article>
+        <article class="start-card"><div class="card-top"><span class="card-number">02</span><span class="card-icon" aria-hidden="true">☰</span></div><h3 id="h-card2-title"></h3><p id="h-card2-desc"></p><button class="btn-quiet" onclick="openLetter()" id="h-types"></button></article>
+      </div>
+    </section>
+    <section class="sample-section" aria-labelledby="sample-heading"><div class="sample-copy"><p class="section-kicker" id="h-s-kicker"></p><h2 id="sample-heading"></h2><p id="h-s-desc"></p><button class="btn-quiet" onclick="loadDemo()" id="h-demo"></button></div>      <aside class="sample" aria-label="清单示例">
         <div class="sample-head">
           <span class="sample-tag" id="h-s-tag"></span>
           <span class="sample-title" id="h-s-title"></span>
@@ -490,29 +501,10 @@
           <p class="sample-bring" id="h-s-bring"></p>
         </div>
         <div class="sample-foot" id="h-s-foot"></div>
-      </aside>
-    </div>
-
-    <section class="section">
-      <h2 class="sec-label" id="h-others-h"></h2>
-      <ul class="toc" id="h-others"></ul>
-    </section>
-
-    <section class="section">
-      <h2 class="sec-label" id="h-how-h"></h2>
-      <div class="how" id="h-how"></div>
-    </section>
-
-    <section class="section">
-      <div class="trust">
-        <b id="h-trust-h"></b><span id="h-trust-b"></span>
-      </div>
-      <div class="tools" id="h-tools"></div>
-      <details class="about">
-        <summary id="about-sum"></summary>
-        <div class="body" id="about-body"></div>
-      </details>
-    </section>
+      </aside></section>
+    <section class="section topic-section"><div class="section-heading"><div><p class="section-kicker" id="h-topic-kicker"></p><h2 id="h-others-h"></h2></div><p id="h-topic-sub"></p></div><ul class="toc" id="h-others"></ul></section>
+    <section class="section steps-section"><h2 id="h-how-h"></h2><div class="how" id="h-how"></div></section>
+    <section class="section support-section"><div class="trust"><b id="h-trust-h"></b><span id="h-trust-b"></span></div><div class="support-links"><h2 id="h-support-title"></h2><div class="tools" id="h-tools"></div></div><details class="about"><summary id="about-sum"></summary><div class="body" id="about-body"></div></details></section>
   </main>
 
   <!-- LETTER -->
@@ -523,8 +515,11 @@
       <p class="lede" id="l-sub"></p>
     </div>
     <p class="note" id="l-note"></p>
-    <ul class="toc toc-main" id="l-types" role="group"></ul>
-    <div id="l-detail"></div>
+    <details class="type-picker" id="type-picker" open>
+      <summary id="type-picker-summary"></summary>
+      <ul class="toc toc-main" id="l-types" role="group"></ul>
+    </details>
+    <div class="selected-type" id="selected-type"></div>
     <div id="l-form" hidden>
       <div class="formblock">
         <span class="flabel" id="f-date-k"></span>
@@ -559,6 +554,7 @@
         <button class="linkbtn" onclick="skipForm()" id="f-skip"></button>
       </div>
     </div>
+    <details class="details-guide"><summary id="guide-summary"></summary><div id="l-detail"></div></details>
   </main>
 
   <!-- PASTE -->
@@ -570,7 +566,7 @@
     </div>
     <div class="pasteform">
       <label class="flab" for="p-text" id="p-lab"></label>
-      <textarea id="p-text" spellcheck="false" autocomplete="off" maxlength="4000"></textarea>
+      <textarea id="p-text" spellcheck="false" autocomplete="off" maxlength="4000" oninput="noticeChanged()"></textarea>
       <div class="examples">
         <span id="p-ex"></span>
         <button type="button" onclick="fillSample(0)" id="p-ex1"></button>
@@ -700,13 +696,13 @@ zh:{
   when_today:"今天", when_d3:"前 3 天", when_d2:"前 2 天", when_d1:"前一天",
   when_due:"截止日", when_appt:"预约日", when_follow:"复诊日",
   eyebrow:"收到通知之后",
-  title:"把通知贴进来，<br>变成能带走的清单。",
-  sub:"日期、地点、要带的材料，自动从原文里挑出来，排成一张能打印、能核对的清单。可粘贴短信或微信文字；纸质通知需要先输入文字。",
-  start:"粘贴通知，生成清单",
+  title:"事情一件件，<br>我们慢慢办。",
+  sub:"收到办事通知，不知道从哪里开始？明白帮您理清时间、材料和下一步，也方便家人一起看。",
+  start:"粘贴通知 →",
   demo:"先看一份示例",
   fine:"不用注册。识别可能出错，生成前请对照原文核对。",
   promise:["本机识别","无需注册","免费使用","不问验证码"],
-  hTypes:"没有原文？按类型选一类（10 类）",
+  hTypes:"选择要办的事 →",
   resumeT:"上次整理的：<b>{name}</b>{d}{p}",
   resumeGo:"继续上次",
   resumeNo:"不用了",
@@ -725,7 +721,7 @@ zh:{
   howH:"三步整理一张清单",
   how:[["把通知原文贴进来","粘贴短信或微信文字；纸质通知可手动输入"],["核对认出来的信息","日期、地点、电话、材料；认错就改，没认出就补"],["打印，带走照做","勾掉一项项；打完电话的把话记在纸上"]],
   trustH:"不收费，也不问验证码。",
-  trustB:"识别在本机进行，内容保存在当前浏览器。分享给家人的链接会包含清单信息，请只发给信任的人。打开网站需要联网；不提供医疗、用药或法律建议。",
+  trustB:"识别在本机进行，最近一张清单保存在当前浏览器；新清单会替换它。分享链接包含清单信息，请只发给信任的人。打开网站需要联网；不提供医疗、用药或法律建议。",
   aboutSum:"为什么这样设计 · 方法与局限",
   back:"返回",
   lTitle:"先看是哪一类通知",
@@ -819,7 +815,7 @@ zh:{
   dPickType:"先选一类：这是哪一类事。",
   dPick:"请选择",
   dDtype:"通知里的日期是",
-  dDate:"日期", dDateHint:"请核对年份及日期；原文未写年份时是推测的。不确定请留空。",
+  dDate:"日期", dDateHint:"请核对年月日。通知没有写年份时，不会自动填日期；不确定请留空。",
   dTime:"时间", dTimeHint:"例如 上午 9:30（可空）",
   dPlace:"地点", dPlaceHint:"哪个中心、几楼、哪个窗口",
   dPhone:"电话", dPhoneHint:"通知上的号码（可空）",
@@ -875,7 +871,7 @@ en:{
   demo:"See an example first",
   fine:"No sign-up. Check the results against the original notice.",
   promise:["On-device processing","No sign-up","Free","Never asks for a code"],
-  hTypes:"No text? Pick a type (10)",
+  hTypes:"Choose a topic →",
   resumeT:"Last time: <b>{name}</b>{d}{p}",
   resumeGo:"Continue",
   resumeNo:"Not now",
@@ -894,7 +890,7 @@ en:{
   howH:"Three steps to a checklist",
   how:[["Paste the notice","Paste an SMS or chat text, or type out a paper notice"],["Check what it found","Date, place, phone, papers. Fix, or add what is missing"],["Print and work through","Tick items off; write down what the call tells you"]],
   trustH:"No fees, and it never asks for a verification code.",
-  trustB:"Processing happens on this device and entries are saved in this browser. A family link contains checklist details; share only with someone you trust. Opening the site requires a connection. No medical, medication or legal advice.",
+  trustB:"Processing happens on this device. The most recent list is saved in this browser and replaced by the next one. A family link contains checklist details; share only with someone you trust. Opening the site requires a connection. No medical, medication or legal advice.",
   aboutSum:"Why it is built this way · method and limits",
   back:"Back",
   lTitle:"Which kind of notice is it?",
@@ -988,7 +984,7 @@ en:{
   dPickType:"Pick the type first.",
   dPick:"Choose",
   dDtype:"On the notice, the date is",
-  dDate:"Date", dDateHint:"Check the year and date. If the notice omits the year, it is guessed; leave blank if unsure.",
+  dDate:"Date", dDateHint:"Check the date. If the notice omits the year, the date is left blank; leave it blank if unsure.",
   dTime:"Time", dTimeHint:"e.g. 9:30 am (optional)",
   dPlace:"Place", dPlaceHint:"Which centre, floor, counter",
   dPhone:"Phone", dPhoneHint:"The number on the notice (optional)",
@@ -1249,7 +1245,7 @@ function go(v){
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
   const h=$("v-"+v).querySelector("h1"); if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
-  if(v==="home"){ if(state.demo){ if(!loadLocal()) state=freshState(); state.demo=false; } renderResume(); }
+  if(v==="home"){ if(!loadLocal()) state=freshState(); state.demo=false; renderResume(); }
 }
 function colon(){ return lang==="zh" ? "：" : ": "; }
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -1269,6 +1265,8 @@ function paint(){
   captureForm();
   document.title = lang==="zh" ? "明白 · 把通知贴进来，变成一张能带走的清单。" : "明白 · Paste the notice in, walk out with one sheet.";
   $("tag").textContent=t("tag");
+  const hc=lang==="zh"?{k:"从这里开始",heading:"您想怎么开始？",sub:"选一种方便的方式，慢慢来。",one:"我有一份通知",oneDesc:"把短信或微信文字贴进来，先核对，再生成清单。",two:"我没有通知原文",twoDesc:"选择要办的事，按提示填写知道的信息，不知道的可以留空。",sampleK:"先看看",sampleH:"一张清单，办事更从容",sampleD:"什么时候去、要带什么、还有哪些问题要问，都放在一起。",topicK:"常见事项",topicH:"您要办哪件事？",topicD:"直接选择事项，也可以不填通知原文。",support:"需要帮助时"}:{k:"GET STARTED",heading:"How would you like to begin?",sub:"Choose the way that works for you.",one:"I have a notice",oneDesc:"Paste a text message or notice, then check the details before making a list.",two:"I do not have the text",twoDesc:"Choose a topic and fill in what you know. You can leave anything blank.",sampleK:"TAKE A LOOK",sampleH:"One clear list to take with you",sampleD:"Keep the date, documents and questions together in one place.",topicK:"COMMON TOPICS",topicH:"What do you need to do?",topicD:"Choose a topic to start without a notice.",support:"Need a little help?"};
+  [["h-start-kicker",hc.k],["start-heading",hc.heading],["h-start-sub",hc.sub],["h-card1-title",hc.one],["h-card1-desc",hc.oneDesc],["h-card2-title",hc.two],["h-card2-desc",hc.twoDesc],["h-s-kicker",hc.sampleK],["sample-heading",hc.sampleH],["h-s-desc",hc.sampleD],["h-topic-kicker",hc.topicK],["h-topic-sub",hc.topicD],["h-support-title",hc.support]].forEach(([id,value])=>$(id).textContent=value);
   $("h-eyebrow").textContent=t("eyebrow");
   $("h-title").innerHTML=t("title");
   $("h-sub").textContent=t("sub");
@@ -1290,8 +1288,8 @@ function paint(){
   $("h-s-bring").innerHTML=t("sBring").map((x,i)=>(i?'<span class="sep">·</span>':'')+'<span class="it">'+esc(x)+'</span>').join("");
   $("h-s-foot").textContent=t("sFoot");
 
-  $("h-others-h").textContent=t("othersH");
-  $("h-others").innerHTML=Object.keys(SCEN).filter(k=>k!=="care").map((k,i)=>{
+  $("h-others-h").textContent=hc.topicH;
+  $("h-others").innerHTML=Object.keys(SCEN).map((k,i)=>{
     const d=SCEN[k][lang];
     return `<li><button onclick="startWith('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span></button></li>`;
   }).join("");
@@ -1412,15 +1410,15 @@ function jumpTypes(){ const el=document.getElementById("h-others"); if(el) el.sc
 /* ---------------- letter ---------------- */
 function startNew(){ openLetter(); }
 function startWith(k){ openLetter(k); }
-function openLetter(k){ state=freshState(); state.scen=k||"care"; editingExisting=false; renderTypes(); renderDetail(); renderForm(); go("letter"); }
-function editDetails(){ editingExisting=true; renderTypes(); renderDetail(); renderForm(); go("letter"); }
+function openLetter(k){ state=freshState(); state.scen=k||"care"; editingExisting=false; renderTypes(); renderDetail(); renderForm(); $("type-picker").open=!k; go("letter"); }
+function editDetails(){ editingExisting=true; renderTypes(); renderDetail(); renderForm(); $("type-picker").open=false; go("letter"); }
 function renderTypes(){
   $("l-types").innerHTML=Object.keys(SCEN).map((k,i)=>{
     const d=SCEN[k][lang];
     return `<li><button aria-pressed="${state.scen===k}" onclick="pick('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span></button></li>`;
   }).join("");
 }
-function pick(k){ captureForm(); if(state.scen!==k){ state.scen=k; state.checks={}; state.bring={}; } renderTypes(); renderDetail(); renderForm(); }
+function pick(k){ captureForm(); if(state.scen!==k){ state.scen=k; state.checks={}; state.bring={}; } renderTypes(); renderDetail(); renderForm(); $("type-picker").open=false; $("selected-type").scrollIntoView({block:"start"}); }
 function statusTag(s){ return `<span class="status ${s||"sug"}">${t("status")[s||"sug"]}</span>`; }
 function renderDetail(){
   const d=S();
@@ -1441,6 +1439,9 @@ function renderDetail(){
     </div>`;
 }
 function renderForm(){
+  $("selected-type").textContent=(lang==="zh"?"已选事项：":"Selected: ")+S().name;
+  $("type-picker-summary").textContent=lang==="zh"?"选择或更换事项":"Choose or change the topic";
+  $("guide-summary").textContent=lang==="zh"?"查看这类事项的常见步骤和材料":"See the usual steps and documents";
   $("l-form").hidden=false;
   $("f-dtypes").innerHTML=t("dtypes").map(x=>`<label class="opt"><input type="radio" name="dtype" value="${x[0]}" ${state.dtype===x[0]?"checked":""} onchange="setDtype('${x[0]}')"><span><b>${x[1]}</b><span class="d">${x[2]}</span></span></label>`).join("");
   $("f-known").innerHTML=t("known").map(x=>`<label class="opt"><input type="checkbox" ${state.known[x[0]]?"checked":""} onchange="setKnown('${x[0]}',this.checked)"><span><b>${x[1]}</b></span></label>`).join("");
@@ -1683,10 +1684,11 @@ function guessDtype(text, dateInfo){
 function extractNotice(raw){
   const text=normNotice(raw);
   const di=parseNoticeDate(text);
+  const hasYear=/(?:\d{4}\s*(?:年|[-/.])|[零〇一二三四五六七八九]{4}\s*年|\b(?:19|20)\d{2}\b)/.test(text);
   return {
     scen:guessScenario(text),
     dtype:guessDtype(text,di),
-    date:di?di.date:"",
+    date:di&&hasYear?di.date:"",
     time:parseNoticeTime(text),
     place:parseNoticePlace(text),
     phone:parseNoticePhone(text),
@@ -1701,6 +1703,7 @@ function openPaste(){
   pending=null; $("p-result").hidden=true; go("paste");
   if(!window.matchMedia || !window.matchMedia("(pointer: coarse)").matches) $("p-text").focus();
 }
+function noticeChanged(){ if(pending){ pending=null; $("p-result").hidden=true; } }
 function pasteClear(){ $("p-text").value=""; $("p-result").hidden=true; pending=null; $("p-text").focus(); }
 function fillSample(i){
   const s=SAMPLES[lang][i];
@@ -1964,7 +1967,7 @@ function renderTasks(){
   const idx=list.map((x,i)=>i);
   const nextIdx=idx.find(i=>!state.checks[i]) ?? -1;
   const confirmIdx=idx.filter(i=>!state.checks[i] && i!==nextIdx && !resolved(list[i]));
-  const restIdx=idx.filter(i=>i!==nextIdx && !confirmIdx.includes(i));
+  const restIdx=idx;
 
   // next block
   const nb=$("t-next");
@@ -2013,14 +2016,7 @@ function renderTasks(){
   $("t-bring-hint").textContent=t("bringHint")+(gap>0?" · "+t("bringGap").replace("{n}",gap):"");
 
   // confirm
-  const cw=$("t-confirm-wrap");
-  if(confirmIdx.length){
-    cw.hidden=false;
-    $("t-confirm").innerHTML=confirmIdx.map(i=>{
-      const x=list[i];
-      return `<li><span class="q">${t("confirmQ")}</span><span>${esc(x.t)}${x.hint?`<span class="fineprint" style="display:block;margin-top:2px">${esc(x.hint)}</span>`:""}</span></li>`;
-    }).join("");
-  } else cw.hidden=true;
+  $("t-confirm-wrap").hidden=true;
 
   renderVoice();
 }
@@ -2040,8 +2036,8 @@ function buildPrintSheet(){
     <h1>${esc(d.name)}</h1>
     <div class="fine">${t("printFine")}</div>
     ${rows.map(r=>`<div class="psrow"><b>${r[0]}</b>${esc(r[1])}</div>`).join("")}
-    <h2>${t("printA")}</h2><ul class="bring">${bring.map(x=>`<li><span class="bx"></span>${esc(x.t)}</li>`).join("")}</ul>
-    <h2>${t("printB")}</h2><ul>${list.map(x=>`<li><span class="bx"></span>${esc(x.t)}<span class="h"> · ${esc(x.hint)}</span></li>`).join("")}</ul>
+    <h2>${t("printA")}</h2><ul class="bring">${bring.map(x=>`<li><span class="bx ${state.bring[x.t]?"checked":""}"></span>${esc(x.t)}</li>`).join("")}</ul>
+    <h2>${t("printB")}</h2><ul>${list.map((x,i)=>`<li><span class="bx ${state.checks[i]?"checked":""}"></span>${esc(x.t)}<span class="h"> · ${esc(x.hint)}</span></li>`).join("")}</ul>
     <h2>${t("printC")}</h2><ul>${Q.map(q=>`<li><span class="bx"></span>${esc(q[lang])}</li>`).join("")}</ul>
     <h2>${t("printD")}</h2><div class="lines"><div></div><div></div><div></div></div>
     <div class="warnbox"><b>${t("printE")}${colon()}</b>${t("printWarn")}<br><br><b>${t("printF")}${colon()}</b>＿＿＿＿＿＿＿＿＿＿</div>
