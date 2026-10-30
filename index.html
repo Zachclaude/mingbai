@@ -524,7 +524,7 @@
       </section>
       <aside class="workspace-side"><p class="side-label" id="side-label"></p><ol class="side-steps"><li><span>1</span><div><b id="step1-title"></b><p id="step1-desc"></p></div></li><li><span>2</span><div><b id="step2-title"></b><p id="step2-desc"></p></div></li><li><span>3</span><div><b id="step3-title"></b><p id="step3-desc"></p></div></li></ol><p class="side-note" id="side-note"></p></aside></div>
       <section class="other-path"><div><h2 id="manual-heading"></h2><p id="manual-desc"></p></div><button class="btn-quiet" id="manual-button" onclick="openLetter()"></button></section>
-      <section class="workspace-help"><h2 id="help-heading"></h2><div class="help-buttons" id="h-tools"></div><details class="method"><summary id="about-sum"></summary><div id="about-body"></div></details></section>
+      <section class="workspace-help"><h2 id="help-heading"></h2><div class="help-buttons" id="h-tools"></div><details class="method"><summary id="about-sum"></summary><div id="about-body"></div></details><details class="method" id="design-sources"><summary id="sources-summary"></summary><div id="sources-body"></div></details></section>
     </div>
   </main>
 
@@ -1295,6 +1295,8 @@ function paint(){
   $("home-notice").placeholder=lang==="zh"?"例如：请于11月20日前到社区服务中心办理……":"For example: Please visit the service centre before 20 November…";
   $("h-tools").innerHTML=[["openCall","toolCall"],["openScam","toolScam"],["openHelp","toolHelp"]].map(x=>`<button onclick="${x[0]}()">${esc(t(x[1]))}</button>`).join("");
   $("about-sum").textContent=t("aboutSum"); $("about-body").innerHTML=t("about");
+  $("sources-summary").textContent=lang==="zh"?"设计参考与来源":"Design references and sources";
+  $("sources-body").innerHTML=lang==="zh"?`<p>“明白”的分步引导和结果核对方式参考了以下英国公共服务与老年服务资源：</p><ul><li><a href="https://design-system.service.gov.uk/patterns/question-pages/" target="_blank" rel="noopener noreferrer">GOV.UK Design System：Question pages（提问页面）</a>：参考逐步提问、返回修改和避免重复填写的设计思路。</li><li><a href="https://www.ageuk.org.uk/information-advice/money-legal/benefits-entitlements/benefits-calculator/" target="_blank" rel="noopener noreferrer">Age UK：Benefits calculator（福利计算器）</a>：参考说明工具结果的局限、提示向有关机构确认的做法。</li></ul><p>这些资料是设计参考，不是中国办事政策依据。具体要求以通知原文和当地经办机构确认为准。</p>`:`<p>Mingbai's guided questions and result-checking approach draw on these UK public and older-adult service resources:</p><ul><li><a href="https://design-system.service.gov.uk/patterns/question-pages/" target="_blank" rel="noopener noreferrer">GOV.UK Design System: Question pages</a>: ideas for step-by-step questions, going back and avoiding repeated entry.</li><li><a href="https://www.ageuk.org.uk/information-advice/money-legal/benefits-entitlements/benefits-calculator/" target="_blank" rel="noopener noreferrer">Age UK: Benefits calculator</a>: explaining the limits of a result and checking with the relevant organisation.</li></ul><p>These are design references, not sources of Chinese administrative requirements. Check the original notice and the local office.</p>`;
 
   $("size-label").textContent=t("sizeLabel");
   $("sz0").textContent=t("sizeStd"); $("sz1").textContent=t("sizeLg"); $("sz2").textContent=t("sizeXl");
