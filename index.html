@@ -470,6 +470,22 @@
  @media(max-width:760px){.page{padding-inline:18px}.desk-layout{grid-template-columns:1fr;gap:27px;padding:34px 0 30px}.desk-intro{padding-top:0}.desk-intro h1{font-size:1.8em;line-height:1.4}.desk-intro .lede{margin-top:14px}.intro-rule{margin:18px 0 14px}.desk-work{padding:22px 20px}.desk-heading{gap:12px}.desk-action{padding:20px 0}.desk-action button{margin-left:0;width:100%}.desk-action-copy{gap:12px}.desk-fold .toc{grid-template-columns:1fr}.example-content{grid-template-columns:1fr}.desk-help{grid-template-columns:1fr;gap:28px}.desk-fold .how{gap:18px}.desk-fold>summary{padding:18px 0}}
 }
 
+
+/* A practical notice workspace, with one clear task on the first screen. */
+@media screen{
+ :root{--paper:#f7f3ec;--sheet:#fffefa;--ink:#292c30;--ink2:#45484b;--ink3:#585c60;--blue:#344f62;--blue-ink:#233f50;--blue-wash:#edf3f4;--blue-line:#bfd0d4;--rule:#d9d8d1;--rule2:#e8e6df;--rule3:#bdbeb9;--green:#4e6a64;--green-wash:#edf3f0}
+ body{background:var(--paper)}.page{max-width:1110px;padding-inline:32px}.masthead{padding:20px 0;border-bottom:1px solid #d7d5ce}.brand .wordmark{color:#2d4758}.brand-sub{color:#50575a}.ctl[aria-pressed="true"]{background:#e8f0ef;color:#294b53}
+ .wizard-progress{font-size:.84em;font-weight:700;color:#365c5a;background:#eaf1ee;border-left:3px solid #78968a;padding:10px 14px;margin:22px 0 0}.wizard-progress:focus{outline:2px solid #385d68;outline-offset:2px}
+ .original-notice{margin-top:20px}.original-notice>summary{cursor:pointer;min-height:48px;color:#304f5b;font-weight:600;text-decoration:underline;text-underline-offset:4px}.original-notice .pasteform{margin-top:4px}
+ .workspace{max-width:1030px;margin:0 auto;padding:44px 0 20px}.workspace-heading{max-width:760px}.workspace-kicker{margin:0 0 9px;color:#466d6d;font-size:.78em;letter-spacing:.09em;font-weight:700}.workspace-heading h1{font-family:var(--serif);font-size:clamp(1.75em,3.5vw,2.35em);line-height:1.4;color:#243d4b}.workspace-heading>p:last-child{margin:12px 0 0;color:#444f53;line-height:1.75;max-width:36em}
+ .workspace-body{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(245px,.75fr);margin-top:28px;align-items:start;border-top:2px solid #385d68}.notice-work{padding:25px 30px 28px 0;min-width:0}.notice-top{display:flex;justify-content:space-between;gap:20px}.notice-top h2,.other-path h2,.workspace-help h2{font-size:1.16em;margin:0;color:#253f4b}.notice-top p{font-size:.88em;line-height:1.7;color:#4e595b;margin:5px 0 16px}.notice-index{font-size:.75em;color:#738487;font-variant-numeric:tabular-nums}
+ #home-notice{display:block;width:100%;min-height:210px;resize:vertical;background:#fffefa;border:1px solid #9eaaa9;border-radius:3px;padding:15px 16px;font:inherit;line-height:1.7;color:#292f31}#home-notice::placeholder{color:#6b7473}#home-notice:focus-visible{outline:3px solid #385d68;outline-offset:2px}.home-error{color:#8c3025;background:#fae9e4;border-left:4px solid #a63b2c;padding:10px 12px;font-size:.9em}.notice-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:18px}.notice-actions .btn-primary{min-height:56px}.example-link{background:none;border:0;padding:10px 0;min-height:44px;color:#304f5b;text-decoration:underline;text-underline-offset:4px;cursor:pointer}.privacy-line{font-size:.8em;color:#505d5e;margin:15px 0 0}
+ .workspace-side{background:#eef2ef;border-left:1px solid #d1dbd6;padding:24px 22px 20px}.side-label{margin:0 0 15px;font-size:.75em;letter-spacing:.08em;color:#516b67;font-weight:700}.side-steps{list-style:none;margin:0;padding:0}.side-steps li{display:flex;gap:12px;padding:0 0 18px}.side-steps li>span{display:grid;place-items:center;width:28px;height:28px;border:1px solid #91a8a2;color:#365b55;border-radius:50%;font-size:.78em;flex:none}.side-steps b{display:block;color:#304743;font-size:.9em}.side-steps p{margin:3px 0 0;color:#4e5e59;font-size:.8em;line-height:1.6}.side-note{border-top:1px solid #cdd9d2;padding-top:13px;margin:0;color:#4a5b55;font-size:.8em}
+ .other-path{border-top:1px solid #d9d8d1;border-bottom:1px solid #d9d8d1;padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:20px}.other-path p{margin:4px 0 0;color:#515b5c;font-size:.88em}.other-path button{flex:none}.workspace-help{padding-top:28px}.help-buttons{display:flex;flex-wrap:wrap;gap:4px 25px;margin-top:9px}.help-buttons button{background:none;border:0;text-align:left;min-height:44px;padding:8px 0;color:#304f5b;text-decoration:underline;text-underline-offset:4px;cursor:pointer;font-size:.9em}.method{border-top:1px solid #dfded8;margin-top:20px;padding-top:15px;color:#51595a;font-size:.84em}.method summary{cursor:pointer;text-decoration:underline;text-underline-offset:4px}.method h4{margin:18px 0 5px}.method p,.method ul{max-width:62em}
+ .btn-primary{background:#344f62;border-color:#344f62;border-radius:3px;box-shadow:none}.btn-primary:hover{background:#233e4e;border-color:#233e4e}.btn-quiet{color:#304e5c;border-color:#9eaeae;background:#fffefa;border-radius:3px}.btn-quiet:hover{background:#eef3f2;border-color:#344f62}.type-picker summary,.details-guide summary{color:#304e5c}.selected-type{background:#eaf1ee;color:#304b47}.task-head{background:#eef2ef;border-color:#cbd8d2}.next{background:#fbf4e6;border-left-color:#a97642}.actions{background:#eaf1ef}.sample::before,.pasteform::before,.detect::before{background:#557a76}
+ @media(max-width:760px){.page{padding-inline:18px}.workspace{padding-top:28px}.workspace-heading h1{font-size:1.8em}.workspace-body{grid-template-columns:1fr;margin-top:22px}.notice-work{padding:21px 0 25px}#home-notice{min-height:180px}.notice-actions{display:grid;gap:6px}.notice-actions .btn-primary{width:100%}.example-link{justify-self:start}.workspace-side{border-left:0;border-top:1px solid #d1dbd6;padding:20px}.side-steps li{padding-bottom:13px}.other-path{align-items:stretch;flex-direction:column;gap:14px}.other-path button{width:100%}.help-buttons{display:grid;gap:0}}
+}
+
 </style>
 </head>
 <body>
@@ -493,46 +509,22 @@
     </div>
   </header>
 
-  <!-- HOME -->
+  <!-- HOME: the work begins here -->
   <main class="view" id="v-home">
     <div class="resume" id="h-resume" hidden><span class="rt" id="h-resume-t"></span><span class="ra"><button class="btn-primary" onclick="resumeLast()" id="h-resume-go"></button><button class="linkbtn" onclick="dismissResume(this)" id="h-resume-no"></button></span></div>
-    <div class="desk-layout">
-      <section class="desk-intro" aria-labelledby="h-title"><p class="eyebrow" id="h-eyebrow"></p><h1 id="h-title"></h1><p class="lede" id="h-sub"></p><div class="intro-rule" aria-hidden="true"></div><p class="welcome-assurance" id="h-fine"></p><div class="promise" id="h-promise"></div></section>
-      <section class="desk-work" aria-labelledby="start-heading">
-        <div class="desk-heading"><span class="desk-index" aria-hidden="true">01 / 02</span><div><p class="section-kicker" id="h-start-kicker"></p><h2 id="start-heading"></h2><p id="h-start-sub"></p></div></div>
-        <div class="desk-actions">
-          <div class="desk-action"><div class="desk-action-copy"><span class="action-no" aria-hidden="true">一</span><div><h3 id="h-card1-title"></h3><p id="h-card1-desc"></p></div></div><button class="btn-primary" onclick="openPaste()" id="h-start"></button></div>
-          <div class="desk-action"><div class="desk-action-copy"><span class="action-no" aria-hidden="true">二</span><div><h3 id="h-card2-title"></h3><p id="h-card2-desc"></p></div></div><button class="btn-quiet" onclick="openLetter()" id="h-types"></button></div>
-        </div>
-        <p class="desk-privacy" id="desk-privacy"></p>
+    <div class="workspace">
+      <div class="workspace-heading"><p class="workspace-kicker" id="ws-kicker"></p><h1 id="ws-title"></h1><p id="ws-intro"></p></div>
+      <div class="workspace-body"><section class="notice-work" aria-labelledby="notice-label">
+        <div class="notice-top"><div><h2 id="notice-label"></h2><p id="notice-help"></p></div><span class="notice-index" aria-hidden="true">01</span></div>
+        <label class="sr-only" for="home-notice" id="home-notice-label"></label>
+        <textarea id="home-notice" maxlength="4000" spellcheck="false" autocomplete="off" aria-describedby="notice-help home-error" oninput="clearHomeError()"></textarea>
+        <p class="home-error" id="home-error" role="alert" hidden></p>
+        <div class="notice-actions"><button class="btn-primary" type="button" id="home-submit" onclick="startHomeNotice()"></button><button class="example-link" type="button" id="home-example" onclick="homeSample()"></button></div>
+        <p class="privacy-line" id="home-privacy"></p>
       </section>
-    </div>
-    <div class="desk-extras">
-      <details class="desk-fold" id="topic-fold"><summary><span><span class="section-kicker" id="h-topic-kicker"></span><strong id="h-others-h"></strong></span><span class="fold-symbol" aria-hidden="true">＋</span></summary><p class="fold-description" id="h-topic-sub"></p><ul class="toc" id="h-others"></ul></details>
-      <details class="desk-fold" id="example-fold"><summary><span><span class="section-kicker" id="h-s-kicker"></span><strong id="sample-heading"></strong></span><span class="fold-symbol" aria-hidden="true">＋</span></summary><div class="example-content"><div><p id="h-s-desc"></p><button class="btn-quiet" onclick="loadDemo()" id="h-demo"></button></div><aside class="sample" aria-label="清单示例">
-        <div class="sample-head">
-          <span class="sample-tag" id="h-s-tag"></span>
-          <span class="sample-title" id="h-s-title"></span>
-        </div>
-        <div class="sample-date">
-          <span class="d" id="h-s-date"></span>
-          <span class="t" id="h-s-place"></span>
-        </div>
-        <div class="sample-sec">
-          <h3 id="h-s-first"></h3>
-          <ul class="sample-lines">
-            <li><span class="tick on" aria-hidden="true"></span><span id="h-s-1"></span></li>
-            <li><span class="tick" aria-hidden="true"></span><span id="h-s-2"></span></li>
-          </ul>
-        </div>
-        <div class="sample-sec">
-          <h3 id="h-s-bringH"></h3>
-          <p class="sample-bring" id="h-s-bring"></p>
-        </div>
-        <div class="sample-foot" id="h-s-foot"></div>
-      </aside></div></details>
-      <details class="desk-fold" id="steps-fold"><summary><strong id="h-how-h"></strong><span class="fold-symbol" aria-hidden="true">＋</span></summary><div class="how" id="h-how"></div></details>
-      <section class="desk-help"><div><h2 id="h-support-title"></h2><div class="tools" id="h-tools"></div></div><div class="trust"><b id="h-trust-h"></b><span id="h-trust-b"></span><details class="about"><summary id="about-sum"></summary><div class="body" id="about-body"></div></details></div></section>
+      <aside class="workspace-side"><p class="side-label" id="side-label"></p><ol class="side-steps"><li><span>1</span><div><b id="step1-title"></b><p id="step1-desc"></p></div></li><li><span>2</span><div><b id="step2-title"></b><p id="step2-desc"></p></div></li><li><span>3</span><div><b id="step3-title"></b><p id="step3-desc"></p></div></li></ol><p class="side-note" id="side-note"></p></aside></div>
+      <section class="other-path"><div><h2 id="manual-heading"></h2><p id="manual-desc"></p></div><button class="btn-quiet" id="manual-button" onclick="openLetter()"></button></section>
+      <section class="workspace-help"><h2 id="help-heading"></h2><div class="help-buttons" id="h-tools"></div><details class="method"><summary id="about-sum"></summary><div id="about-body"></div></details></section>
     </div>
   </main>
 
@@ -550,7 +542,8 @@
     </details>
     <div class="selected-type" id="selected-type"></div>
     <div id="l-form" hidden>
-      <div class="formblock">
+      <p class="wizard-progress" id="wizard-progress" aria-live="polite"></p>
+      <div class="formblock" id="wizard-date">
         <span class="flabel" id="f-date-k"></span>
         <div id="f-dtypes"></div>
         <div class="field" id="f-date-wrap">
@@ -558,12 +551,12 @@
           <input id="f-date" type="date">
         </div>
       </div>
-      <div class="formblock">
+      <div class="formblock" id="wizard-known">
         <span class="flabel" id="f-known-k"></span>
         <p class="fineprint" id="f-known-h" style="margin:0 0 8px"></p>
         <div id="f-known"></div>
       </div>
-      <div class="formblock">
+      <div class="formblock" id="wizard-contact">
         <span class="flabel" id="f-place-k"></span>
         <div class="field">
           <label for="f-time" id="f-time-l"></label>
@@ -579,11 +572,13 @@
         </div>
       </div>
       <div class="formcta">
+        <button class="btn-quiet" type="button" onclick="wizardMove(-1)" id="wizard-back"></button>
+        <button class="btn-primary" type="button" onclick="wizardMove(1)" id="wizard-next"></button>
         <button class="btn-primary" onclick="makeTasks()" id="f-go"></button>
         <button class="linkbtn" onclick="skipForm()" id="f-skip"></button>
       </div>
     </div>
-    <details class="details-guide"><summary id="guide-summary"></summary><div id="l-detail"></div></details>
+    <details class="details-guide" id="guide-section"><summary id="guide-summary"></summary><div id="l-detail"></div></details>
   </main>
 
   <!-- PASTE -->
@@ -593,6 +588,7 @@
       <h1 id="p-title"></h1>
       <p class="lede" id="p-sub"></p>
     </div>
+    <details class="original-notice" id="p-original" open><summary id="p-original-summary"></summary>
     <div class="pasteform">
       <label class="flab" for="p-text" id="p-lab"></label>
       <textarea id="p-text" spellcheck="false" autocomplete="off" maxlength="4000" oninput="noticeChanged()"></textarea>
@@ -608,7 +604,7 @@
         <button class="linkbtn" onclick="openLetter()" id="p-template"></button>
       </div>
       <p class="fineprint" id="p-fine" style="margin:14px 0 0"></p>
-    </div>
+    </div></details>
     <section class="detect" id="p-result" hidden aria-live="polite"></section>
   </main>
 
@@ -1255,7 +1251,7 @@ function freshState(){
            known:{}, checks:{}, scam:{}, fromFamily:false, voice:"", rate:0.92, demo:false, banner:null };
 }
 let state = freshState();
-let hadLocal = false, resumeDismissed = false, pending = null, editingExisting = false;
+let hadLocal = false, resumeDismissed = false, pending = null, editingExisting = false, choosingTopic = false, wizardStep = 0;
 const t = k => T[lang][k];
 const S = () => SCEN[state.scen][lang];
 const full = () => !!SCEN[state.scen].full;
@@ -1294,41 +1290,11 @@ function paint(){
   captureForm();
   document.title = lang==="zh" ? "明白 · 把通知贴进来，变成一张能带走的清单。" : "明白 · Paste the notice in, walk out with one sheet.";
   $("tag").textContent=t("tag");
-  const hc=lang==="zh"?{k:"从这里开始",heading:"您想怎么开始？",sub:"选一种方便的方式，慢慢来。",one:"我有一份通知",oneDesc:"把短信或微信文字贴进来，先核对，再生成清单。",two:"我没有通知原文",twoDesc:"选择要办的事，按提示填写知道的信息，不知道的可以留空。",sampleK:"先看看",sampleH:"一张清单，办事更从容",sampleD:"什么时候去、要带什么、还有哪些问题要问，都放在一起。",topicK:"常见事项",topicH:"您要办哪件事？",topicD:"直接选择事项，也可以不填通知原文。",support:"需要帮助时"}:{k:"GET STARTED",heading:"How would you like to begin?",sub:"Choose the way that works for you.",one:"I have a notice",oneDesc:"Paste a text message or notice, then check the details before making a list.",two:"I do not have the text",twoDesc:"Choose a topic and fill in what you know. You can leave anything blank.",sampleK:"TAKE A LOOK",sampleH:"One clear list to take with you",sampleD:"Keep the date, documents and questions together in one place.",topicK:"COMMON TOPICS",topicH:"What do you need to do?",topicD:"Choose a topic to start without a notice.",support:"Need a little help?"};
-  [["h-start-kicker",hc.k],["start-heading",hc.heading],["h-start-sub",hc.sub],["h-card1-title",hc.one],["h-card1-desc",hc.oneDesc],["h-card2-title",hc.two],["h-card2-desc",hc.twoDesc],["h-s-kicker",hc.sampleK],["sample-heading",hc.sampleH],["h-s-desc",hc.sampleD],["h-topic-kicker",hc.topicK],["h-topic-sub",hc.topicD],["h-support-title",hc.support]].forEach(([id,value])=>$(id).textContent=value);
-  $("desk-privacy").textContent=lang==="zh"?"不用注册 · 可以随时返回修改":"No sign-up · You can return and edit";
-  $("h-eyebrow").textContent=t("eyebrow");
-  $("h-title").innerHTML=t("title");
-  $("h-sub").textContent=t("sub");
-  $("h-start").textContent=t("start");
-  $("h-demo").textContent=t("demo");
-  $("h-fine").textContent=t("fine");
-  $("h-promise").innerHTML=t("promise").map(x=>`<span><span class="dot" aria-hidden="true"></span>${esc(x)}</span>`).join("");
-  $("h-types").textContent=t("hTypes");
+  const w=lang==="zh"?{k:"明白 · 办事助手",title:"把这件事，理清楚。",intro:"收到通知后，把文字贴在下面。我们一起整理要去的时间、地点和需要带的材料。",label:"通知上写了什么？",hint:"可以粘贴短信或微信文字；纸质通知请先输入文字。",inputLabel:"通知文字",submit:"下一步：核对信息",example:"没有现成的文字？先试试示例",privacy:"文字在这台设备上处理。请勿填写验证码或银行卡密码。",side:"接下来会做什么",s1:"先整理",d1:"从通知里找出时间、地点和材料。",s2:"再核对",d2:"识别可能出错，您可以修改或补充。",s3:"带走清单",d3:"勾选、打印，或分享给信任的家人。",note:"不确定的地方，可以留空后向经办机构询问。",mh:"没有通知文字？",md:"也可以选择要办的事，自己填写知道的信息。",mb:"按事项开始",help:"需要人帮忙或想先问清楚？"}:{k:"MINGBAI · ERRAND HELPER",title:"Let's make this clearer.",intro:"Paste the notice below. We'll help organise the time, place and papers to bring.",label:"What does the notice say?",hint:"Paste a text message or type out a paper notice.",inputLabel:"Notice text",submit:"Next: check the details",example:"No text handy? Try an example",privacy:"Text is processed on this device. Do not enter verification codes or bank passwords.",side:"WHAT HAPPENS NEXT",s1:"Organise",d1:"Find the time, place and papers in the notice.",s2:"Check",d2:"It can make mistakes. Correct or add details.",s3:"Take your list",d3:"Tick, print or share with someone you trust.",note:"If unsure, leave it blank and ask the office.",mh:"No notice text?",md:"Choose a topic and fill in what you know.",mb:"Choose a topic",help:"Need help or want to ask first?"};
+  [["ws-kicker",w.k],["ws-title",w.title],["ws-intro",w.intro],["notice-label",w.label],["notice-help",w.hint],["home-notice-label",w.inputLabel],["home-submit",w.submit],["home-example",w.example],["home-privacy",w.privacy],["side-label",w.side],["step1-title",w.s1],["step1-desc",w.d1],["step2-title",w.s2],["step2-desc",w.d2],["step3-title",w.s3],["step3-desc",w.d3],["side-note",w.note],["manual-heading",w.mh],["manual-desc",w.md],["manual-button",w.mb],["help-heading",w.help]].forEach(([id,value])=>$(id).textContent=value);
+  $("home-notice").placeholder=lang==="zh"?"例如：请于11月20日前到社区服务中心办理……":"For example: Please visit the service centre before 20 November…";
   $("h-tools").innerHTML=[["openCall","toolCall"],["openScam","toolScam"],["openHelp","toolHelp"]].map(x=>`<button onclick="${x[0]}()">${esc(t(x[1]))}</button>`).join("");
-
-  $("h-s-tag").textContent=t("sTag");
-  $("h-s-title").textContent=t("sSheet");
-  $("h-s-date").textContent=t("sDate");
-  $("h-s-place").textContent=t("sPlace");
-  $("h-s-first").textContent=t("sFirst");
-  $("h-s-1").textContent=t("s1");
-  $("h-s-2").textContent=t("s2");
-  $("h-s-bringH").textContent=t("sBringH");
-  $("h-s-bring").innerHTML=t("sBring").map((x,i)=>(i?'<span class="sep">·</span>':'')+'<span class="it">'+esc(x)+'</span>').join("");
-  $("h-s-foot").textContent=t("sFoot");
-
-  $("h-others-h").textContent=hc.topicH;
-  $("h-others").innerHTML=Object.keys(SCEN).map((k,i)=>{
-    const d=SCEN[k][lang];
-    return `<li><button onclick="startWith('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span></button></li>`;
-  }).join("");
-  $("h-how-h").textContent=t("howH");
-  $("h-how").innerHTML=t("how").map(x=>`<div class="how-step"><b>${x[0]}</b><span>${x[1]}</span></div>`).join("");
-  $("h-trust-h").textContent=t("trustH");
-  $("h-trust-b").textContent=t("trustB");
-  $("about-sum").textContent=t("aboutSum");
-  $("about-body").innerHTML=t("about");
+  $("about-sum").textContent=t("aboutSum"); $("about-body").innerHTML=t("about");
 
   $("size-label").textContent=t("sizeLabel");
   $("sz0").textContent=t("sizeStd"); $("sz1").textContent=t("sizeLg"); $("sz2").textContent=t("sizeXl");
@@ -1360,8 +1326,9 @@ function paint(){
   $("f-phone").setAttribute("aria-label",t("phoneL"));
 
   // paste
-  $("p-title").textContent=t("pTitle");
-  $("p-sub").textContent=t("pSub");
+  $("p-title").textContent=(!$("p-result").hidden&&pending)?t("dTitle"):t("pTitle");
+  $("p-original-summary").textContent=lang==="zh"?"查看或修改通知原文":"View or edit the original notice";
+  $("p-sub").textContent=(!$("p-result").hidden&&pending)?(lang==="zh"?"请对照原文逐项核对，错误可以修改，不确定的可以留空。":"Compare each detail with the original. Correct mistakes or leave uncertain fields blank."):t("pSub");
   $("p-lab").textContent=t("pLab");
   $("p-text").setAttribute("aria-label",t("pLab"));
   $("p-ex").textContent=t("pEx");
@@ -1440,15 +1407,15 @@ function jumpTypes(){ const el=document.getElementById("h-others"); if(el) el.sc
 /* ---------------- letter ---------------- */
 function startNew(){ openLetter(); }
 function startWith(k){ openLetter(k); }
-function openLetter(k){ state=freshState(); state.scen=k||"care"; editingExisting=false; renderTypes(); renderDetail(); renderForm(); $("type-picker").open=!k; go("letter"); }
-function editDetails(){ editingExisting=true; renderTypes(); renderDetail(); renderForm(); $("type-picker").open=false; go("letter"); }
+function openLetter(k){ state=freshState(); state.scen=k||"care"; editingExisting=false; choosingTopic=!k; wizardStep=0; renderTypes(); renderDetail(); renderForm(); $("type-picker").open=!k; $("l-form").hidden=!k; $("selected-type").hidden=!k; $("guide-section").hidden=!k; go("letter"); }
+function editDetails(){ editingExisting=true; choosingTopic=false; renderTypes(); renderDetail(); renderForm(); $("type-picker").open=false; $("selected-type").hidden=false; $("guide-section").hidden=false; go("letter"); }
 function renderTypes(){
   $("l-types").innerHTML=Object.keys(SCEN).map((k,i)=>{
     const d=SCEN[k][lang];
-    return `<li><button aria-pressed="${state.scen===k}" onclick="pick('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span></button></li>`;
+    return `<li><button aria-pressed="${!choosingTopic&&state.scen===k}" onclick="pick('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span></button></li>`;
   }).join("");
 }
-function pick(k){ captureForm(); if(state.scen!==k){ state.scen=k; state.checks={}; state.bring={}; } renderTypes(); renderDetail(); renderForm(); $("type-picker").open=false; $("selected-type").scrollIntoView({block:"start"}); }
+function pick(k){ choosingTopic=false; wizardStep=0; captureForm(); if(state.scen!==k){ state.scen=k; state.checks={}; state.bring={}; } renderTypes(); renderDetail(); renderForm(); $("type-picker").open=false; $("selected-type").hidden=false; $("guide-section").hidden=false; $("selected-type").scrollIntoView({block:"start"}); }
 function statusTag(s){ return `<span class="status ${s||"sug"}">${t("status")[s||"sug"]}</span>`; }
 function renderDetail(){
   const d=S();
@@ -1472,13 +1439,25 @@ function renderForm(){
   $("selected-type").textContent=(lang==="zh"?"已选事项：":"Selected: ")+S().name;
   $("type-picker-summary").textContent=lang==="zh"?"选择或更换事项":"Choose or change the topic";
   $("guide-summary").textContent=lang==="zh"?"查看这类事项的常见步骤和材料":"See the usual steps and documents";
-  $("l-form").hidden=false;
+  $("l-form").hidden=choosingTopic;
   $("f-dtypes").innerHTML=t("dtypes").map(x=>`<label class="opt"><input type="radio" name="dtype" value="${x[0]}" ${state.dtype===x[0]?"checked":""} onchange="setDtype('${x[0]}')"><span><b>${x[1]}</b><span class="d">${x[2]}</span></span></label>`).join("");
   $("f-known").innerHTML=t("known").map(x=>`<label class="opt"><input type="checkbox" ${state.known[x[0]]?"checked":""} onchange="setKnown('${x[0]}',this.checked)"><span><b>${x[1]}</b></span></label>`).join("");
   $("f-date-wrap").hidden=(state.dtype==="unknown");
   $("f-date").value=state.date;
   $("f-time").value=state.time||""; $("f-place").value=state.place||""; $("f-phone").value=state.phone||"";
+  renderWizard();
 }
+function renderWizard(){
+  const blocks=["wizard-date","wizard-known","wizard-contact"];
+  blocks.forEach((id,i)=>$(id).hidden=!editingExisting&&i!==wizardStep);
+  $("wizard-progress").hidden=editingExisting;
+  $("wizard-progress").textContent=lang==="zh"?"第 "+(wizardStep+1)+" / 3 步 · 不知道的可以留空":"Step "+(wizardStep+1)+" / 3 · Leave anything you do not know blank";
+  $("wizard-back").hidden=editingExisting||wizardStep===0; $("wizard-back").textContent=lang==="zh"?"上一步":"Previous";
+  $("wizard-next").hidden=editingExisting||wizardStep===2; $("wizard-next").textContent=lang==="zh"?"下一步":"Next";
+  $("f-go").hidden=!editingExisting&&wizardStep!==2;
+  $("f-skip").hidden=editingExisting||wizardStep===2; $("f-skip").textContent=lang==="zh"?"暂时不填，直接生成清单":"Skip and create the list";
+}
+function wizardMove(delta){ captureForm(); wizardStep=Math.max(0,Math.min(2,wizardStep+delta)); renderWizard(); $("wizard-progress").setAttribute("tabindex","-1"); $("wizard-progress").focus({preventScroll:true}); $("wizard-progress").scrollIntoView({block:"start"}); }
 function setDtype(v){ state.dtype=v; $("f-date-wrap").hidden=(v==="unknown"); }
 function setKnown(k,v){ state.known[k]=v; }
 function makeTasks(){
@@ -1729,11 +1708,19 @@ function extractNotice(raw){
 function foundCount(e){ return (e.scen?1:0)+(e.date?1:0)+(e.time?1:0)+(e.place?1:0)+(e.phone?1:0)+e.mats.length; }
 
 /* ---------------- paste UI ---------------- */
+function clearHomeError(){ $("home-error").hidden=true; $("home-notice").removeAttribute("aria-invalid"); }
+function homeSample(){ $("home-notice").value=SAMPLES[lang][0]; clearHomeError(); $("home-notice").focus(); }
+function startHomeNotice(){
+  const raw=$("home-notice").value.trim();
+  if(!raw){ $("home-error").textContent=lang==="zh"?"请先粘贴或输入通知文字，或者选择下面的示例。":"Paste or type a notice first, or try the example below."; $("home-error").hidden=false; $("home-notice").setAttribute("aria-invalid","true"); $("home-notice").focus(); return; }
+  $("p-text").value=raw; pending=null; $("p-result").hidden=true; go("paste"); runExtract();
+}
 function openPaste(){
-  pending=null; $("p-result").hidden=true; go("paste");
+  pending=null; $("p-result").hidden=true; $("p-original").open=true; $("p-title").textContent=t("pTitle"); go("paste");
   if(!window.matchMedia || !window.matchMedia("(pointer: coarse)").matches) $("p-text").focus();
 }
-function noticeChanged(){ if(pending){ pending=null; $("p-result").hidden=true; } }
+function editOriginal(){ $("p-original").open=true; $("p-result").hidden=true; $("p-title").textContent=t("pTitle"); $("p-sub").textContent=t("pSub"); $("p-text").focus(); }
+function noticeChanged(){ if(pending){ pending=null; $("p-result").hidden=true; $("p-title").textContent=t("pTitle"); } }
 function pasteClear(){ $("p-text").value=""; $("p-result").hidden=true; pending=null; $("p-text").focus(); }
 function fillSample(i){
   const s=SAMPLES[lang][i];
@@ -1748,6 +1735,7 @@ function runExtract(){
   pending=extractNotice(raw);
   renderDetect();
   $("p-result").hidden=false;
+  $("p-original").open=false; $("p-title").textContent=t("dTitle"); $("p-sub").textContent=lang==="zh"?"请对照原文逐项核对，错误可以修改，不确定的可以留空。":"Compare each detail with the original. Correct mistakes or leave uncertain fields blank.";
   toast(t("dFoundToast").replace("{n}",foundCount(pending)));
   $("p-result").scrollIntoView({block:"start"});
   if(!pending.date) $("p-date").focus({preventScroll:true});
@@ -1809,7 +1797,7 @@ function renderDetect(){
     <div class="detect-foot">
       <p class="fineprint">${esc(t("dCheck"))}</p>
       <button class="btn-primary" type="button" onclick="makePasteTasks()">${esc(t("dMake"))}</button>
-      <button class="linkbtn" type="button" onclick="$('p-result').hidden=true;$('p-text').focus()">${esc(t("dBack"))}</button>
+      <button class="linkbtn" type="button" onclick="editOriginal()">${esc(t("dBack"))}</button>
     </div>`;
   renderMats();
 }
