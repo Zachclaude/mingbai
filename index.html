@@ -456,6 +456,20 @@
  @media(max-width:760px){.welcome{margin-top:20px;padding:34px 24px 30px;min-height:0;border-radius:4px 4px 28px 4px}.welcome h1{font-size:1.9em}.welcome .lede{margin-top:16px}.start-section{padding:32px 0 40px}.sample-section{border-radius:4px 24px 4px 4px}}
 }
 
+
+/* A working desk: task-first, readable, and deliberately non-promotional. */
+@media screen{
+ :root{--paper:#f5f0e8;--sheet:#fffdf8;--ink:#302923;--ink2:#50443b;--ink3:#65584b;--blue:#813e29;--blue-ink:#713421;--blue-wash:#f8ede3;--blue-line:#dcbda8;--green:#705940;--green-wash:#f3eee5;--rule:#ddd0bf;--rule2:#e9e0d4;--rule3:#c9b9a5;--amber:#805221;--amber-wash:#fbf0db}
+ body{background:var(--paper);color:var(--ink)}.page{max-width:1080px;padding-inline:32px}.masthead{border-bottom:1px solid #cfc0ad;padding:21px 0}.brand .wordmark{font-family:var(--serif);font-size:1.8em;color:#783d2b}.brand-sub{color:#57483d}.ctl[aria-pressed="true"]{background:#f0dfd2;color:#713421}
+ h1,h2{color:#302923}.btn-primary{background:#813e29;border-color:#813e29;color:#fff;box-shadow:none;border-radius:3px}.btn-primary:hover{background:#65301f;border-color:#65301f}.btn-quiet{background:#fffdf8;color:#713421;border-color:#bd9c84;border-radius:3px}.btn-quiet:hover{background:#f9ede2;border-color:#813e29}a,.linkbtn,.tools button{color:#713421}
+ .desk-layout{display:grid;grid-template-columns:.78fr 1.22fr;gap:56px;align-items:start;padding:65px 0 50px}.desk-intro{padding-top:18px}.desk-intro .eyebrow{font-size:.72em;letter-spacing:.15em;color:#895339;font-weight:700}.desk-intro h1{font-size:clamp(2em,4vw,2.65em);line-height:1.45;letter-spacing:.04em}.desk-intro .lede{margin-top:22px;font-size:1em;line-height:1.85;color:#51463b}.intro-rule{width:55px;height:3px;background:#b6704e;margin:28px 0 20px}.desk-intro .welcome-assurance{font-size:.86em;color:#55483e;margin:0}.desk-intro .promise{font-size:.78em;margin-top:12px;gap:5px 16px}.desk-intro .promise .dot{background:#a76243}
+ .desk-work{background:#fffdf8;border:1px solid #d9c9b6;border-top:5px solid #a65d40;padding:30px 34px 25px;box-shadow:0 8px 22px rgba(80,54,37,.06)}.desk-heading{display:flex;gap:20px;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid #ded1c1}.desk-index{flex:none;font-size:.7em;letter-spacing:.08em;color:#916247;padding-top:6px}.section-kicker{display:block;font-size:.7em;letter-spacing:.1em;color:#895339;font-weight:700}.desk-heading h2{margin:2px 0 4px;font-family:var(--serif);font-size:1.45em;line-height:1.4;color:#332a22}.desk-heading p:last-child{margin:0;font-size:.85em;color:#5c5045}.desk-action{padding:24px 0;border-bottom:1px solid #e7ddcf}.desk-action-copy{display:flex;gap:17px}.action-no{flex:none;width:30px;height:30px;border:1px solid #c6a78e;border-radius:50%;display:grid;place-items:center;font-size:.75em;color:#813e29}.desk-action h3{font-size:1.08em;margin:0;color:#332a22}.desk-action p{margin:5px 0 16px;font-size:.88em;line-height:1.65;color:#5b4d42}.desk-action button{margin-left:47px;min-height:52px}.desk-privacy{margin:18px 0 0;font-size:.78em;color:#66584d}
+ .desk-extras{border-top:1px solid #d6c9b9}.desk-fold{border-bottom:1px solid #d6c9b9}.desk-fold>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;padding:22px 0;list-style:none;min-height:72px}.desk-fold>summary::-webkit-details-marker{display:none}.desk-fold>summary strong{display:block;font-family:var(--serif);font-size:1.2em;color:#352b24}.fold-symbol{display:grid;place-items:center;width:38px;height:38px;flex:none;border:1px solid #bea48e;border-radius:50%;font-size:1em;color:#813e29}.desk-fold[open] .fold-symbol{transform:rotate(45deg)}.fold-description{margin:0 0 15px;color:#55483c;font-size:.9em}.desk-fold .toc{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;padding-bottom:22px}.desk-fold .toc li{background:transparent;border:0;border-bottom:1px solid #e3d8c9;border-radius:0}.desk-fold .toc button{padding:14px 3px;min-height:68px}.toc-no{color:#905a3b}.toc-desc{color:#5a4e42}.desk-fold .toc button:hover{background:#f4e9dc}.example-content{display:grid;grid-template-columns:.7fr 1.3fr;gap:28px;align-items:start;padding:0 0 28px}.example-content>div>p{margin-top:0;color:#5a4d42}.sample{background:#fffdf8;border:1px solid #d8cbb9;border-radius:0;box-shadow:none}.sample::before{background:#ac6345}.sample-tag{color:#743d29;background:#f4e5d7;border-color:#e2c8b3}.sample-date .d{color:#302923}.sample-sec h3,.sec-label,.detect h2{color:#655246}.tick.on{background:#813e29;border-color:#813e29}.desk-fold .how{margin:0 0 28px}.how-step{border:0;border-left:2px solid #d6baa4;background:transparent;padding:3px 16px}.how-step b{color:#48372d}.how-step span{color:#5b4e43}
+ .desk-help{display:grid;grid-template-columns:1fr 1fr;gap:35px;padding:34px 0}.desk-help h2{margin:0;font-size:1.15em;font-family:var(--serif);color:#3a2c22}.desk-help .tools{display:grid;gap:0;margin-top:10px}.desk-help .tools button{text-align:left;color:#713421;font-size:.9em}.desk-help .trust{background:transparent;padding:0;color:#5b4e42}.desk-help .trust b{color:#48392f}.desk-help .about{margin-top:16px}
+ .type-picker,.details-guide,.pasteform,.detect{background:#fffdf8;border-color:#d8c9b6;border-radius:3px}.type-picker summary,.details-guide summary{color:#713421}.selected-type{background:#f5e8db;color:#713421}.field input,.dfield input,.dfield select,#p-text{border-color:#b9a996}.task-head{background:#f2e7db;border-color:#dfcab7;border-radius:3px}.next{background:#fff8eb;border-left-color:#a65d40}.sched-item{background:#fffdf8;border-color:#e4d9cb;border-radius:3px}.actions{background:#f3e9dd}.note{border-left-color:#be947a}.resume{background:#f6e9dd;border-color:#d9bba7}.banner{background:#f8eee5;border-color:#e1c5af;color:#623d2a}.banner button{color:#623d2a}.status.ok{color:#674a35;background:#f2e8db}.status.sug{color:#713421;background:#f7ebdf}.chip{background:#f7eadf;border-color:#dcc3b0;color:#713421}.chip button{color:#713421}.detect .found{color:#713421}.type-picker .toc li{border-color:#e2d6c8}.task-head h1{color:#302923}
+ @media(max-width:760px){.page{padding-inline:18px}.desk-layout{grid-template-columns:1fr;gap:27px;padding:34px 0 30px}.desk-intro{padding-top:0}.desk-intro h1{font-size:1.8em;line-height:1.4}.desk-intro .lede{margin-top:14px}.intro-rule{margin:18px 0 14px}.desk-work{padding:22px 20px}.desk-heading{gap:12px}.desk-action{padding:20px 0}.desk-action button{margin-left:0;width:100%}.desk-action-copy{gap:12px}.desk-fold .toc{grid-template-columns:1fr}.example-content{grid-template-columns:1fr}.desk-help{grid-template-columns:1fr;gap:28px}.desk-fold .how{gap:18px}.desk-fold>summary{padding:18px 0}}
+}
+
 </style>
 </head>
 <body>
@@ -482,21 +496,20 @@
   <!-- HOME -->
   <main class="view" id="v-home">
     <div class="resume" id="h-resume" hidden><span class="rt" id="h-resume-t"></span><span class="ra"><button class="btn-primary" onclick="resumeLast()" id="h-resume-go"></button><button class="linkbtn" onclick="dismissResume(this)" id="h-resume-no"></button></span></div>
-    <section class="welcome">
-      <div class="welcome-copy">
-        <p class="eyebrow" id="h-eyebrow"></p><h1 id="h-title"></h1><p class="lede" id="h-sub"></p>
-        <p class="welcome-assurance" id="h-fine"></p><div class="promise" id="h-promise"></div>
-      </div>
-      <div class="welcome-art" aria-hidden="true"><span class="art-ring"></span><span class="art-square"></span><span class="art-mark">明</span><span class="art-rule"></span><span class="art-caption">ONE STEP<br>AT A TIME</span></div>
-    </section>
-    <section class="start-section" aria-labelledby="start-heading">
-      <div class="section-heading"><div><p class="section-kicker" id="h-start-kicker"></p><h2 id="start-heading"></h2></div><p id="h-start-sub"></p></div>
-      <div class="start-grid">
-        <article class="start-card primary-card"><div class="card-top"><span class="card-number">01</span><span class="card-icon" aria-hidden="true">✎</span></div><h3 id="h-card1-title"></h3><p id="h-card1-desc"></p><button class="btn-primary" onclick="openPaste()" id="h-start"></button></article>
-        <article class="start-card"><div class="card-top"><span class="card-number">02</span><span class="card-icon" aria-hidden="true">☰</span></div><h3 id="h-card2-title"></h3><p id="h-card2-desc"></p><button class="btn-quiet" onclick="openLetter()" id="h-types"></button></article>
-      </div>
-    </section>
-    <section class="sample-section" aria-labelledby="sample-heading"><div class="sample-copy"><p class="section-kicker" id="h-s-kicker"></p><h2 id="sample-heading"></h2><p id="h-s-desc"></p><button class="btn-quiet" onclick="loadDemo()" id="h-demo"></button></div>      <aside class="sample" aria-label="清单示例">
+    <div class="desk-layout">
+      <section class="desk-intro" aria-labelledby="h-title"><p class="eyebrow" id="h-eyebrow"></p><h1 id="h-title"></h1><p class="lede" id="h-sub"></p><div class="intro-rule" aria-hidden="true"></div><p class="welcome-assurance" id="h-fine"></p><div class="promise" id="h-promise"></div></section>
+      <section class="desk-work" aria-labelledby="start-heading">
+        <div class="desk-heading"><span class="desk-index" aria-hidden="true">01 / 02</span><div><p class="section-kicker" id="h-start-kicker"></p><h2 id="start-heading"></h2><p id="h-start-sub"></p></div></div>
+        <div class="desk-actions">
+          <div class="desk-action"><div class="desk-action-copy"><span class="action-no" aria-hidden="true">一</span><div><h3 id="h-card1-title"></h3><p id="h-card1-desc"></p></div></div><button class="btn-primary" onclick="openPaste()" id="h-start"></button></div>
+          <div class="desk-action"><div class="desk-action-copy"><span class="action-no" aria-hidden="true">二</span><div><h3 id="h-card2-title"></h3><p id="h-card2-desc"></p></div></div><button class="btn-quiet" onclick="openLetter()" id="h-types"></button></div>
+        </div>
+        <p class="desk-privacy" id="desk-privacy"></p>
+      </section>
+    </div>
+    <div class="desk-extras">
+      <details class="desk-fold" id="topic-fold"><summary><span><span class="section-kicker" id="h-topic-kicker"></span><strong id="h-others-h"></strong></span><span class="fold-symbol" aria-hidden="true">＋</span></summary><p class="fold-description" id="h-topic-sub"></p><ul class="toc" id="h-others"></ul></details>
+      <details class="desk-fold" id="example-fold"><summary><span><span class="section-kicker" id="h-s-kicker"></span><strong id="sample-heading"></strong></span><span class="fold-symbol" aria-hidden="true">＋</span></summary><div class="example-content"><div><p id="h-s-desc"></p><button class="btn-quiet" onclick="loadDemo()" id="h-demo"></button></div><aside class="sample" aria-label="清单示例">
         <div class="sample-head">
           <span class="sample-tag" id="h-s-tag"></span>
           <span class="sample-title" id="h-s-title"></span>
@@ -517,10 +530,10 @@
           <p class="sample-bring" id="h-s-bring"></p>
         </div>
         <div class="sample-foot" id="h-s-foot"></div>
-      </aside></section>
-    <section class="section topic-section"><div class="section-heading"><div><p class="section-kicker" id="h-topic-kicker"></p><h2 id="h-others-h"></h2></div><p id="h-topic-sub"></p></div><ul class="toc" id="h-others"></ul></section>
-    <section class="section steps-section"><h2 id="h-how-h"></h2><div class="how" id="h-how"></div></section>
-    <section class="section support-section"><div class="trust"><b id="h-trust-h"></b><span id="h-trust-b"></span></div><div class="support-links"><h2 id="h-support-title"></h2><div class="tools" id="h-tools"></div></div><details class="about"><summary id="about-sum"></summary><div class="body" id="about-body"></div></details></section>
+      </aside></div></details>
+      <details class="desk-fold" id="steps-fold"><summary><strong id="h-how-h"></strong><span class="fold-symbol" aria-hidden="true">＋</span></summary><div class="how" id="h-how"></div></details>
+      <section class="desk-help"><div><h2 id="h-support-title"></h2><div class="tools" id="h-tools"></div></div><div class="trust"><b id="h-trust-h"></b><span id="h-trust-b"></span><details class="about"><summary id="about-sum"></summary><div class="body" id="about-body"></div></details></div></section>
+    </div>
   </main>
 
   <!-- LETTER -->
@@ -712,7 +725,7 @@ zh:{
   when_today:"今天", when_d3:"前 3 天", when_d2:"前 2 天", when_d1:"前一天",
   when_due:"截止日", when_appt:"预约日", when_follow:"复诊日",
   eyebrow:"收到通知之后",
-  title:"事情一件件，<br>我们慢慢办。",
+  title:"办事不用急，<br>一件一件来。",
   sub:"收到办事通知，不知道从哪里开始？明白帮您理清时间、材料和下一步，也方便家人一起看。",
   start:"粘贴通知 →",
   demo:"先看一份示例",
@@ -1283,6 +1296,7 @@ function paint(){
   $("tag").textContent=t("tag");
   const hc=lang==="zh"?{k:"从这里开始",heading:"您想怎么开始？",sub:"选一种方便的方式，慢慢来。",one:"我有一份通知",oneDesc:"把短信或微信文字贴进来，先核对，再生成清单。",two:"我没有通知原文",twoDesc:"选择要办的事，按提示填写知道的信息，不知道的可以留空。",sampleK:"先看看",sampleH:"一张清单，办事更从容",sampleD:"什么时候去、要带什么、还有哪些问题要问，都放在一起。",topicK:"常见事项",topicH:"您要办哪件事？",topicD:"直接选择事项，也可以不填通知原文。",support:"需要帮助时"}:{k:"GET STARTED",heading:"How would you like to begin?",sub:"Choose the way that works for you.",one:"I have a notice",oneDesc:"Paste a text message or notice, then check the details before making a list.",two:"I do not have the text",twoDesc:"Choose a topic and fill in what you know. You can leave anything blank.",sampleK:"TAKE A LOOK",sampleH:"One clear list to take with you",sampleD:"Keep the date, documents and questions together in one place.",topicK:"COMMON TOPICS",topicH:"What do you need to do?",topicD:"Choose a topic to start without a notice.",support:"Need a little help?"};
   [["h-start-kicker",hc.k],["start-heading",hc.heading],["h-start-sub",hc.sub],["h-card1-title",hc.one],["h-card1-desc",hc.oneDesc],["h-card2-title",hc.two],["h-card2-desc",hc.twoDesc],["h-s-kicker",hc.sampleK],["sample-heading",hc.sampleH],["h-s-desc",hc.sampleD],["h-topic-kicker",hc.topicK],["h-topic-sub",hc.topicD],["h-support-title",hc.support]].forEach(([id,value])=>$(id).textContent=value);
+  $("desk-privacy").textContent=lang==="zh"?"不用注册 · 可以随时返回修改":"No sign-up · You can return and edit";
   $("h-eyebrow").textContent=t("eyebrow");
   $("h-title").innerHTML=t("title");
   $("h-sub").textContent=t("sub");
