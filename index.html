@@ -381,6 +381,48 @@
   .voice label{flex-wrap:wrap;max-width:100%}
   .task-meta strong,.task-date,.confirmlist li,.sched-title{overflow-wrap:anywhere}
   .page{overflow-wrap:break-word}
+
+/* Calm, high-contrast reading surfaces and generous touch targets. */
+@media screen {
+  :root{--paper:#f4f1e9;--sheet:#fffefb;--ink:#202b29;--ink2:#394b47;--ink3:#586963;--rule:#d7ddd4;--rule2:#e5e9e1;--rule3:#bbc8bc;--blue:#28564d;--blue-ink:#183e37;--blue-wash:#edf4ee;--blue-line:#bbd0c1;--green:#38664e;--green-wash:#eef5eb;--amber:#80581c;--amber-wash:#faf2df}
+  body{background:var(--paper);line-height:1.75}
+  .page{max-width:1100px}
+  .masthead{align-items:center;padding:23px 0 20px;border-bottom:2px solid #ccd7ca}
+  .brand{align-items:center;gap:14px}.wordmark{font-family:var(--serif);font-size:1.7em;letter-spacing:.08em}
+  .brand-sub{border-left:1px solid var(--rule3);padding-left:14px;letter-spacing:.12em;color:var(--ink2)}
+  .ctl{min-height:44px;border-radius:6px}.ctl[aria-pressed="true"]{background:#e1ece2;border-bottom-color:transparent;padding-inline:12px}
+  h1{font-size:2.15em;line-height:1.4;color:#183e37}.lede{font-size:1em;line-height:1.85}
+  .eyebrow{color:#496d59;font-weight:700;letter-spacing:.13em}
+  .home-grid{grid-template-columns:1.04fr .96fr;gap:48px;align-items:center;padding:52px 0 18px}
+  .home-lead .cta{gap:12px;margin-top:26px}.home-lead .fineprint{margin-top:16px}
+  .btn-primary,.btn-quiet{border-radius:7px;min-height:56px;line-height:1.45;text-align:center}
+  .btn-primary{box-shadow:0 3px 0 #163c34}.btn-primary:hover{background:#183e37}
+  .btn-quiet{background:#fffefb;border-color:#a9bbb0;color:#224b42}.btn-quiet:hover{background:#edf4ee}
+  .homelinks{margin-top:14px}.homelinks .btn-quiet{width:100%;max-width:26em;justify-content:center;background:#fffefb;border:1px solid #a9bbb0;border-radius:7px;padding:10px 18px;min-height:54px;font-size:.94em;text-decoration:none}
+  .promise{gap:8px 18px}.promise .dot{width:8px;height:8px}
+  .sample{border:1px solid #d4ded2;border-radius:10px;padding:28px 30px;background:var(--sheet);box-shadow:0 10px 28px rgba(35,61,49,.08)}
+  .sample::before,.pasteform::before,.detect::before{height:5px;border-radius:10px 10px 0 0;background:#689177}
+  .sample-tag{letter-spacing:.08em;border-radius:4px;font-weight:700}.sample-date .d{font-size:1.65em;color:#214f43}
+  .sample-sec h3,.sec-label,.detect h2{letter-spacing:.1em;font-size:.82em;color:#496059}
+  .tick{width:20px;height:20px;border-radius:3px}.tick.on::after{left:6px;top:3px}
+  .section{border-top:1px solid #d1dcd0;margin-top:42px;padding-top:28px}
+  .toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .toc li{border:1px solid #d8e1d7;background:#fffefb;border-radius:8px}
+  .toc button{padding:16px;min-height:74px;align-items:center;gap:10px}
+  .toc button:hover{background:#f0f6ee}.toc button[aria-pressed="true"]{box-shadow:inset 4px 0 0 var(--blue);padding-left:16px}
+  .toc-no{color:#5a7969}.toc-desc{color:#52645e}.toc-tag{white-space:normal}
+  .how{gap:14px}.how-step{border:1px solid #d8e1d7;border-radius:8px;background:#fffefb;padding:18px}
+  .how-step b{color:#234e42}.how-step span{color:#52645e}
+  .trust{background:#eaf2e8;border-radius:8px;padding:22px;color:#344f42}.trust b{color:#214b3c}
+  .pasteform,.detect{border:1px solid #d5e0d4;border-radius:10px;box-shadow:0 6px 20px rgba(35,61,49,.06);padding:26px}
+  .next{border-radius:0 8px 8px 0;border-left-width:5px;background:#f3f8ef}
+  .group{border-color:#d1dcd0}.note{border-left-width:4px;border-left-color:#8fac98}
+  .resume,.banner{border-radius:8px}.sched-item{min-height:60px}
+  .field input,.dfield input,.dfield select,#p-text{border-radius:6px;border-color:#a8b9ad}
+  @media(max-width:900px){.home-grid{grid-template-columns:1fr;gap:28px;padding-top:32px}.sample{max-width:38em}}
+  @media(max-width:640px){.page{padding:0 18px 64px}.masthead{align-items:center}.brand{width:auto}.controls{justify-content:flex-start}.home-grid{gap:24px}.toc{grid-template-columns:1fr}.toc button{min-height:68px}.pasteform,.detect,.sample{padding:22px 20px}h1{font-size:1.72em}.how{grid-template-columns:1fr}.how-step{padding:14px 16px}.homelinks .btn-quiet{max-width:none}.cta .btn-quiet{justify-self:stretch;padding:10px 18px;width:100%}.sample-date .d{font-size:1.45em}}
+}
+
 </style>
 </head>
 <body>
@@ -499,6 +541,10 @@
       </div>
       <div class="formblock">
         <span class="flabel" id="f-place-k"></span>
+        <div class="field">
+          <label for="f-time" id="f-time-l"></label>
+          <div><input id="f-time" type="text" autocomplete="off" placeholder="例如 14:30"><span class="hint" id="f-time-h"></span></div>
+        </div>
         <div class="field">
           <label for="f-place" id="f-place-l"></label>
           <div><input id="f-place" type="text" autocomplete="off"><span class="hint" id="f-place-h"></span></div>
@@ -1184,7 +1230,7 @@ function freshState(){
            known:{}, checks:{}, scam:{}, fromFamily:false, voice:"", rate:0.92, demo:false, banner:null };
 }
 let state = freshState();
-let hadLocal = false, resumeDismissed = false, pending = null;
+let hadLocal = false, resumeDismissed = false, pending = null, editingExisting = false;
 const t = k => T[lang][k];
 const S = () => SCEN[state.scen][lang];
 const full = () => !!SCEN[state.scen].full;
@@ -1203,11 +1249,11 @@ function go(v){
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
   const h=$("v-"+v).querySelector("h1"); if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
-  if(v==="home") renderResume();
+  if(v==="home"){ if(state.demo){ if(!loadLocal()) state=freshState(); state.demo=false; } renderResume(); }
 }
 function colon(){ return lang==="zh" ? "：" : ": "; }
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-function fmtDate(d){ return lang==="zh" ? (d.getMonth()+1)+"月"+d.getDate()+"日" : d.getDate()+" "+MONTHS[d.getMonth()]; }
+function fmtDate(d){ return lang==="zh" ? d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日" : d.getDate()+" "+MONTHS[d.getMonth()]+" "+d.getFullYear(); }
 function fmtWeekday(d){ return t("weekday")[d.getDay()]; }
 
 /* ---------------- paint ---------------- */
@@ -1215,6 +1261,7 @@ function captureForm(){
   // only capture while the user is actually editing the letter form
   if($("v-letter").hidden || $("l-form").hidden) return;
   if(state.dtype!=="unknown"){ const dv=$("f-date"); if(dv) state.date=dv.value||""; }
+  const tv=$("f-time"); if(tv) state.time=tv.value.trim();
   const pv=$("f-place"); if(pv) state.place=pv.value.trim();
   const hv=$("f-phone"); if(hv) state.phone=hv.value.trim();
 }
@@ -1273,6 +1320,9 @@ function paint(){
   $("f-place-k").textContent=t("fPlaceK");
   $("f-date-l").textContent=t("fDateL");
   $("f-date-h").textContent=t("fDateH");
+  $("f-time-l").textContent=t("timeL");
+  $("f-time-h").textContent=t("dTimeHint");
+  $("f-time").placeholder=t("dTimeHint");
   $("f-place-l").textContent=t("placeL");
   $("f-phone-l").textContent=t("phoneL");
   $("f-place-h").textContent=t("placeH");
@@ -1307,7 +1357,7 @@ function paint(){
   $("t-link").textContent=t("link");
   $("t-save").textContent=t("save");
   $("t-clear").textContent=t("clear");
-  $("t-edit").innerHTML=`${t("edit")} <button class="linkbtn" onclick="go('letter')">${t("editBtn")}</button>`;
+  $("t-edit").innerHTML=`${t("edit")} <button class="linkbtn" onclick="editDetails()">${t("editBtn")}</button>`;
 
   // call
   $("c-title").textContent=t("cTitle"); $("c-sub").textContent=t("cSub");
@@ -1355,21 +1405,22 @@ function renderResume(){
   $("h-resume-no").textContent=t("resumeNo");
   el.hidden=false;
 }
-function resumeLast(){ state.demo=false; renderTasks(); go("tasks"); }
+function resumeLast(){ if(state.demo) loadLocal(); state.demo=false; renderTasks(); go("tasks"); }
 function dismissResume(){ resumeDismissed=true; $("h-resume").hidden=true; }
 function jumpTypes(){ const el=document.getElementById("h-others"); if(el) el.scrollIntoView({block:"center"}); }
 
 /* ---------------- letter ---------------- */
-function startNew(){ state.scen="care"; openLetter(); }
-function startWith(k){ state.scen=k; openLetter(); }
-function openLetter(){ go("letter"); renderTypes(); renderDetail(); renderForm(); }
+function startNew(){ openLetter(); }
+function startWith(k){ openLetter(k); }
+function openLetter(k){ state=freshState(); state.scen=k||"care"; editingExisting=false; renderTypes(); renderDetail(); renderForm(); go("letter"); }
+function editDetails(){ editingExisting=true; renderTypes(); renderDetail(); renderForm(); go("letter"); }
 function renderTypes(){
   $("l-types").innerHTML=Object.keys(SCEN).map((k,i)=>{
     const d=SCEN[k][lang];
     return `<li><button aria-pressed="${state.scen===k}" onclick="pick('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span></button></li>`;
   }).join("");
 }
-function pick(k){ state.scen=k; state.checks={}; renderTypes(); renderDetail(); renderForm(); }
+function pick(k){ captureForm(); if(state.scen!==k){ state.scen=k; state.checks={}; state.bring={}; } renderTypes(); renderDetail(); renderForm(); }
 function statusTag(s){ return `<span class="status ${s||"sug"}">${t("status")[s||"sug"]}</span>`; }
 function renderDetail(){
   const d=S();
@@ -1395,14 +1446,16 @@ function renderForm(){
   $("f-known").innerHTML=t("known").map(x=>`<label class="opt"><input type="checkbox" ${state.known[x[0]]?"checked":""} onchange="setKnown('${x[0]}',this.checked)"><span><b>${x[1]}</b></span></label>`).join("");
   $("f-date-wrap").hidden=(state.dtype==="unknown");
   $("f-date").value=state.date;
+  $("f-time").value=state.time||""; $("f-place").value=state.place||""; $("f-phone").value=state.phone||"";
 }
 function setDtype(v){ state.dtype=v; $("f-date-wrap").hidden=(v==="unknown"); }
 function setKnown(k,v){ state.known[k]=v; }
 function makeTasks(){
   state.date = state.dtype==="unknown" ? "" : ($("f-date").value||"");
+  state.time=$("f-time").value.trim();
   state.place=$("f-place").value.trim();
   state.phone=$("f-phone").value.trim();
-  state.checks={}; state.demo=false; state.banner=null; saveLocal(); renderTasks(); go("tasks");
+  if(!editingExisting){ state.checks={}; state.bring={}; } state.demo=false; state.banner=null; saveLocal(); renderTasks(); go("tasks");
 }
 function skipForm(){ state.dtype=state.dtype||"unknown"; makeTasks(); }
 
@@ -1458,8 +1511,8 @@ function inferYear(m,d){
   if(dt.getTime()-now.getTime() < -180*864e5) y+=1;
   return y;
 }
-function dateKind(text, idx){
-  const before=text.slice(Math.max(0,idx-14),idx), after=text.slice(idx,idx+16);
+function dateKind(text, idx, end){
+  const before=text.slice(Math.max(0,idx-14),idx), after=text.slice(end,end+16);
   if(/复诊|复查|随访/.test(before+after)) return "followup";
   if(/(截止|截至|不晚于|期限|最迟|务必于)/.test(before) || /^[)）]?\s*(前|之前|以前|前完成|为止|截止)/.test(after)) return "deadline";
   return "";
@@ -1472,11 +1525,11 @@ function parseNoticeDate(text){
     if(iso){
       const rest=text.slice(m.index+m[0].length), r=rest.match(/^\s*(?:至|到|—|–|~|-)\s*(\d{4})\s*(?:年|[-/.])\s*(\d{1,2})\s*(?:月|[-/.])\s*(\d{1,2})/);
       if(r){ const iso2=isoDate(+r[1],+r[2],+r[3]); if(iso2) return {date:iso2, kind:"deadline"}; }
-      return {date:iso, kind:dateKind(text,m.index)};
+      return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)};
     }
   }
   m=text.match(/([零〇一二三四五六七八九]{4})\s*年\s*([一二三四五六七八九十]{1,3})\s*月\s*([一二三四五六七八九十]{1,3})\s*[日号]/);
-  if(m){ const iso=isoDate(cnYear(m[1]),cnSmall(m[2]),cnSmall(m[3])); if(iso) return {date:iso, kind:dateKind(text,m.index)}; }
+  if(m){ const iso=isoDate(cnYear(m[1]),cnSmall(m[2]),cnSmall(m[3])); if(iso) return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)}; }
   // month-day: 11月20日 / 11月20号
   m=text.match(/(\d{1,2})\s*月\s*(\d{1,2})\s*[日号]/);
   if(m){
@@ -1484,36 +1537,37 @@ function parseNoticeDate(text){
     if(iso){
       const rest=text.slice(m.index+m[0].length), r=rest.match(/^\s*(?:至|到|—|–|~|-)\s*(\d{1,2})\s*月\s*(\d{1,2})\s*[日号]/);
       if(r){ const iso2=isoDate(inferYear(+r[1],+r[2]),+r[1],+r[2]); if(iso2) return {date:iso2, kind:"deadline"}; }
-      return {date:iso, kind:dateKind(text,m.index)};
+      return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)};
     }
   }
   const EM={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
   m=text.match(/\b(\d{1,2})\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?,?\s*(\d{4})?/i);
-  if(m){ const mo=EM[m[2].toLowerCase()], dd=+m[1], y=m[3]?+m[3]:inferYear(mo,dd), iso=isoDate(y,mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index)}; }
+  if(m){ const mo=EM[m[2].toLowerCase()], dd=+m[1], y=m[3]?+m[3]:inferYear(mo,dd), iso=isoDate(y,mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)}; }
   m=text.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s*(\d{4})?/i);
-  if(m){ const mo=EM[m[1].toLowerCase()], dd=+m[2], y=m[3]?+m[3]:inferYear(mo,dd), iso=isoDate(y,mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index)}; }
+  if(m){ const mo=EM[m[1].toLowerCase()], dd=+m[2], y=m[3]?+m[3]:inferYear(mo,dd), iso=isoDate(y,mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)}; }
   // bare numeric date, only when nothing else was found
   m=text.match(/(?:^|[^\d])(\d{1,2})\s*\/\s*(\d{1,2})(?!\s*\/)/);
-  if(m){ const mo=+m[1], dd=+m[2]; if(mo>=1&&mo<=12&&dd>=1&&dd<=31){ const iso=isoDate(inferYear(mo,dd),mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index)}; } }
+  if(m){ const mo=+m[1], dd=+m[2]; if(mo>=1&&mo<=12&&dd>=1&&dd<=31){ const iso=isoDate(inferYear(mo,dd),mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)}; } }
   return null;
 }
 function parseNoticeTime(text){
   let m=text.match(/(上午|下午|晚上|早上|中午|夜里)?\s*(\d{1,2})\s*[:：点]\s*(\d{2})?\s*(分|半)?\s*(am|pm)?/i);
   if(m){
     let ap=m[1]||"", h=+m[2], mi=m[3]!==undefined?+m[3]:(m[4]==="半"?30:0);
-    if(/下午|晚上|夜里/.test(ap)&&h<12) h+=12;
-    if(m[5]&&/pm/i.test(m[5])&&h<12) h+=12;
-    if(h<=23&&mi<=59) return (ap?ap+" ":"")+h+":"+pad2(mi)+(m[5]?" "+m[5].toLowerCase():"");
+    if((/下午|晚上|夜里/.test(ap)||(m[5]&&/pm/i.test(m[5])))&&h<12) h+=12;
+    if(m[5]&&/am/i.test(m[5])&&h===12) h=0;
+    if(h<=23&&mi<=59) return pad2(h)+":"+pad2(mi);
   }
   // 下午两点半 / 上午九点
   m=text.match(/(上午|下午|晚上|早上|中午|夜里)?\s*([一二三四五六七八九十两]{1,3})\s*点\s*(半|[一二三四五六七八九十]{1,3}\s*分?)?/);
   if(m){
-    const ap=m[1]||"", h=cnSmall(m[2]);
+    const ap=m[1]||""; let h=cnSmall(m[2]);
+    if(/下午|晚上|夜里/.test(ap)&&h<12) h+=12;
     if(h>=0&&h<=23){
       let mi=0;
       if(m[3]==="半") mi=30;
       else if(m[3]){ const x=cnSmall(String(m[3]).replace(/\s*分$/,"")); if(x>=0&&x<60) mi=x; }
-      return (ap?ap+" ":"")+h+":"+pad2(mi);
+      return pad2(h)+":"+pad2(mi);
     }
   }
   // 9:30 am (English notices)
@@ -2075,13 +2129,16 @@ function exportICS(){
   const evs=list.map(x=>({x,dt:schedule(x.when)})).filter(e=>e.dt);
   if(!evs.length){ toast(t("icsNoDate")); return; }
   const stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
-  const tm=(()=>{ const m=String(state.time||"").match(/(\d{1,2})\s*[:：]\s*(\d{2})/); return m?pad(+m[1])+m[2]:"0900"; })();
-  const tmEnd=(()=>{ const m=String(state.time||"").match(/(\d{1,2})\s*[:：]\s*(\d{2})/); if(!m) return "0930"; const h=+m[1], mi=+m[2]+30; return pad(h+Math.floor(mi/60))+pad(mi%60); })();
+  const parsedTime=parseNoticeTime(state.time||"");
+  const timeMatch=parsedTime.match(/^(\d{2}):(\d{2})$/);
   let out="BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Mingbai//v4.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n";
   evs.forEach((e,i)=>{ const dt=ymd(e.dt);
     out+="BEGIN:VEVENT\r\n"+fold("UID:mingbai-"+dt+"-"+i+"@mingbai.local")+"\r\nDTSTAMP:"+stamp+"\r\n";
-    if(state.time){ out+="DTSTART:"+dt+"T"+tm+"00\r\nDTEND:"+dt+"T"+tmEnd+"00\r\n"; }
-    else { out+="DTSTART;VALUE=DATE:"+dt+"\r\nDTEND;VALUE=DATE:"+ymd(offsetDate(e.dt,1))+"\r\n"; }
+    if(timeMatch && e.x.when==="due" && (state.dtype==="appoint"||state.dtype==="followup")){
+      const start=new Date(e.dt); start.setHours(+timeMatch[1],+timeMatch[2],0,0);
+      const end=new Date(start.getTime()+30*60000);
+      out+="DTSTART:"+ymd(start)+"T"+pad(start.getHours())+pad(start.getMinutes())+"00\r\nDTEND:"+ymd(end)+"T"+pad(end.getHours())+pad(end.getMinutes())+"00\r\n";
+    } else { out+="DTSTART;VALUE=DATE:"+dt+"\r\nDTEND;VALUE=DATE:"+ymd(offsetDate(e.dt,1))+"\r\n"; }
     out+=fold("SUMMARY:"+icsText(e.x.t))+"\r\n"+fold("DESCRIPTION:"+icsText(d.name+" · "+e.x.hint))+"\r\n";
     if(state.place) out+=fold("LOCATION:"+icsText(state.place))+"\r\n";
     out+="BEGIN:VALARM\r\nTRIGGER:-PT30M\r\nACTION:DISPLAY\r\n"+fold("DESCRIPTION:"+icsText(d.name))+"\r\nEND:VALARM\r\nEND:VEVENT\r\n";
@@ -2198,6 +2255,7 @@ function cleanMats(a){
   return a.filter(x=>typeof x==="string" && x.trim()).map(x=>x.trim().slice(0,40)).slice(0,12);
 }
 function saveLocal(){
+  if(state.demo) return;
   try{
     localStorage.setItem(KEY,JSON.stringify({
       scen:state.scen, dtype:state.dtype, date:state.date, time:state.time,
@@ -2226,6 +2284,7 @@ function loadLocal(){
 }
 function saveNow(){ saveLocal(); const st=$("t-saved"); st.hidden=false; st.textContent=t("saved"); setTimeout(()=>{st.hidden=true;},2600); toast(t("saveToast")); }
 function clearSaved(){
+  if(!confirm(lang==="zh"?"确定删除这台设备上保存的清单吗？":"Delete the checklist saved on this device?")) return;
   try{ localStorage.removeItem(KEY); }catch(e){}
   state=freshState(); hadLocal=false;
   toast(t("clearToast")); go("home"); paint();
