@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>明白 · 把通知贴进来，变成一张能带走的清单。</title>
+<meta name="description" content="把办事通知原文贴进来，自动挑出日期、地点、要带的材料，排成一张能打印、能核对的清单。离线、不上传。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2322456b'/%3E%3Ctext x='32' y='45' font-family='Microsoft YaHei,PingFang SC,sans-serif' font-size='36' font-weight='700' text-anchor='middle' fill='%23ffffff'%3E明%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --paper:#faf8f4; --sheet:#fffdf9; --ink:#1c1b19; --ink2:#43413c; --ink3:#6b665e;
+    --rule:#e3ded4; --rule2:#efeae0; --rule3:#cfc8bb;
+    --blue:#22456b; --blue-ink:#16324f; --blue-wash:#edf1f6; --blue-line:#c9d6e5;
+    --amber:#7a5312; --amber-wash:#fbf4e6;
+    --red:#8f2f22; --red-wash:#fbefec;
+    --green:#2c5a41; --green-wash:#eef4ef;
+    --fs:18px;
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,"Times New Roman",serif;
+    --sans:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans SC",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  html[data-fs="lg"]{--fs:21px}
+  html[data-fs="xl"]{--fs:25px}
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font:var(--fs)/1.78 var(--sans);-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit}
+  a{color:var(--blue)}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  h1:focus,h1:focus-visible,h2:focus,h2:focus-visible{outline:none}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .page{max-width:980px;margin:0 auto;padding:0 32px 80px}
+  .view[hidden]{display:none}
+  [hidden]{display:none!important}
+  @media(max-width:640px){.page{padding:0 20px 64px}}
+
+  /* ---------- masthead ---------- */
+  .masthead{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:26px 0 18px;border-bottom:1px solid var(--rule)}
+  .brand{display:flex;align-items:baseline;gap:12px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+  .wordmark{font-family:var(--serif);font-size:1.55em;font-weight:700;letter-spacing:.14em;color:var(--blue-ink);line-height:1}
+  .brand-sub{font-size:.72em;letter-spacing:.22em;color:var(--ink3)}
+  .controls{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .ctl-group{display:inline-flex;align-items:center;gap:2px}
+  .ctl-label{font-size:.72em;letter-spacing:.14em;color:var(--ink3);margin-right:4px}
+  .ctl{background:none;border:0;padding:8px 9px;color:var(--ink2);font-size:.84em;cursor:pointer;border-bottom:1px solid transparent;min-height:40px}
+  .ctl:hover{color:var(--ink)}
+  .ctl[aria-pressed="true"]{color:var(--blue-ink);border-bottom-color:var(--blue);font-weight:700}
+  @media(max-width:640px){
+    .masthead{flex-wrap:wrap;row-gap:8px}
+    .brand{width:100%}
+    .controls{width:100%;justify-content:space-between;gap:10px}
+    h1{font-size:1.68em;line-height:1.38}
+    .pagehead h1{font-size:1.6em}
+  }
+
+  /* ---------- type ---------- */
+  .eyebrow{margin:0 0 14px;font-size:.7em;letter-spacing:.26em;color:var(--ink3)}
+  h1{margin:0;font-family:var(--serif);font-size:2.02em;line-height:1.42;font-weight:600;letter-spacing:.01em}
+  .lede{margin:16px 0 0;color:var(--ink2);font-size:.97em;max-width:29em}
+  .fineprint{font-size:.82em;color:var(--ink3);line-height:1.7}
+  .sec-label{margin:0 0 14px;font-size:.72em;font-weight:700;letter-spacing:.2em;color:var(--ink3)}
+  .section{border-top:1px solid var(--rule);margin-top:40px;padding-top:26px}
+  .quiet{color:var(--ink2)}
+
+  /* ---------- buttons ---------- */
+  .btn-primary{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);border:1px solid var(--blue);color:#fff;border-radius:2px;min-height:54px;padding:0 26px;font-size:1em;font-weight:600;letter-spacing:.02em;cursor:pointer}
+  .btn-primary:hover{background:var(--blue-ink);border-color:var(--blue-ink)}
+  .btn-quiet{display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--rule3);color:var(--ink2);border-radius:2px;min-height:54px;padding:0 20px;font-size:.94em;cursor:pointer}
+  .btn-quiet:hover{border-color:var(--blue);color:var(--blue-ink)}
+  .cta .btn-quiet{min-height:54px}
+  .linkbtn{background:none;border:0;padding:6px 0;color:var(--blue);text-decoration:underline;text-underline-offset:4px;cursor:pointer;font-size:.9em;min-height:44px}
+  .textbtn{background:none;border:0;padding:10px 2px;color:var(--ink2);cursor:pointer;font-size:.9em;display:inline-flex;align-items:center;gap:7px;min-height:44px}
+  .textbtn:hover{color:var(--blue-ink)}
+  .textbtn svg{flex:none}
+  @media(max-width:640px){
+    .cta{display:grid;gap:8px}
+    .cta .btn-primary{width:100%}
+    .cta .btn-quiet{justify-self:start;padding:8px 0}
+  }
+
+  /* ---------- home ---------- */
+  .home-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:64px;padding:52px 0 8px;align-items:start}
+  @media(max-width:900px){.home-grid{grid-template-columns:1fr;gap:34px;padding-top:36px}}
+  .home-lead .cta{margin-top:30px;display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+  .home-lead .fineprint{margin-top:18px;max-width:26em}
+
+  /* the sample sheet: the core visual image */
+  .sample{background:var(--sheet);border:1px solid var(--rule3);border-radius:2px;padding:30px 28px 24px;position:relative}
+  .sample::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--blue)}
+  .sample-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .sample-tag{font-size:.68em;letter-spacing:.2em;color:var(--blue-ink);border:1px solid var(--blue-line);background:var(--blue-wash);padding:2px 7px;border-radius:2px}
+  .sample-title{font-size:.76em;letter-spacing:.18em;color:var(--ink3)}
+  .sample-date{display:flex;align-items:baseline;gap:6px 10px;flex-wrap:wrap;margin:14px 0 16px;padding-bottom:14px;border-bottom:1px solid var(--rule2)}
+  .sample-date .d{font-family:var(--serif);font-size:1.45em;font-weight:600;color:var(--ink)}
+  .sample-date .t{font-size:.8em;color:var(--ink3)}
+  .sample-sec{margin:16px 0 0}
+  .sample-sec h3{margin:0 0 8px;font-size:.68em;font-weight:700;letter-spacing:.2em;color:var(--ink3)}
+  .sample-lines{list-style:none;margin:0;padding:0}
+  .sample-lines li{display:flex;gap:10px;align-items:flex-start;padding:5px 0;font-size:.92em;line-height:1.5}
+  .tick{width:17px;height:17px;flex:none;border:1px solid var(--ink3);border-radius:1px;margin-top:.3em;position:relative}
+  .tick.on{background:var(--green);border-color:var(--green)}
+  .tick.on::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:9px;border:solid #fff;border-width:0 1.6px 1.6px 0;transform:rotate(42deg)}
+  .sample-bring{margin:0;font-size:.9em;color:var(--ink2);line-height:1.9;display:flex;flex-wrap:wrap;gap:0 2px}
+  .sample-bring .it{white-space:nowrap}
+  .sample-bring .sep{color:var(--rule3);margin:0 .45em}
+  .sample-foot{margin-top:18px;padding-top:14px;border-top:1px solid var(--rule2);font-size:.8em;color:var(--ink3)}
+  .sample-foot b{font-weight:600;color:var(--amber)}
+
+  /* contents list */
+  .toc{list-style:none;margin:0;padding:0}
+  .toc li{border-bottom:1px solid var(--rule2)}
+  .toc button{display:grid;grid-template-columns:2.2em 1fr auto;align-items:baseline;gap:14px;width:100%;text-align:left;background:none;border:0;padding:16px 2px;cursor:pointer;min-height:56px}
+  .toc button:hover .toc-name{color:var(--blue-ink)}
+  .toc button[aria-pressed="true"]{box-shadow:inset 2px 0 0 var(--blue);padding-left:12px}
+  .toc button[aria-pressed="true"] .toc-name{color:var(--blue-ink)}
+  .toc-no{font-size:.76em;color:var(--ink3);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+  .toc-name{font-size:1em;font-weight:600;color:var(--ink)}
+  .toc-desc{display:block;font-size:.82em;font-weight:400;color:var(--ink3);margin-top:2px}
+  .toc-tag{font-size:.72em;color:var(--ink3);letter-spacing:.1em;white-space:nowrap}
+
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+  @media(max-width:760px){.how{grid-template-columns:1fr;gap:14px}}
+  .how-step{border-top:1px solid var(--rule2);padding-top:12px}
+  .how-step b{display:block;font-size:.95em;font-weight:600;margin-bottom:3px}
+  .how-step span{display:block;font-size:.86em;color:var(--ink3);line-height:1.65}
+
+  .trust{font-size:.82em;color:var(--ink3);line-height:1.8}
+  .trust b{display:block;color:var(--ink2);font-weight:600}
+
+  details.about{margin-top:26px;border-top:1px solid var(--rule2);padding-top:14px}
+  details.about summary{cursor:pointer;font-size:.84em;color:var(--ink2);list-style:none;text-decoration:underline;text-underline-offset:4px}
+  details.about summary::-webkit-details-marker{display:none}
+  details.about .body{margin-top:12px;font-size:.85em;color:var(--ink2);line-height:1.8;max-width:44em}
+  details.about h4{margin:16px 0 4px;font-size:.95em;color:var(--ink)}
+  details.about ul{margin:4px 0 0;padding-left:1.2em}
+  details.about li{margin:3px 0}
+
+  /* ---------- page heads ---------- */
+  .backlink{display:inline-flex;align-items:center;gap:6px;margin:20px 0 0;background:none;border:0;padding:6px 0;color:var(--ink2);font-size:.85em;cursor:pointer;min-height:44px}
+  .backlink:hover{color:var(--blue-ink)}
+  .pagehead{padding:24px 0 0}
+  .pagehead h1{font-size:1.9em}
+  .pagehead .lede{max-width:34em}
+
+  /* ---------- task page ---------- */
+  .task-head{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding:24px 0 20px;border-bottom:1px solid var(--rule)}
+  @media(max-width:700px){.task-head{grid-template-columns:1fr}}
+  .task-kind{font-size:.72em;letter-spacing:.24em;color:var(--ink3);margin:0 0 10px}
+  .task-date{font-family:var(--serif);font-size:2.4em;line-height:1.22;font-weight:600;margin:0}
+  .task-date.over{color:var(--red)}
+  .task-date small{display:block;font-family:var(--sans);font-size:.4em;font-weight:400;color:var(--ink3);letter-spacing:.02em;margin-top:8px;line-height:1.6}
+  .task-meta{font-size:.86em;color:var(--ink2);text-align:right;line-height:1.9}
+  @media(max-width:700px){.task-meta{text-align:left}}
+  .task-meta .lab{font-size:.74em;letter-spacing:.14em;color:var(--ink3);display:block;margin-bottom:1px}
+  .task-meta strong{font-weight:600;display:block}
+
+  .next{border-left:3px solid var(--blue);background:var(--sheet);padding:22px 26px;margin:28px 0 0}
+  .next .lab{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:.7em;letter-spacing:.22em;color:var(--blue-ink);margin-bottom:8px}
+  .next .lab .when{letter-spacing:.02em;color:var(--ink3);font-size:1.05em}
+  .next.done{border-left-color:var(--green)}
+  .next.done .lab{color:var(--green)}
+  .next h2{margin:0;font-size:1.2em;font-weight:600;line-height:1.5}
+  .next p{margin:8px 0 0;font-size:.9em;color:var(--ink2);line-height:1.7}
+  .next .askline{margin:10px 0 0;font-size:.86em;color:var(--amber)}
+
+  .group{margin-top:38px;border-top:1px solid var(--rule);padding-top:22px}
+  .group-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:4px}
+  .group-head .sec-label{margin:0}
+  .count{font-size:.8em;color:var(--ink3);font-variant-numeric:tabular-nums}
+
+  .schedule{list-style:none;margin:0;padding:0}
+  .sched-item{display:grid;grid-template-columns:5.4em 1fr;gap:16px;align-items:start;padding:15px 0;border-bottom:1px solid var(--rule2);cursor:pointer;position:relative}
+  .sched-item:last-child{border-bottom:0}
+  .sched-when{font-size:.78em;color:var(--ink3);padding-top:.3em;font-variant-numeric:tabular-nums}
+  .sched-when.over{color:var(--red);font-weight:600}
+  .sched-body{min-width:0}
+  .sched-title{display:flex;gap:11px;align-items:flex-start;font-size:1em;font-weight:600;line-height:1.55}
+  .sched-title .tick{margin-top:.3em}
+  .sched-hint{display:block;margin:4px 0 0 26px;font-size:.86em;color:var(--ink2);line-height:1.65}
+  .sched-note{display:block;margin:4px 0 0 26px;font-size:.82em;color:var(--amber);line-height:1.6}
+  .sched-item.done{opacity:.55}
+  .sched-item.done .sched-title{text-decoration:line-through;text-decoration-thickness:1px}
+  input.hidden-box{position:absolute;opacity:0;width:1px;height:1px}
+  input.hidden-box:focus-visible + .sched-body .tick{outline:2px solid var(--blue);outline-offset:3px}
+
+  .flatlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 28px}
+  @media(max-width:640px){.flatlist{grid-template-columns:1fr}}
+  .flatlist li{display:flex;gap:10px;align-items:flex-start;font-size:.94em;line-height:1.65;padding:6px 0}
+  .flatlist .tick{margin-top:.3em}
+
+  .confirmlist{list-style:none;margin:0;padding:0}
+  .confirmlist li{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule2);font-size:.94em;line-height:1.65}
+  .confirmlist li:last-child{border-bottom:0}
+  .confirmlist .q{color:var(--amber);font-weight:700;font-size:.82em;letter-spacing:.06em;white-space:nowrap;padding-top:.15em}
+
+  .actions{margin-top:34px;border-top:1px solid var(--rule);padding-top:22px;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+  .actions .spacer{flex:1}
+  @media(max-width:640px){.actions{display:grid;gap:12px}.actions .btn-primary{width:100%}}
+  .more{margin-top:14px;display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+  .more .mlabel{font-size:.78em;color:var(--ink3);letter-spacing:.14em}
+  .editline{margin-top:20px;font-size:.86em;color:var(--ink3)}
+  .voice{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-top:16px;font-size:.8em;color:var(--ink3)}
+  .voice label{display:inline-flex;align-items:center;gap:8px}
+  .voice select{font:inherit;font-size:1em;padding:6px 8px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:2px;min-height:40px;max-width:20em}
+  .note{border-left:2px solid var(--blue-line);padding:2px 0 2px 14px;font-size:.86em;color:var(--ink2);margin:16px 0 0;line-height:1.7}
+  .banner{margin:16px 0 0;padding:12px 16px;border:1px solid #bcd0c2;background:var(--green-wash);font-size:.86em;color:#244c37;display:flex;gap:12px;align-items:flex-start}
+  .banner[hidden]{display:none}
+  .banner button{margin-left:auto;background:none;border:0;color:#244c37;text-decoration:underline;cursor:pointer;flex:none;font-size:.92em}
+
+  /* ---------- letter / form ---------- */
+  .typebody{margin-top:38px}
+  .typebody h2{font-size:.72em;font-weight:700;letter-spacing:.2em;color:var(--ink3);margin:0 0 12px;font-family:var(--sans)}
+  .numlist{list-style:none;margin:0;padding:0;counter-reset:n;border-top:1px solid var(--rule2)}
+  .numlist li{position:relative;padding:13px 0 13px 34px;counter-increment:n;border-bottom:1px solid var(--rule2);font-size:.96em}
+  .numlist li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;top:14px;font-size:.74em;font-weight:700;color:var(--ink3);letter-spacing:.06em}
+  .numlist .sub{display:block;font-size:.86em;color:var(--ink3);margin-top:3px;line-height:1.6}
+  .status{display:inline-block;font-size:.7em;font-weight:700;letter-spacing:.06em;padding:1px 6px;border-radius:2px;margin-right:8px;vertical-align:.08em}
+  .status.ok{color:var(--green);background:var(--green-wash)}
+  .status.sug{color:var(--blue-ink);background:var(--blue-wash)}
+  .status.ask{color:var(--amber);background:var(--amber-wash)}
+
+  .formblock{margin-top:38px;border-top:1px solid var(--rule);padding-top:22px}
+  .formblock .flabel{display:block;font-size:.72em;font-weight:700;letter-spacing:.2em;color:var(--ink3);margin-bottom:10px}
+  .opt{display:flex;gap:14px;align-items:flex-start;padding:13px 2px;border-bottom:1px solid var(--rule2);cursor:pointer}
+  .opt:first-of-type{border-top:1px solid var(--rule2)}
+  .opt input{margin:0;width:18px;height:18px;flex:none;accent-color:var(--blue);margin-top:.25em}
+  .opt b{display:block;font-weight:600;font-size:.96em}
+  .opt span.d{display:block;font-size:.84em;color:var(--ink3);margin-top:2px;line-height:1.6}
+  .opt:has(input:checked){box-shadow:inset 2px 0 0 var(--blue);padding-left:12px}
+  .opt:has(input:checked) b{color:var(--blue-ink)}
+  .field{display:grid;grid-template-columns:9em 1fr;gap:16px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--rule2)}
+  @media(max-width:600px){.field{grid-template-columns:1fr;gap:6px}}
+  .field label{font-size:.88em;font-weight:600}
+  .field .hint{display:block;font-size:.8em;color:var(--ink3);font-weight:400;margin-top:2px}
+  .field input{width:100%;padding:12px;font:inherit;font-size:1em;border:1px solid var(--rule3);background:var(--sheet);color:var(--ink);border-radius:2px;min-height:50px}
+  .field input:focus{border-color:var(--blue);outline:2px solid var(--blue-wash);outline-offset:0}
+  .formcta{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:28px}
+  @media(max-width:640px){.formcta{display:grid}.formcta .btn-primary{width:100%}}
+
+  /* ---------- call / scam / help ---------- */
+  .script{border-top:1px solid var(--rule);margin-top:32px;padding-top:20px}
+  .script .lab{display:block;font-size:.7em;letter-spacing:.22em;color:var(--ink3);margin-bottom:10px}
+  .say{font-size:1.02em;line-height:1.85;padding-left:18px;border-left:2px solid var(--blue)}
+  .say b{color:var(--blue-ink)}
+  .qa{margin:0;border-top:1px solid var(--rule2)}
+  .qaitem{display:grid;grid-template-columns:1fr 1.25fr;gap:20px;padding:13px 0;border-bottom:1px solid var(--rule2);font-size:.92em}
+  @media(max-width:640px){.qaitem{grid-template-columns:1fr;gap:4px}}
+  .qaitem b{font-weight:600}
+  .qaitem span{color:var(--ink2)}
+  .wline{border-bottom:1px solid var(--rule3);height:2.1em}
+  .wlabel{font-size:.8em;color:var(--ink3);margin-top:14px}
+
+  .scamq{padding:16px 0;border-bottom:1px solid var(--rule2)}
+  .scamq:first-child{border-top:1px solid var(--rule2)}
+  .scamq .q{display:grid;grid-template-columns:auto 1fr auto;gap:10px 14px;align-items:baseline;font-size:.96em;line-height:1.65}
+  @media(max-width:640px){.scamq .q{grid-template-columns:auto 1fr}.yn{grid-column:2;justify-self:start;margin-top:4px}}
+  .scamq .qn{font-size:.76em;color:var(--ink3);font-variant-numeric:tabular-nums}
+  .scamq .text{grid-column:2}
+  .yn{display:flex;gap:8px;justify-self:end;align-self:start}
+  .yn button{background:var(--sheet);border:1px solid var(--rule3);border-radius:2px;padding:8px 14px;font-size:.86em;color:var(--ink2);cursor:pointer;min-height:44px;min-width:64px}
+  .yn button:hover{color:var(--ink)}
+  .yn button[aria-pressed="true"]{color:#fff;font-weight:700;background:var(--blue);border-color:var(--blue)}
+  .yn button[aria-pressed="true"].bad{color:#fff;background:var(--red);border-color:var(--red)}
+  .verdict{margin-top:22px;padding:15px 18px;font-size:.94em;line-height:1.75;border:1px solid var(--rule3);border-left-width:3px}
+  .verdict.good{border-color:#bcd0c2;border-left-color:var(--green);background:var(--green-wash);color:#244c37}
+  .verdict.bad{border-color:#e0bdb6;border-left-color:var(--red);background:var(--red-wash);color:#6f2318}
+  .verdict.tmp{border-left-color:var(--ink3);background:var(--sheet);color:var(--ink2)}
+
+  .helplist{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule2)}
+  .helplist li{padding:13px 0;border-bottom:1px solid var(--rule2);font-size:.95em;line-height:1.65}
+
+  .foot{margin-top:54px;border-top:1px solid var(--rule);padding-top:18px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.78em;color:var(--ink3)}
+
+  /* ---------- print ---------- */
+  #printsheet{display:none}
+  .ps{color:#000;background:#fff;font-family:var(--sans);font-size:10.5pt;line-height:1.5}
+  .ps h1{font-family:var(--serif);font-size:19pt;font-weight:600;margin:0 0 4pt;padding-bottom:4pt;border-bottom:1.4pt solid #000}
+  .ps .kicker{font-size:8.5pt;letter-spacing:.16em;color:#555;margin-bottom:6pt}
+  .ps .fine{font-size:8.8pt;color:#444;margin:0 0 8pt}
+  .ps .psrow{font-size:9.8pt;margin:2pt 0;padding-bottom:2pt;border-bottom:.5pt solid #ddd}
+  .ps .psrow b{display:inline-block;min-width:52pt;color:#333}
+  .ps h2{font-size:10.5pt;font-weight:700;margin:10pt 0 4pt;padding-bottom:2pt;border-bottom:1pt solid #000;letter-spacing:.06em}
+  .ps ul{list-style:none;padding:0;margin:3pt 0}
+  .ps ul.bring{column-count:2;column-gap:14pt}
+  .ps li{font-size:10.2pt;margin:2.4pt 0;padding-left:15pt;position:relative}
+  .ps li .bx{position:absolute;left:0;top:1.6pt;width:9.5pt;height:9.5pt;border:.9pt solid #000}
+  .ps li .h{color:#555;font-size:8.8pt}
+  .ps li .bx.checked::after{content:"✓";position:absolute;left:0;top:-4pt;font-size:11pt;font-weight:700;color:#000}
+  .ps .lines div{border-bottom:.7pt solid #aaa;height:14pt}
+  .ps .warnbox{border:.9pt solid #000;padding:5pt 7pt;font-size:8.8pt;margin-top:7pt}
+  .ps .footline{font-size:8pt;color:#555;margin-top:6pt}
+  @media print{
+    @page{margin:13mm}
+    body{background:#fff}
+    .page{display:none!important}
+    #printsheet{display:block!important;position:static}
+    /* if no list sheet was built (e.g. printing the phone script), print the page itself, without navigation */
+    body:has(#printsheet:empty) .page{display:block!important}
+    body:has(#printsheet:empty) .masthead,
+    body:has(#printsheet:empty) .backlink,
+    body:has(#printsheet:empty) .foot,
+    body:has(#printsheet:empty) .controls,
+    body:has(#printsheet:empty) .btn-primary,
+    body:has(#printsheet:empty) .btn-quiet,
+    body:has(#printsheet:empty) .textbtn,
+    body:has(#printsheet:empty) .linkbtn,
+    body:has(#printsheet:empty) .voice,
+    body:has(#printsheet:empty) .toast,
+    body:has(#printsheet:empty) .editline{display:none!important}
+    body:has(#printsheet:empty) .next{border-left-width:2pt}
+  }
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 16px;border-radius:2px;font-size:.85em;opacity:0;pointer-events:none;transition:opacity .18s;max-width:calc(100% - 32px);text-align:center;z-index:60}
+  .toast.on{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+  }
+
+  /* ---------- home promise / resume / tools ---------- */
+  .promise{display:flex;gap:8px 20px;flex-wrap:wrap;margin:14px 0 0;font-size:.8em;color:var(--ink2);line-height:1.6}
+  .promise span{display:inline-flex;align-items:center;gap:7px}
+  .promise .dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex:none}
+  .homelinks{display:flex;gap:8px 22px;flex-wrap:wrap;align-items:center;margin-top:10px}
+  .homelinks button{background:none;border:0;padding:10px 0;color:var(--blue);text-decoration:underline;text-underline-offset:4px;font-size:.85em;cursor:pointer;min-height:44px}
+  .resume{display:flex;gap:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;border:1px solid var(--blue-line);background:var(--blue-wash);padding:14px 18px;margin:22px 0 0;font-size:.9em;line-height:1.6}
+  .resume .rt{color:var(--ink2);min-width:0}
+  .resume .rt b{color:var(--blue-ink)}
+  .resume .ra{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .resume .ra button{min-height:44px;padding:8px 12px}
+  .tools{display:flex;gap:8px 24px;flex-wrap:wrap;align-items:center;margin-top:16px}
+  .tools button{background:none;border:0;padding:10px 0;color:var(--blue);text-decoration:underline;text-underline-offset:4px;font-size:.85em;cursor:pointer;min-height:44px}
+
+  /* ---------- paste ---------- */
+  .pasteform{margin-top:22px;background:var(--sheet);border:1px solid var(--rule3);padding:22px 24px 20px;position:relative}
+  .pasteform::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--blue)}
+  .pasteform .flab{display:block;font-size:.72em;font-weight:700;letter-spacing:.2em;color:var(--ink3);margin-bottom:9px}
+  #p-text{display:block;width:100%;min-height:10.5em;padding:14px;font:inherit;font-size:.92em;line-height:1.7;border:1px solid var(--rule3);border-radius:2px;background:#fff;color:var(--ink);resize:vertical}
+  #p-text:focus{border-color:var(--blue);outline:2px solid var(--blue-wash);outline-offset:0}
+  .examples{display:flex;gap:8px 18px;flex-wrap:wrap;align-items:center;margin-top:12px;font-size:.82em;color:var(--ink3)}
+  .examples button{background:none;border:0;padding:10px 0;color:var(--blue);text-decoration:underline;text-underline-offset:4px;font-size:1em;cursor:pointer;min-height:44px}
+  .pasterow{display:flex;gap:14px 22px;flex-wrap:wrap;align-items:center;margin-top:16px}
+  @media(max-width:640px){.pasterow{display:grid;gap:10px}.pasterow .btn-primary{width:100%}.pasterow .linkbtn{justify-self:start}}
+
+  .detect{margin-top:26px;background:var(--sheet);border:1px solid var(--rule3);padding:22px 24px;position:relative}
+  .detect::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--green)}
+  .detect .dhead{display:flex;align-items:baseline;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;margin-bottom:6px}
+  .detect h2{margin:0;font-size:.74em;font-weight:700;letter-spacing:.2em;color:var(--ink3)}
+  .detect .found{font-size:.82em;color:var(--green);font-weight:600}
+  .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;margin-top:16px}
+  @media(max-width:640px){.dgrid{grid-template-columns:1fr;gap:14px}}
+  .dgrid>*{min-width:0}
+  .dfield label{display:block;font-size:.78em;font-weight:600;letter-spacing:.04em;color:var(--ink2);margin-bottom:5px}
+  .dfield input,.dfield select{display:block;width:100%;min-width:0;padding:11px 12px;font:inherit;font-size:.95em;border:1px solid var(--rule3);background:#fff;color:var(--ink);border-radius:2px;min-height:48px}
+  .dfield input:focus,.dfield select:focus{border-color:var(--blue);outline:2px solid var(--blue-wash);outline-offset:0}
+  .dfield.bad input{border-color:var(--amber);background:var(--amber-wash)}
+  .dfield .dhint{display:block;font-size:.76em;color:var(--ink3);margin-top:3px}
+  .mats{margin-top:18px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:7px}
+  .chip{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--blue-line);background:var(--blue-wash);color:var(--blue-ink);padding:2px 2px 2px 10px;font-size:.86em;border-radius:2px;line-height:1.6;min-height:44px}
+  .chip button{background:none;border:0;cursor:pointer;color:var(--blue-ink);font-size:1em;min-width:44px;min-height:40px;line-height:1;border-radius:2px}
+  .chip button:hover{background:#dbe5ef}
+  .chip-add{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+  .chip-add input{flex:1 1 12em;min-width:0;padding:11px 12px;font:inherit;font-size:.9em;border:1px solid var(--rule3);background:#fff;color:var(--ink);border-radius:2px;min-height:48px}
+  .chip-add button{min-height:48px;padding:0 18px;font-size:.9em}
+  .missnote{margin:16px 0 0;padding:10px 14px;background:var(--amber-wash);border-left:2px solid var(--amber);font-size:.86em;color:var(--ink2);line-height:1.7}
+  .detect-foot{display:flex;gap:14px 22px;flex-wrap:wrap;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule2)}
+  .detect-foot .fineprint{margin:0;flex:1 1 14em;min-width:0}
+  @media(max-width:640px){.detect-foot{display:grid}.detect-foot .btn-primary{width:100%}}
+
+  /* ---------- tasks: call row + bring checks ---------- */
+  .callrow{display:flex;gap:12px 20px;flex-wrap:wrap;align-items:center;margin:18px 0 0}
+  .callrow .btn-quiet{min-height:48px;padding:0 18px;text-decoration:none}
+  .callrow .fineprint{margin:0}
+  .bringitem{display:flex;gap:10px;align-items:center;width:100%;min-height:44px;padding:6px 0;background:none;border:0;text-align:left;font-size:.94em;line-height:1.5;cursor:pointer;color:var(--ink)}
+  .bringitem .tick{margin-top:0}
+  .bringitem .src{font-size:.72em;color:var(--ink3);letter-spacing:.06em;white-space:nowrap}
+  .bringitem[aria-pressed="true"]>span:nth-child(2){color:var(--ink3);text-decoration:line-through;text-decoration-thickness:1px}
+  .bringitem .tick.on{background:var(--green);border-color:var(--green)}
+  @media(max-width:640px){.bringitem .src{white-space:normal}}
+
+  /* ---------- keep long content inside narrow screens ---------- */
+  .voice select{flex:1 1 10em;min-width:0;max-width:100%}
+  .voice label{flex-wrap:wrap;max-width:100%}
+  .task-meta strong,.task-date,.confirmlist li,.sched-title{overflow-wrap:anywhere}
+  .page{overflow-wrap:break-word}
+
+/* Calm, high-contrast reading surfaces and generous touch targets. */
+@media screen {
+  :root{--paper:#f4f1e9;--sheet:#fffefb;--ink:#202b29;--ink2:#394b47;--ink3:#586963;--rule:#d7ddd4;--rule2:#e5e9e1;--rule3:#bbc8bc;--blue:#28564d;--blue-ink:#183e37;--blue-wash:#edf4ee;--blue-line:#bbd0c1;--green:#38664e;--green-wash:#eef5eb;--amber:#80581c;--amber-wash:#faf2df}
+  body{background:var(--paper);line-height:1.75}
+  .page{max-width:1100px}
+  .masthead{align-items:center;padding:23px 0 20px;border-bottom:2px solid #ccd7ca}
+  .brand{align-items:center;gap:14px}.wordmark{font-family:var(--serif);font-size:1.7em;letter-spacing:.08em}
+  .brand-sub{border-left:1px solid var(--rule3);padding-left:14px;letter-spacing:.12em;color:var(--ink2)}
+  .ctl{min-height:44px;border-radius:6px}.ctl[aria-pressed="true"]{background:#e1ece2;border-bottom-color:transparent;padding-inline:12px}
+  h1{font-size:2.15em;line-height:1.4;color:#183e37}.lede{font-size:1em;line-height:1.85}
+  .eyebrow{color:#496d59;font-weight:700;letter-spacing:.13em}
+  .home-grid{grid-template-columns:1.04fr .96fr;gap:48px;align-items:center;padding:52px 0 18px}
+  .home-lead .cta{gap:12px;margin-top:26px}.home-lead .fineprint{margin-top:16px}
+  .btn-primary,.btn-quiet{border-radius:7px;min-height:56px;line-height:1.45;text-align:center}
+  .btn-primary{box-shadow:0 3px 0 #163c34}.btn-primary:hover{background:#183e37}
+  .btn-quiet{background:#fffefb;border-color:#a9bbb0;color:#224b42}.btn-quiet:hover{background:#edf4ee}
+  .homelinks{margin-top:14px}.homelinks .btn-quiet{width:100%;max-width:26em;justify-content:center;background:#fffefb;border:1px solid #a9bbb0;border-radius:7px;padding:10px 18px;min-height:54px;font-size:.94em;text-decoration:none}
+  .promise{gap:8px 18px}.promise .dot{width:8px;height:8px}
+  .sample{border:1px solid #d4ded2;border-radius:10px;padding:28px 30px;background:var(--sheet);box-shadow:0 10px 28px rgba(35,61,49,.08)}
+  .sample::before,.pasteform::before,.detect::before{height:5px;border-radius:10px 10px 0 0;background:#689177}
+  .sample-tag{letter-spacing:.08em;border-radius:4px;font-weight:700}.sample-date .d{font-size:1.65em;color:#214f43}
+  .sample-sec h3,.sec-label,.detect h2{letter-spacing:.1em;font-size:.82em;color:#496059}
+  .tick{width:20px;height:20px;border-radius:3px}.tick.on::after{left:6px;top:3px}
+  .section{border-top:1px solid #d1dcd0;margin-top:42px;padding-top:28px}
+  .toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .toc li{border:1px solid #d8e1d7;background:#fffefb;border-radius:8px}
+  .toc button{padding:16px;min-height:74px;align-items:center;gap:10px}
+  .toc button:hover{background:#f0f6ee}.toc button[aria-pressed="true"]{box-shadow:inset 4px 0 0 var(--blue);padding-left:16px}
+  .toc-no{color:#5a7969}.toc-desc{color:#52645e}.toc-tag{white-space:normal}
+  .how{gap:14px}.how-step{border:1px solid #d8e1d7;border-radius:8px;background:#fffefb;padding:18px}
+  .how-step b{color:#234e42}.how-step span{color:#52645e}
+  .trust{background:#eaf2e8;border-radius:8px;padding:22px;color:#344f42}.trust b{color:#214b3c}
+  .pasteform,.detect{border:1px solid #d5e0d4;border-radius:10px;box-shadow:0 6px 20px rgba(35,61,49,.06);padding:26px}
+  .next{border-radius:0 8px 8px 0;border-left-width:5px;background:#f3f8ef}
+  .group{border-color:#d1dcd0}.note{border-left-width:4px;border-left-color:#8fac98}
+  .resume,.banner{border-radius:8px}.sched-item{min-height:60px}
+  .field input,.dfield input,.dfield select,#p-text{border-radius:6px;border-color:#a8b9ad}
+  @media(max-width:900px){.home-grid{grid-template-columns:1fr;gap:28px;padding-top:32px}.sample{max-width:38em}}
+  @media(max-width:640px){.page{padding:0 18px 64px}.masthead{align-items:center}.brand{width:auto}.controls{justify-content:flex-start}.home-grid{gap:24px}.toc{grid-template-columns:1fr}.toc button{min-height:68px}.pasteform,.detect,.sample{padding:22px 20px}h1{font-size:1.72em}.how{grid-template-columns:1fr}.how-step{padding:14px 16px}.homelinks .btn-quiet{max-width:none}.cta .btn-quiet{justify-self:stretch;padding:10px 18px;width:100%}.sample-date .d{font-size:1.45em}}
+}
+
+
+/* Editorial service design: clear entry points, warm paper, visible steps. */
+@media screen{
+ :root{--paper:#f7f5f0;--sheet:#fff;--ink:#172c29;--ink2:#405650;--ink3:#53655e;--blue:#174e45;--blue-ink:#123d37;--blue-wash:#edf4ef;--blue-line:#b7cec2;--green:#315f49;--rule:#d4ded5;--rule2:#e5eae4;--rule3:#b9c9bd}
+ .page{max-width:1160px;padding-inline:34px}.masthead{padding:22px 0;border-color:#cfdcd1}.brand .wordmark{font-size:1.8em;letter-spacing:.1em}.brand-sub{font-size:.72em}
+ .welcome{display:grid;grid-template-columns:1.4fr .6fr;align-items:center;gap:40px;padding:70px 0 62px}.welcome-copy{max-width:660px}.welcome h1{font-size:clamp(2em,4.2vw,2.8em);line-height:1.36;letter-spacing:.025em}.welcome .lede{max-width:30em;font-size:1em;margin-top:20px}.welcome-assurance{font-size:.88em;color:var(--ink2);margin:24px 0 0}.promise{margin-top:12px}
+ .welcome-art{width:260px;height:260px;position:relative;justify-self:center;display:grid;place-items:center}.art-ring{position:absolute;inset:8px;border:1px solid #9ab6a4;border-radius:50%}.art-square{position:absolute;inset:30px;background:#dce9dc;border-radius:48% 52% 48% 52%;transform:rotate(-14deg)}.art-mark{position:relative;z-index:1;color:#1c5849;font:600 5em/1 var(--serif)}.art-rule{position:absolute;bottom:20px;width:58px;height:3px;background:#bd8955}.art-caption{position:absolute;right:-10px;bottom:8px;font:600 10px/1.4 var(--sans);letter-spacing:.15em;color:#496b5b}
+ .section-kicker{margin:0 0 5px;font-size:.72em;letter-spacing:.14em;color:#5b7868;font-weight:700}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:22px;margin-bottom:20px}.section-heading h2,.sample-copy h2,.steps-section h2,.support-links h2{font-family:var(--serif);font-size:1.5em;line-height:1.4;color:#183f37;margin:0}.section-heading>p{font-size:.88em;color:var(--ink2);margin:0;max-width:23em}
+ .start-section{padding:30px 0 56px;border-top:1px solid var(--rule)}.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.start-card{background:#fff;border:1px solid #d3e0d5;border-radius:12px;padding:28px;display:flex;flex-direction:column;align-items:flex-start;min-height:265px;box-shadow:0 8px 24px rgba(23,58,46,.04)}.primary-card{background:#eaf3e9;border-color:#c9ddce}.card-top{display:flex;width:100%;justify-content:space-between;align-items:center}.card-number{font-size:.72em;letter-spacing:.15em;color:#527263;font-weight:700}.card-icon{font-size:1.25em;color:#416d58}.start-card h3{font-family:var(--serif);font-size:1.3em;color:#173f37;margin:10px 0 4px}.start-card p{color:#465b52;font-size:.9em;margin:0 0 20px;line-height:1.7}.start-card button{margin-top:auto;min-height:54px}
+ .sample-section{background:#e8efe6;border-radius:14px;padding:38px;display:grid;grid-template-columns:.8fr 1fr;gap:38px;align-items:center}.sample-copy p:not(.section-kicker){color:#405850;max-width:22em}.sample-copy button{margin-top:10px}.sample{box-shadow:0 8px 24px rgba(23,58,46,.08);max-width:none}
+ .topic-section{margin-top:62px}.topic-section .toc{grid-template-columns:repeat(3,minmax(0,1fr))}.toc button{min-height:82px}.toc-desc{line-height:1.45}.steps-section .how{margin-top:20px}.support-section{display:grid;grid-template-columns:1.15fr .85fr;gap:24px}.support-section .about{grid-column:1/-1}.support-links h2{font-size:1.15em}.support-links .tools{display:grid;gap:0}.support-links .tools button{text-align:left;font-size:.9em}
+ .pagehead{padding-top:18px}.pagehead h1{font-size:1.8em}.type-picker,.details-guide{margin-top:24px;border:1px solid #c9dacc;border-radius:10px;background:#fff;padding:16px 20px}.type-picker summary,.details-guide summary{font-weight:700;color:#174e45;cursor:pointer;min-height:44px;display:flex;align-items:center}.type-picker summary::before,.details-guide summary::before{content:"＋";margin-right:10px}.type-picker[open] summary::before,.details-guide[open] summary::before{content:"−"}.type-picker .toc{margin-top:12px}.selected-type{margin-top:20px;background:#e8f2e7;color:#214d40;font-weight:700;padding:14px 18px;border-radius:8px}.formblock{margin-top:24px;padding-top:18px}.formblock .flabel{font-size:.9em;letter-spacing:.04em;color:#244b41}.opt{min-height:58px}.typebody{margin-top:22px}.details-guide{margin-top:30px}
+ .task-head{background:#eaf3e9;border:1px solid #d2e2d1;border-radius:12px;margin-top:16px;padding:24px}.task-meta{display:grid;gap:10px}.next{border-radius:8px;background:#fff9eb;border-left-color:#b8884c}.sched-item{background:#fff;border:1px solid #e1e8df;border-radius:8px;margin:8px 0;padding:16px}.sched-title{font-size:1em}.sched-hint{color:#405650}.bringitem{min-height:52px}.actions{background:#edf4ec;border-radius:10px;padding:16px;margin-top:24px}.editline{font-size:1em}
+ @media(max-width:760px){.page{padding-inline:20px}.welcome{grid-template-columns:1fr;padding:42px 0 36px}.welcome-art{display:none}.welcome h1{font-size:1.9em}.start-section{padding:24px 0 38px}.start-grid{grid-template-columns:1fr}.start-card{min-height:0;padding:22px}.start-card button{width:100%}.section-heading{display:block}.section-heading>p{margin-top:8px}.sample-section{grid-template-columns:1fr;padding:24px;gap:24px}.topic-section .toc{grid-template-columns:1fr}.support-section{grid-template-columns:1fr}.support-section .about{grid-column:auto}.task-head{padding:20px}.task-meta{text-align:left}.sched-item{grid-template-columns:4.8em 1fr;gap:8px}.type-picker,.details-guide{padding:12px 14px}}
+}
+
+
+/* Mingbai: a warm, ink-and-paper identity for an everyday service. */
+@media screen{
+ :root{--paper:#f7f2eb;--sheet:#fffdf9;--ink:#252938;--ink2:#454b58;--ink3:#5c606b;--rule:#ded5ca;--rule2:#ece5dc;--rule3:#c9bcb0;--blue:#353f64;--blue-ink:#27304e;--blue-wash:#f0f0f6;--blue-line:#c2c5d5;--green:#6d5461;--green-wash:#f4edf0;--amber:#83522c;--amber-wash:#fbf0df}
+ body{background:#f7f2eb}.page{max-width:1120px}.masthead{border-bottom:1px solid #d8cbc0}.brand .wordmark{color:#303958}.brand-sub{color:#555362}.ctl[aria-pressed="true"]{background:#e9e6ed;color:#303958}
+ .welcome{position:relative;overflow:hidden;background:#343d5d;color:#fff9f2;border-radius:4px 4px 42px 4px;grid-template-columns:1fr 240px;margin-top:30px;padding:54px 58px;min-height:320px}.welcome h1{color:#fffaf4}.welcome .eyebrow{color:#edc9ad}.welcome .lede{color:#f2eee8}.welcome-assurance{color:#e3dfe0}.welcome .promise{color:#f1e8e0}.welcome .promise .dot{background:#edc09f}
+ .welcome-art{width:220px;height:220px}.art-ring{border-color:rgba(255,247,235,.5)}.art-square{inset:30px;background:#e9ccbc;border-radius:50% 50% 8px 50%;transform:rotate(-10deg)}.art-mark{color:#303a58}.art-rule{background:#f6e4d5}.art-caption{color:#f8eee7}
+ .start-section{border:0;padding:46px 0 58px}.section-kicker{color:#87563d}.section-heading h2,.sample-copy h2,.steps-section h2,.support-links h2{color:#303958}.section-heading>p{color:#514f55}.start-grid{gap:20px}.start-card{border-color:#e4d8cd;box-shadow:0 9px 24px rgba(58,43,40,.045);border-radius:4px 4px 20px 4px;background:#fffdf9}.primary-card{background:#f2ded0;border-color:#e7cabc}.card-number{color:#87563d}.card-icon{color:#9b593c}.start-card h3{color:#343754}.start-card p{color:#504c50}
+ .btn-primary{background:#343d5d;border-color:#343d5d;box-shadow:0 3px 0 #232b46}.btn-primary:hover{background:#252d49;border-color:#252d49}.btn-quiet{background:#fffdf9;border-color:#b8aa9e;color:#343d5d}.btn-quiet:hover{background:#f5eee7;border-color:#343d5d}
+ .sample-section{background:#e7e5ed;border-radius:4px 30px 4px 4px}.sample-copy p:not(.section-kicker){color:#4d4e5a}.sample{border-color:#ded3ca;box-shadow:0 10px 25px rgba(44,37,48,.09)}.sample::before,.pasteform::before,.detect::before{background:#b9724c}.sample-tag{background:#f5e8dc;border-color:#e3cabb;color:#77472e}.sample-date .d{color:#343d5d}.sample-sec h3,.sec-label,.detect h2{color:#575562}.tick.on{background:#6d5461;border-color:#6d5461}.sample-foot{color:#58535a}
+ .toc li{border-color:#e2d8ce;background:#fffdf9;border-radius:4px}.toc button:hover{background:#f6ede6}.toc-no{color:#935e43}.toc-desc{color:#57545a}.how-step{background:#fffdf9;border-color:#e3d9cf}.how-step b{color:#343d5d}.how-step span{color:#55525a}.trust{background:#f0e4d8;color:#504644}.trust b{color:#55404b}.support-links h2{color:#343d5d}
+ .type-picker,.details-guide,.pasteform,.detect{border-color:#dfd3c7;background:#fffdf9}.type-picker summary,.details-guide summary{color:#343d5d}.selected-type{background:#f1e5dc;color:#573f48}.field input,.dfield input,.dfield select,#p-text{border-color:#b9ada5}.task-head{background:#e9e7ee;border-color:#d3cdd8}.next{background:#fbf1e2;border-left-color:#b16a42}.sched-item{background:#fffdf9;border-color:#e8ded4}.sched-hint{color:#494b55}.actions{background:#eee9ef}.note{border-left-color:#a994a0}.resume{background:#edebf2;border-color:#c4c3d0}.banner{background:#f3e9e8;border-color:#d9c2c0;color:#573f48}.banner button{color:#573f48}
+ .how-step,.typebody,.group,.section{border-color:#ded5ca}.status.ok{color:#654653;background:#f2e9ee}.status.sug{color:#343d5d;background:#ebeaf2}.dfield.bad input{background:#fbf0df}.chip{background:#eeeaf1;border-color:#d2c9d6;color:#343d5d}.chip button{color:#343d5d}.chip button:hover{background:#e2dae6}.detect .found{color:#654653}
+ @media(max-width:760px){.welcome{margin-top:20px;padding:34px 24px 30px;min-height:0;border-radius:4px 4px 28px 4px}.welcome h1{font-size:1.9em}.welcome .lede{margin-top:16px}.start-section{padding:32px 0 40px}.sample-section{border-radius:4px 24px 4px 4px}}
+}
+
+
+/* A working desk: task-first, readable, and deliberately non-promotional. */
+@media screen{
+ :root{--paper:#f5f0e8;--sheet:#fffdf8;--ink:#302923;--ink2:#50443b;--ink3:#65584b;--blue:#813e29;--blue-ink:#713421;--blue-wash:#f8ede3;--blue-line:#dcbda8;--green:#705940;--green-wash:#f3eee5;--rule:#ddd0bf;--rule2:#e9e0d4;--rule3:#c9b9a5;--amber:#805221;--amber-wash:#fbf0db}
+ body{background:var(--paper);color:var(--ink)}.page{max-width:1080px;padding-inline:32px}.masthead{border-bottom:1px solid #cfc0ad;padding:21px 0}.brand .wordmark{font-family:var(--serif);font-size:1.8em;color:#783d2b}.brand-sub{color:#57483d}.ctl[aria-pressed="true"]{background:#f0dfd2;color:#713421}
+ h1,h2{color:#302923}.btn-primary{background:#813e29;border-color:#813e29;color:#fff;box-shadow:none;border-radius:3px}.btn-primary:hover{background:#65301f;border-color:#65301f}.btn-quiet{background:#fffdf8;color:#713421;border-color:#bd9c84;border-radius:3px}.btn-quiet:hover{background:#f9ede2;border-color:#813e29}a,.linkbtn,.tools button{color:#713421}
+ .desk-layout{display:grid;grid-template-columns:.78fr 1.22fr;gap:56px;align-items:start;padding:65px 0 50px}.desk-intro{padding-top:18px}.desk-intro .eyebrow{font-size:.72em;letter-spacing:.15em;color:#895339;font-weight:700}.desk-intro h1{font-size:clamp(2em,4vw,2.65em);line-height:1.45;letter-spacing:.04em}.desk-intro .lede{margin-top:22px;font-size:1em;line-height:1.85;color:#51463b}.intro-rule{width:55px;height:3px;background:#b6704e;margin:28px 0 20px}.desk-intro .welcome-assurance{font-size:.86em;color:#55483e;margin:0}.desk-intro .promise{font-size:.78em;margin-top:12px;gap:5px 16px}.desk-intro .promise .dot{background:#a76243}
+ .desk-work{background:#fffdf8;border:1px solid #d9c9b6;border-top:5px solid #a65d40;padding:30px 34px 25px;box-shadow:0 8px 22px rgba(80,54,37,.06)}.desk-heading{display:flex;gap:20px;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid #ded1c1}.desk-index{flex:none;font-size:.7em;letter-spacing:.08em;color:#916247;padding-top:6px}.section-kicker{display:block;font-size:.7em;letter-spacing:.1em;color:#895339;font-weight:700}.desk-heading h2{margin:2px 0 4px;font-family:var(--serif);font-size:1.45em;line-height:1.4;color:#332a22}.desk-heading p:last-child{margin:0;font-size:.85em;color:#5c5045}.desk-action{padding:24px 0;border-bottom:1px solid #e7ddcf}.desk-action-copy{display:flex;gap:17px}.action-no{flex:none;width:30px;height:30px;border:1px solid #c6a78e;border-radius:50%;display:grid;place-items:center;font-size:.75em;color:#813e29}.desk-action h3{font-size:1.08em;margin:0;color:#332a22}.desk-action p{margin:5px 0 16px;font-size:.88em;line-height:1.65;color:#5b4d42}.desk-action button{margin-left:47px;min-height:52px}.desk-privacy{margin:18px 0 0;font-size:.78em;color:#66584d}
+ .desk-extras{border-top:1px solid #d6c9b9}.desk-fold{border-bottom:1px solid #d6c9b9}.desk-fold>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;padding:22px 0;list-style:none;min-height:72px}.desk-fold>summary::-webkit-details-marker{display:none}.desk-fold>summary strong{display:block;font-family:var(--serif);font-size:1.2em;color:#352b24}.fold-symbol{display:grid;place-items:center;width:38px;height:38px;flex:none;border:1px solid #bea48e;border-radius:50%;font-size:1em;color:#813e29}.desk-fold[open] .fold-symbol{transform:rotate(45deg)}.fold-description{margin:0 0 15px;color:#55483c;font-size:.9em}.desk-fold .toc{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;padding-bottom:22px}.desk-fold .toc li{background:transparent;border:0;border-bottom:1px solid #e3d8c9;border-radius:0}.desk-fold .toc button{padding:14px 3px;min-height:68px}.toc-no{color:#905a3b}.toc-desc{color:#5a4e42}.desk-fold .toc button:hover{background:#f4e9dc}.example-content{display:grid;grid-template-columns:.7fr 1.3fr;gap:28px;align-items:start;padding:0 0 28px}.example-content>div>p{margin-top:0;color:#5a4d42}.sample{background:#fffdf8;border:1px solid #d8cbb9;border-radius:0;box-shadow:none}.sample::before{background:#ac6345}.sample-tag{color:#743d29;background:#f4e5d7;border-color:#e2c8b3}.sample-date .d{color:#302923}.sample-sec h3,.sec-label,.detect h2{color:#655246}.tick.on{background:#813e29;border-color:#813e29}.desk-fold .how{margin:0 0 28px}.how-step{border:0;border-left:2px solid #d6baa4;background:transparent;padding:3px 16px}.how-step b{color:#48372d}.how-step span{color:#5b4e43}
+ .desk-help{display:grid;grid-template-columns:1fr 1fr;gap:35px;padding:34px 0}.desk-help h2{margin:0;font-size:1.15em;font-family:var(--serif);color:#3a2c22}.desk-help .tools{display:grid;gap:0;margin-top:10px}.desk-help .tools button{text-align:left;color:#713421;font-size:.9em}.desk-help .trust{background:transparent;padding:0;color:#5b4e42}.desk-help .trust b{color:#48392f}.desk-help .about{margin-top:16px}
+ .type-picker,.details-guide,.pasteform,.detect{background:#fffdf8;border-color:#d8c9b6;border-radius:3px}.type-picker summary,.details-guide summary{color:#713421}.selected-type{background:#f5e8db;color:#713421}.field input,.dfield input,.dfield select,#p-text{border-color:#b9a996}.task-head{background:#f2e7db;border-color:#dfcab7;border-radius:3px}.next{background:#fff8eb;border-left-color:#a65d40}.sched-item{background:#fffdf8;border-color:#e4d9cb;border-radius:3px}.actions{background:#f3e9dd}.note{border-left-color:#be947a}.resume{background:#f6e9dd;border-color:#d9bba7}.banner{background:#f8eee5;border-color:#e1c5af;color:#623d2a}.banner button{color:#623d2a}.status.ok{color:#674a35;background:#f2e8db}.status.sug{color:#713421;background:#f7ebdf}.chip{background:#f7eadf;border-color:#dcc3b0;color:#713421}.chip button{color:#713421}.detect .found{color:#713421}.type-picker .toc li{border-color:#e2d6c8}.task-head h1{color:#302923}
+ @media(max-width:760px){.page{padding-inline:18px}.desk-layout{grid-template-columns:1fr;gap:27px;padding:34px 0 30px}.desk-intro{padding-top:0}.desk-intro h1{font-size:1.8em;line-height:1.4}.desk-intro .lede{margin-top:14px}.intro-rule{margin:18px 0 14px}.desk-work{padding:22px 20px}.desk-heading{gap:12px}.desk-action{padding:20px 0}.desk-action button{margin-left:0;width:100%}.desk-action-copy{gap:12px}.desk-fold .toc{grid-template-columns:1fr}.example-content{grid-template-columns:1fr}.desk-help{grid-template-columns:1fr;gap:28px}.desk-fold .how{gap:18px}.desk-fold>summary{padding:18px 0}}
+}
+
+
+/* A practical notice workspace, with one clear task on the first screen. */
+@media screen{
+ :root{--paper:#f7f3ec;--sheet:#fffefa;--ink:#292c30;--ink2:#45484b;--ink3:#585c60;--blue:#344f62;--blue-ink:#233f50;--blue-wash:#edf3f4;--blue-line:#bfd0d4;--rule:#d9d8d1;--rule2:#e8e6df;--rule3:#bdbeb9;--green:#4e6a64;--green-wash:#edf3f0}
+ body{background:var(--paper)}.page{max-width:1110px;padding-inline:32px}.masthead{padding:20px 0;border-bottom:1px solid #d7d5ce}.brand .wordmark{color:#2d4758}.brand-sub{color:#50575a}.ctl[aria-pressed="true"]{background:#e8f0ef;color:#294b53}
+ .wizard-progress{font-size:.84em;font-weight:700;color:#365c5a;background:#eaf1ee;border-left:3px solid #78968a;padding:10px 14px;margin:22px 0 0}.wizard-progress:focus{outline:2px solid #385d68;outline-offset:2px}
+ .original-notice{margin-top:20px}.original-notice>summary{cursor:pointer;min-height:48px;color:#304f5b;font-weight:600;text-decoration:underline;text-underline-offset:4px}.original-notice .pasteform{margin-top:4px}
+ .workspace{max-width:1030px;margin:0 auto;padding:44px 0 20px}.workspace-heading{max-width:760px}.workspace-kicker{margin:0 0 9px;color:#466d6d;font-size:.78em;letter-spacing:.09em;font-weight:700}.workspace-heading h1{font-family:var(--serif);font-size:clamp(1.75em,3.5vw,2.35em);line-height:1.4;color:#243d4b}.workspace-heading>p:last-child{margin:12px 0 0;color:#444f53;line-height:1.75;max-width:36em}
+ .workspace-body{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(245px,.75fr);margin-top:28px;align-items:start;border-top:2px solid #385d68}.notice-work{padding:25px 30px 28px 0;min-width:0}.notice-top{display:flex;justify-content:space-between;gap:20px}.notice-top h2,.other-path h2,.workspace-help h2{font-size:1.16em;margin:0;color:#253f4b}.notice-top p{font-size:.88em;line-height:1.7;color:#4e595b;margin:5px 0 16px}.notice-index{font-size:.75em;color:#738487;font-variant-numeric:tabular-nums}
+ #home-notice{display:block;width:100%;min-height:210px;resize:vertical;background:#fffefa;border:1px solid #9eaaa9;border-radius:3px;padding:15px 16px;font:inherit;line-height:1.7;color:#292f31}#home-notice::placeholder{color:#6b7473}#home-notice:focus-visible{outline:3px solid #385d68;outline-offset:2px}.home-error{color:#8c3025;background:#fae9e4;border-left:4px solid #a63b2c;padding:10px 12px;font-size:.9em}.notice-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:18px}.notice-actions .btn-primary{min-height:56px}.example-link{background:none;border:0;padding:10px 0;min-height:44px;color:#304f5b;text-decoration:underline;text-underline-offset:4px;cursor:pointer}.privacy-line{font-size:.8em;color:#505d5e;margin:15px 0 0}
+ .workspace-side{background:#eef2ef;border-left:1px solid #d1dbd6;padding:24px 22px 20px}.side-label{margin:0 0 15px;font-size:.75em;letter-spacing:.08em;color:#516b67;font-weight:700}.side-steps{list-style:none;margin:0;padding:0}.side-steps li{display:flex;gap:12px;padding:0 0 18px}.side-steps li>span{display:grid;place-items:center;width:28px;height:28px;border:1px solid #91a8a2;color:#365b55;border-radius:50%;font-size:.78em;flex:none}.side-steps b{display:block;color:#304743;font-size:.9em}.side-steps p{margin:3px 0 0;color:#4e5e59;font-size:.8em;line-height:1.6}.side-note{border-top:1px solid #cdd9d2;padding-top:13px;margin:0;color:#4a5b55;font-size:.8em}
+ .other-path{border-top:1px solid #d9d8d1;border-bottom:1px solid #d9d8d1;padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:20px}.other-path p{margin:4px 0 0;color:#515b5c;font-size:.88em}.other-path button{flex:none}.workspace-help{padding-top:28px}.help-buttons{display:flex;flex-wrap:wrap;gap:4px 25px;margin-top:9px}.help-buttons button{background:none;border:0;text-align:left;min-height:44px;padding:8px 0;color:#304f5b;text-decoration:underline;text-underline-offset:4px;cursor:pointer;font-size:.9em}.method{border-top:1px solid #dfded8;margin-top:20px;padding-top:15px;color:#51595a;font-size:.84em}.method summary{cursor:pointer;text-decoration:underline;text-underline-offset:4px}.method h4{margin:18px 0 5px}.method p,.method ul{max-width:62em}
+ .btn-primary{background:#344f62;border-color:#344f62;border-radius:3px;box-shadow:none}.btn-primary:hover{background:#233e4e;border-color:#233e4e}.btn-quiet{color:#304e5c;border-color:#9eaeae;background:#fffefa;border-radius:3px}.btn-quiet:hover{background:#eef3f2;border-color:#344f62}.type-picker summary,.details-guide summary{color:#304e5c}.selected-type{background:#eaf1ee;color:#304b47}.task-head{background:#eef2ef;border-color:#cbd8d2}.next{background:#fbf4e6;border-left-color:#a97642}.actions{background:#eaf1ef}.sample::before,.pasteform::before,.detect::before{background:#557a76}
+ @media(max-width:760px){.page{padding-inline:18px}.workspace{padding-top:28px}.workspace-heading h1{font-size:1.8em}.workspace-body{grid-template-columns:1fr;margin-top:22px}.notice-work{padding:21px 0 25px}#home-notice{min-height:180px}.notice-actions{display:grid;gap:6px}.notice-actions .btn-primary{width:100%}.example-link{justify-self:start}.workspace-side{border-left:0;border-top:1px solid #d1dbd6;padding:20px}.side-steps li{padding-bottom:13px}.other-path{align-items:stretch;flex-direction:column;gap:14px}.other-path button{width:100%}.help-buttons{display:grid;gap:0}}
+}
+
+
+/* Clear typography and one recognisable primary colour. */
+@media screen{
+ :root{--sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC","Noto Sans SC",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:var(--sans);--ink:#202939;--ink2:#364255;--ink3:#485569;--blue:#2349b2;--blue-ink:#19398f;--blue-wash:#edf2ff;--blue-line:#b4c5f3;--rule:#d8dfeb;--rule2:#e7ebf2;--rule3:#aab8cc}
+ body{font-family:var(--sans);font-weight:400;line-height:1.7;color:var(--ink)}h1,h2,h3,.wordmark{font-family:var(--sans);letter-spacing:0}h1{font-weight:700;line-height:1.35}h2,h3{font-weight:700;line-height:1.45}
+ .brand .wordmark{font-family:var(--sans);font-weight:700;font-size:1.65em;letter-spacing:.04em;color:#2349b2}.brand-sub{color:#364255}.masthead{border-bottom:2px solid #d8dfeb}.ctl[aria-pressed="true"]{color:#19398f;background:#e6eeff;font-weight:700}
+ .workspace-heading h1{font-family:var(--sans);font-size:clamp(2em,4.1vw,2.6em);font-weight:700;letter-spacing:.01em;color:#1c2e56}.workspace-heading>p:last-child{color:#364255;line-height:1.8}.workspace-kicker{font-size:.86em;color:#2349b2;letter-spacing:.04em}
+ .workspace-body{border-top:4px solid #2349b2}.notice-top h2,.other-path h2,.workspace-help h2{font-family:var(--sans);font-size:1.2em;font-weight:700;color:#202f4c}.notice-top p,.other-path p{color:#364255;font-size:.92em}.notice-index{color:#2349b2;font-weight:700}
+ .btn-primary{background:#2349b2;border-color:#2349b2;color:#fff;font-weight:700}.btn-primary:hover{background:#19398f;border-color:#19398f}.btn-quiet{background:#fffefa;color:#19398f;border:1.5px solid #2349b2;font-weight:600}.btn-quiet:hover{background:#edf2ff;border-color:#19398f}.example-link,.help-buttons button,a,.linkbtn{color:#19398f}.privacy-line{font-size:.86em;color:#364255}
+ #home-notice{border:2px solid #9eacc1;color:#202939;font-size:1em}#home-notice::placeholder{color:#58667a}#home-notice:focus-visible,:focus-visible{outline:3px solid #2349b2;outline-offset:3px}
+ .workspace-side{background:#2349b2;color:#fff;border:0;padding:25px 24px}.side-label{font-size:.88em;letter-spacing:.04em;color:#fff;font-weight:700}.side-steps li>span{background:#fff;color:#19398f;border:1px solid #fff;font-size:.83em;font-weight:700}.side-steps b{color:#fff;font-size:1em}.side-steps p,.side-note{color:#fff;font-size:.88em;line-height:1.65}.side-note{border-top:1px solid #a7b9ed}
+ .other-path{border-color:#d8dfeb}.help-buttons button{font-size:.95em}.method{font-size:.9em;color:#364255}.wizard-progress{color:#19398f;background:#edf2ff;border-left-color:#2349b2}.type-picker summary,.details-guide summary{color:#19398f}.selected-type{background:#edf2ff;color:#19398f}.task-head{background:#edf2ff;border-color:#c4d2f1}.task-head h1{font-family:var(--sans);color:#1c2e56}.next{border-left-color:#2349b2}.actions{background:#edf2ff}.sample::before,.pasteform::before,.detect::before{background:#2349b2}.chip{background:#edf2ff;border-color:#b4c5f3;color:#19398f}.detect .found{color:#19398f}
+ @media(max-width:760px){.workspace-heading h1{font-size:1.85em}.workspace-side{padding:21px}.notice-actions .btn-primary{font-size:1em}}
+}
+
+
+/* A quiet, structured toolbar with clear selected states. */
+@media screen{
+ .masthead{align-items:center;gap:24px}.controls{gap:0;align-items:center;justify-content:flex-end}.ctl-group{gap:0;align-items:center;flex-wrap:wrap;max-width:100%}.ctl-group+.ctl-group{margin-left:18px;padding-left:18px;border-left:1px solid #cbd4e2}.ctl-label{font-size:.82em;letter-spacing:0;color:#4a566a;margin-right:9px;white-space:nowrap}.ctl{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:8px 10px;background:transparent;border:0;border-radius:0;color:#465269;font-size:.86em;font-weight:500;line-height:1.3;white-space:nowrap;cursor:pointer}.ctl:hover{background:#f0f3f8;color:#19398f}.ctl[aria-pressed="true"]{padding:8px 10px;background:transparent;color:#19398f;border:0;font-weight:700}.ctl[aria-pressed="true"]::after{content:"";position:absolute;bottom:3px;left:10px;right:10px;height:2px;background:#2349b2}.ctl:focus-visible{outline:3px solid #2349b2;outline-offset:2px;z-index:1}
+ @media(max-width:760px){.masthead{row-gap:13px}.controls{width:100%;justify-content:flex-start;gap:4px 0;flex-wrap:wrap}.ctl-group+.ctl-group{margin-left:12px;padding-left:12px}.ctl{padding-inline:8px}.ctl[aria-pressed="true"]{padding-inline:8px}.ctl[aria-pressed="true"]::after{left:8px;right:8px}}
+ @media(max-width:360px){.ctl-group+.ctl-group{margin-left:0;padding-left:0;border-left:0}.controls{gap:0 12px}}
+}
+
+
+/* Guided-assistant presentation with readable, calm contrast. */
+@media screen{
+ :root{--paper:#f7f6f2;--sheet:#fff;--ink:#202d33;--ink2:#34454b;--ink3:#4b5c61;--blue:#245b73;--blue-ink:#19475a;--blue-wash:#edf5f6;--blue-line:#b4ced4;--green:#45645d;--green-wash:#edf3ef;--rule:#d9e2e2;--rule2:#e7eded;--rule3:#afc1c2}
+ body{background:var(--paper);color:var(--ink)}.brand .wordmark{color:#245b73}.ctl[aria-pressed="true"]{color:#19475a}.ctl[aria-pressed="true"]::after{background:#245b73}.ctl:hover{color:#19475a;background:#edf5f6}
+ .assistant-shell{max-width:860px;margin:0 auto;padding:42px 0 20px}.assistant-welcome{display:flex;align-items:flex-start;gap:17px;margin-bottom:30px}.assistant-avatar,.message-icon{display:grid;place-items:center;flex:none;background:#245b73;color:#fff;font-size:.9em;font-weight:700;border-radius:50%;width:48px;height:48px}.assistant-intro{min-width:0}.assistant-intro .workspace-kicker{margin:0 0 4px;color:#37606b;font-size:.8em;font-weight:700;letter-spacing:.03em}.assistant-intro h1{font-family:var(--sans);color:#203b49;font-size:clamp(1.65em,3vw,2.05em);line-height:1.4;margin:0}.assistant-intro>p:last-child{color:#41565b;margin:8px 0 0;line-height:1.7}
+ .assistant-message{display:flex;align-items:flex-start;gap:12px;margin:0 0 16px}.message-icon{width:38px;height:38px;font-size:.78em}.message-body{background:#e8f1f1;border:1px solid #ccdede;border-radius:4px 18px 18px 18px;padding:19px 22px;max-width:740px}.message-body h2{margin:0;color:#203e48;font-size:1.08em}.message-body p{margin:7px 0 0;color:#344e52;line-height:1.7;font-size:.91em}.message-body .capability{border-top:1px solid #c4d6d5;padding-top:10px;font-size:.84em;color:#344e52}
+ .assistant-composer{margin-left:50px;border:1.5px solid #aebfc0;border-radius:14px;background:#fff;padding:18px 20px 15px;box-shadow:0 5px 18px rgba(34,66,74,.06)}.assistant-composer label{display:block;font-size:.9em;font-weight:700;color:#263e47;margin-bottom:8px}#home-notice{min-height:135px;border:1px solid #aebfc0;border-radius:7px;background:#fff;padding:13px 14px;color:#202d33}#home-notice:focus-visible{outline:3px solid #245b73;outline-offset:2px}#home-notice::placeholder{color:#5b6a6d}.composer-actions{display:flex;align-items:center;gap:12px 22px;flex-wrap:wrap;margin-top:14px}.btn-primary{background:#245b73;border-color:#245b73;color:#fff;border-radius:7px}.btn-primary:hover{background:#19475a;border-color:#19475a}.btn-quiet{color:#19475a;border-color:#72969e}.example-link,.help-buttons button,a,.linkbtn{color:#194f63}.privacy-line{margin:10px 0 0;color:#4a5c5e;font-size:.83em}
+ .assistant-alternatives,.assistant-progress,.workspace-help{margin:25px 0 0 50px}.assistant-alternatives{border-top:1px solid #dce6e3;padding-top:22px}.alternative-heading h2,.workspace-help h2{font-family:var(--sans);font-size:1.08em;color:#243d44;margin:0}.alternative-heading p{margin:5px 0 14px;color:#495b5d;font-size:.9em}.quick-actions{display:flex;flex-wrap:wrap;gap:10px}.quick-action{min-height:48px;padding:8px 14px;border:1px solid #a8bdba;border-radius:7px;background:#fff;color:#244c54;font:inherit;font-size:.9em;font-weight:600;cursor:pointer;text-align:left}.quick-action:hover{background:#edf5f3;border-color:#245b73}.all-topics{color:#194f63;border-color:#789da4}.assistant-progress{border-top:1px solid #dce6e3;border-bottom:1px solid #dce6e3;padding:15px 0}.assistant-progress summary{min-height:44px;cursor:pointer;color:#244c54;font-weight:700}.assistant-progress .side-steps{padding:12px 0 0}.side-steps li>span{background:#fff;border:1px solid #789b96;color:#245b73}.side-steps b{color:#263e3d}.side-steps p,.side-note{color:#465b57}.side-note{border-color:#d1ded9}.workspace-help{padding-top:0}.method{font-size:.88em}.task-head{background:#eef5f3;border-color:#c8dbd6}.next{border-left-color:#245b73}.actions{background:#edf5f3}.wizard-progress{color:#19475a;background:#edf5f6;border-left-color:#245b73}.selected-type{background:#edf5f3;color:#244c54}.sample::before,.pasteform::before,.detect::before{background:#245b73}:focus-visible{outline-color:#245b73}
+ @media(max-width:760px){.assistant-shell{padding-top:28px}.assistant-welcome{gap:12px;margin-bottom:24px}.assistant-avatar{width:42px;height:42px}.assistant-intro h1{font-size:1.58em}.assistant-message{gap:8px}.message-icon{width:32px;height:32px}.message-body{padding:16px}.assistant-composer,.assistant-alternatives,.assistant-progress,.workspace-help{margin-left:0}.assistant-composer{padding:16px}.composer-actions{display:grid;gap:4px}.composer-actions .btn-primary{width:100%}.example-link{justify-self:start}.quick-actions{display:grid;grid-template-columns:1fr 1fr}.quick-action{width:100%}}
+ @media(max-width:360px){.quick-actions{grid-template-columns:1fr}}
+}
+
+
+/* Mingbai's errand note: warm paper, clear ink and one restrained accent. */
+@media screen{
+ :root{--paper:#f8f5ef;--sheet:#fffefa;--ink:#292623;--ink2:#4b433d;--ink3:#5e524a;--blue:#973b2c;--blue-ink:#7d2e22;--blue-wash:#faf0e9;--blue-line:#dfb9a9;--green:#675548;--green-wash:#f5eee5;--rule:#ded6ca;--rule2:#ece6dc;--rule3:#c8baab}
+ body{background:var(--paper);color:var(--ink)}.page{max-width:1140px}.masthead{border-color:#ded6ca}.brand .wordmark{color:#973b2c}.brand-sub{color:#4b433d}.ctl[aria-pressed="true"]{color:#7d2e22}.ctl[aria-pressed="true"]::after{background:#973b2c}.ctl:hover{color:#7d2e22;background:#f7ece4}
+ .assistant-shell{max-width:1050px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(250px,.7fr);grid-template-areas:"welcome welcome" "message preview" "composer preview" "alternatives preview" "progress progress" "help help";column-gap:42px;align-items:start;padding-top:42px}.assistant-welcome{grid-area:welcome;margin-bottom:30px;align-items:center}.assistant-avatar{background:#973b2c;border-radius:5px;width:48px;height:48px}.assistant-intro .workspace-kicker{color:#8a4634}.assistant-intro h1{color:#292623;font-size:clamp(1.65em,3vw,2em)}.assistant-intro>p:last-child{color:#4e453e}
+ .assistant-message{grid-area:message;margin:0 0 14px;display:block}.message-icon{display:none}.message-body{border:0;border-left:4px solid #b55b43;border-radius:0;background:#f5e9db;max-width:none;padding:18px 20px}.message-body h2{color:#332c27}.message-body p,.message-body .capability{color:#4c4038}.message-body .capability{border-color:#decbbb}
+ .assistant-composer{grid-area:composer;margin:0;background:#fffefa;border:1px solid #d7c9b9;border-radius:4px;padding:19px 20px;box-shadow:0 7px 20px rgba(83,56,39,.05)}.assistant-composer label{color:#332c27}#home-notice{border:1.5px solid #ab9c8d;border-radius:3px;color:#292623}#home-notice:focus-visible{outline-color:#973b2c}#home-notice::placeholder{color:#62564d}.btn-primary{background:#973b2c;border-color:#973b2c;color:#fff;border-radius:4px}.btn-primary:hover{background:#782a20;border-color:#782a20}.btn-quiet{border-color:#a87361;color:#7d2e22}.example-link,.help-buttons button,a,.linkbtn{color:#7d2e22}.privacy-line{color:#554a42}
+ .paper-preview{grid-area:preview;background:#fffdf7;border:1px solid #dacfc1;border-top:4px solid #b65b45;padding:24px 22px;box-shadow:0 8px 25px rgba(81,57,39,.07)}.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#7d2e22;font-size:.72em;font-weight:700;letter-spacing:.03em}.preview-stamp{display:grid;place-items:center;width:33px;height:33px;border:1px solid #b57865;color:#973b2c;font-weight:700}.paper-preview h2{font-size:1.3em;color:#322b26;margin:12px 0 4px}.paper-preview>p:not(.preview-foot){margin:0;color:#5a4e45;font-size:.85em;line-height:1.7}.preview-rows{margin-top:16px;border-top:1px solid #e6dbcf}.preview-rows>div{padding:14px 0;border-bottom:1px solid #e6dbcf}.preview-rows span,.preview-rows strong{display:block}.preview-rows span{font-size:.78em;color:#765647}.preview-rows strong{font-size:.88em;color:#3e352f;margin-top:3px}.preview-foot{margin:17px 0 0;color:#5a4e45;font-size:.82em;line-height:1.6}
+ .assistant-alternatives{grid-area:alternatives;margin:24px 0 0;border-color:#e1d7cb;padding-top:20px}.alternative-heading h2,.workspace-help h2{color:#332c27}.alternative-heading p{color:#554a42}.quick-action{border-color:#c8b4a4;background:#fffefa;color:#773629;border-radius:4px}.quick-action:hover{background:#faf0e8;border-color:#973b2c}.all-topics{color:#773629;border-color:#aa7866}.assistant-progress{grid-area:progress;margin:24px 0 0;border-color:#e1d7cb}.assistant-progress summary{color:#773629}.side-steps li>span{color:#7d2e22;border-color:#b18d7c}.side-steps b{color:#3b3029}.side-steps p,.side-note{color:#564b43}.workspace-help{grid-area:help;margin:24px 0 0}.help-buttons button{color:#7d2e22}.method{color:#544a42}.task-head{background:#f7ede3;border-color:#dfcdbb}.task-head h1{color:#292623}.next{background:#fff8eb;border-left-color:#973b2c}.actions{background:#f8f0e7}.wizard-progress{color:#7d2e22;background:#faf0e9;border-left-color:#973b2c}.selected-type{background:#f7ede3;color:#743427}.type-picker summary,.details-guide summary{color:#7d2e22}.sample::before,.pasteform::before,.detect::before{background:#973b2c}:focus-visible{outline-color:#973b2c}
+ @media(max-width:760px){.assistant-shell{display:grid;grid-template-columns:1fr;grid-template-areas:"welcome" "message" "composer" "alternatives" "preview" "progress" "help";padding-top:28px}.assistant-welcome{margin-bottom:24px;gap:12px}.assistant-avatar{width:42px;height:42px}.assistant-intro h1{font-size:1.55em}.message-body{padding:16px}.assistant-composer{margin:0;padding:16px}.paper-preview{margin-top:22px;padding:20px}.preview-rows>div{padding:11px 0}.assistant-alternatives,.assistant-progress,.workspace-help{margin-left:0}.quick-actions{grid-template-columns:1fr 1fr}.composer-actions .btn-primary{width:100%}}
+ @media(max-width:360px){.quick-actions{grid-template-columns:1fr}}
+}
+
+
+/* Optional colour themes: text labels and selected state do not rely on colour. */
+@media screen{
+ :root,:root[data-theme="clay"]{--theme:#973b2c;--theme-dark:#782a20;--theme-soft:#f5e9db;--blue:#973b2c;--blue-ink:#782a20;--blue-wash:#faf0e9;--blue-line:#dfb9a9}
+ :root[data-theme="ocean"]{--theme:#205776;--theme-dark:#173e56;--theme-soft:#e9f1f4;--blue:#205776;--blue-ink:#173e56;--blue-wash:#e9f1f4;--blue-line:#afc8d3}
+ :root[data-theme="forest"]{--theme:#285d49;--theme-dark:#1e4637;--theme-soft:#eaf1e9;--blue:#285d49;--blue-ink:#1e4637;--blue-wash:#eaf1e9;--blue-line:#b5cbbb}
+ :root[data-theme="plum"]{--theme:#63416f;--theme-dark:#4c3056;--theme-soft:#f0ebf3;--blue:#63416f;--blue-ink:#4c3056;--blue-wash:#f0ebf3;--blue-line:#cbbbd1}
+ .brand .wordmark,.assistant-intro .workspace-kicker,.preview-top,.preview-stamp,.ctl[aria-pressed="true"],.type-picker summary,.details-guide summary,.assistant-progress summary,.example-link,.help-buttons button,a,.linkbtn{color:var(--theme-dark)}
+ .ctl[aria-pressed="true"]::after,.assistant-avatar,.btn-primary,.sample::before,.pasteform::before,.detect::before{background:var(--theme)}.btn-primary{border-color:var(--theme);color:#fff}.btn-primary:hover{background:var(--theme-dark);border-color:var(--theme-dark)}.btn-quiet,.quick-action,.all-topics{color:var(--theme-dark);border-color:var(--theme)}.quick-action:hover,.btn-quiet:hover,.ctl:hover{color:var(--theme-dark);border-color:var(--theme);background:var(--theme-soft)}
+ .message-body{background:var(--theme-soft);border-left-color:var(--theme)}.paper-preview{border-top-color:var(--theme)}.preview-stamp{border-color:var(--theme)}.selected-type,.wizard-progress{color:var(--theme-dark);background:var(--theme-soft)}.wizard-progress,.next{border-left-color:var(--theme)}.task-head,.actions{background:var(--theme-soft)}.chip{color:var(--theme-dark);background:var(--theme-soft);border-color:var(--blue-line)}.detect .found{color:var(--theme-dark)}.side-steps li>span{color:var(--theme-dark);border-color:var(--theme)}
+ :focus-visible,#home-notice:focus-visible,.ctl:focus-visible{outline-color:var(--theme)}
+ .theme-chooser{border-bottom:1px solid #ded6ca;padding:8px 0 10px}.theme-chooser>summary{cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--ink2);font-size:.9em;font-weight:600;list-style:none}.theme-chooser>summary::-webkit-details-marker{display:none}.theme-chooser>summary::before{content:"＋";color:var(--theme);font-size:1.15em}.theme-chooser[open]>summary::before{content:"−"}.theme-description{font-size:.84em;color:var(--ink2);margin:0 0 10px}.theme-options{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:6px}.theme-option{display:inline-flex;gap:8px;align-items:center;justify-content:center;min-height:48px;padding:8px 13px;background:#fffefa;border:1px solid #b9b4aa;border-radius:4px;color:#292623;font:inherit;font-size:.9em;cursor:pointer}.theme-option:hover{border-color:var(--theme)}.theme-option[aria-pressed="true"]{border:2px solid var(--theme);font-weight:700;padding:7px 12px}.theme-option[aria-pressed="true"]::after{content:"✓";color:var(--theme);font-weight:700}.theme-swatch{width:17px;height:17px;border-radius:50%;background:var(--swatch);flex:none}.theme-option[data-theme-choice="clay"]{--swatch:#973b2c}.theme-option[data-theme-choice="ocean"]{--swatch:#205776}.theme-option[data-theme-choice="forest"]{--swatch:#285d49}.theme-option[data-theme-choice="plum"]{--swatch:#63416f}
+ @media(max-width:760px){.theme-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.theme-option{justify-content:flex-start}}
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <button class="brand" onclick="go('home')" aria-label="回到首页">
+      <span class="wordmark">明白</span>
+      <span class="brand-sub" id="tag">办事助手</span>
+    </button>
+    <div class="controls">
+      <span class="ctl-group" role="group" aria-label="语言 / Language">
+        <button class="ctl" id="lzh" aria-pressed="true" onclick="setLang('zh')">中文</button>
+        <button class="ctl" id="len" aria-pressed="false" onclick="setLang('en')">EN</button>
+      </span>
+      <span class="ctl-group" role="group" aria-labelledby="size-label">
+        <span class="ctl-label" id="size-label">字号</span>
+        <button class="ctl" id="sz0" data-sz="" aria-pressed="true" onclick="setSize('',this)">标准</button>
+        <button class="ctl" id="sz1" data-sz="lg" aria-pressed="false" onclick="setSize('lg',this)">大</button>
+        <button class="ctl" id="sz2" data-sz="xl" aria-pressed="false" onclick="setSize('xl',this)">特大</button>
+      </span>
+    </div>
+  </header>
+  <details class="theme-chooser" id="theme-chooser"><summary id="theme-summary"></summary><p class="theme-description" id="theme-description"></p><div class="theme-options" role="group" aria-labelledby="theme-summary"><button class="theme-option" type="button" data-theme-choice="clay" aria-pressed="true" onclick="setTheme('clay')"><span class="theme-swatch" aria-hidden="true"></span><span id="theme-clay"></span></button><button class="theme-option" type="button" data-theme-choice="ocean" aria-pressed="false" onclick="setTheme('ocean')"><span class="theme-swatch" aria-hidden="true"></span><span id="theme-ocean"></span></button><button class="theme-option" type="button" data-theme-choice="forest" aria-pressed="false" onclick="setTheme('forest')"><span class="theme-swatch" aria-hidden="true"></span><span id="theme-forest"></span></button><button class="theme-option" type="button" data-theme-choice="plum" aria-pressed="false" onclick="setTheme('plum')"><span class="theme-swatch" aria-hidden="true"></span><span id="theme-plum"></span></button></div></details>
+
+  <!-- HOME: guided assistant -->
+  <main class="view" id="v-home">
+    <div class="resume" id="h-resume" hidden><span class="rt" id="h-resume-t"></span><span class="ra"><button class="btn-primary" onclick="resumeLast()" id="h-resume-go"></button><button class="linkbtn" onclick="dismissResume(this)" id="h-resume-no"></button></span></div>
+    <div class="assistant-shell">
+      <div class="assistant-welcome"><span class="assistant-avatar" aria-hidden="true">明</span><div class="assistant-intro"><p class="workspace-kicker" id="ws-kicker"></p><h1 id="ws-title"></h1><p id="ws-intro"></p></div></div>
+      <div class="assistant-message" aria-labelledby="notice-label"><div class="message-icon" aria-hidden="true">明</div><div class="message-body"><h2 id="notice-label"></h2><p id="notice-help"></p><p class="capability" id="assistant-capability"></p></div></div>
+      <div class="assistant-composer"><label for="home-notice" id="home-notice-label"></label><textarea id="home-notice" maxlength="4000" spellcheck="false" autocomplete="off" aria-describedby="notice-help home-error" oninput="clearHomeError()"></textarea><p class="home-error" id="home-error" role="alert" hidden></p><div class="composer-actions"><button class="btn-primary" type="button" id="home-submit" onclick="startHomeNotice()"></button><button class="example-link" type="button" id="home-example" onclick="homeSample()"></button></div><p class="privacy-line" id="home-privacy"></p></div>
+      <section class="assistant-alternatives"><div class="alternative-heading"><h2 id="manual-heading"></h2><p id="manual-desc"></p></div><div class="quick-actions"><button type="button" class="quick-action" onclick="startWith('pension')" id="quick-pension"></button><button type="button" class="quick-action" onclick="startWith('medical')" id="quick-medical"></button><button type="button" class="quick-action" onclick="startWith('care')" id="quick-care"></button><button class="quick-action all-topics" id="manual-button" onclick="openLetter()"></button></div></section>
+      <aside class="paper-preview" aria-labelledby="preview-title"><div class="preview-top"><span id="preview-label"></span><span class="preview-stamp" aria-hidden="true">明</span></div><h2 id="preview-title"></h2><p id="preview-caption"></p><div class="preview-rows"><div><span id="preview-time-label"></span><strong id="preview-time-value"></strong></div><div><span id="preview-place-label"></span><strong id="preview-place-value"></strong></div><div><span id="preview-bring-label"></span><strong id="preview-bring-value"></strong></div></div><p class="preview-foot" id="preview-foot"></p></aside>
+
+      <details class="assistant-progress"><summary id="side-label"></summary><ol class="side-steps"><li><span>1</span><div><b id="step1-title"></b><p id="step1-desc"></p></div></li><li><span>2</span><div><b id="step2-title"></b><p id="step2-desc"></p></div></li><li><span>3</span><div><b id="step3-title"></b><p id="step3-desc"></p></div></li></ol><p class="side-note" id="side-note"></p></details>
+      <section class="workspace-help"><h2 id="help-heading"></h2><div class="help-buttons" id="h-tools"></div><details class="method"><summary id="about-sum"></summary><div id="about-body"></div></details><details class="method" id="design-sources"><summary id="sources-summary"></summary><div id="sources-body"></div></details></section>
+    </div>
+  </main>
+
+  <!-- LETTER -->
+  <main class="view" id="v-letter" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead">
+      <h1 id="l-title"></h1>
+      <p class="lede" id="l-sub"></p>
+    </div>
+    <p class="note" id="l-note"></p>
+    <details class="type-picker" id="type-picker" open>
+      <summary id="type-picker-summary"></summary>
+      <ul class="toc toc-main" id="l-types" role="group"></ul>
+    </details>
+    <div class="selected-type" id="selected-type"></div>
+    <div id="l-form" hidden>
+      <p class="wizard-progress" id="wizard-progress" aria-live="polite"></p>
+      <div class="formblock" id="wizard-date">
+        <span class="flabel" id="f-date-k"></span>
+        <div id="f-dtypes"></div>
+        <div class="field" id="f-date-wrap">
+          <label for="f-date"><span id="f-date-l"></span><span class="hint" id="f-date-h"></span></label>
+          <input id="f-date" type="date">
+        </div>
+      </div>
+      <div class="formblock" id="wizard-known">
+        <span class="flabel" id="f-known-k"></span>
+        <p class="fineprint" id="f-known-h" style="margin:0 0 8px"></p>
+        <div id="f-known"></div>
+      </div>
+      <div class="formblock" id="wizard-contact">
+        <span class="flabel" id="f-place-k"></span>
+        <div class="field">
+          <label for="f-time" id="f-time-l"></label>
+          <div><input id="f-time" type="text" autocomplete="off" placeholder="例如 14:30"><span class="hint" id="f-time-h"></span></div>
+        </div>
+        <div class="field">
+          <label for="f-place" id="f-place-l"></label>
+          <div><input id="f-place" type="text" autocomplete="off"><span class="hint" id="f-place-h"></span></div>
+        </div>
+        <div class="field">
+          <label for="f-phone" id="f-phone-l"></label>
+          <div><input id="f-phone" type="tel" inputmode="tel" autocomplete="off"><span class="hint" id="f-phone-h"></span></div>
+        </div>
+      </div>
+      <div class="formcta">
+        <button class="btn-quiet" type="button" onclick="wizardMove(-1)" id="wizard-back"></button>
+        <button class="btn-primary" type="button" onclick="wizardMove(1)" id="wizard-next"></button>
+        <button class="btn-primary" onclick="makeTasks()" id="f-go"></button>
+        <button class="linkbtn" onclick="skipForm()" id="f-skip"></button>
+      </div>
+    </div>
+    <details class="details-guide" id="guide-section"><summary id="guide-summary"></summary><div id="l-detail"></div></details>
+  </main>
+
+  <!-- PASTE -->
+  <main class="view" id="v-paste" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead">
+      <h1 id="p-title"></h1>
+      <p class="lede" id="p-sub"></p>
+    </div>
+    <details class="original-notice" id="p-original" open><summary id="p-original-summary"></summary>
+    <div class="pasteform">
+      <label class="flab" for="p-text" id="p-lab"></label>
+      <textarea id="p-text" spellcheck="false" autocomplete="off" maxlength="4000" oninput="noticeChanged()"></textarea>
+      <div class="examples">
+        <span id="p-ex"></span>
+        <button type="button" onclick="fillSample(0)" id="p-ex1"></button>
+        <button type="button" onclick="fillSample(1)" id="p-ex2"></button>
+        <button type="button" onclick="fillSample(2)" id="p-ex3"></button>
+      </div>
+      <div class="pasterow">
+        <button class="btn-primary" onclick="runExtract()" id="p-go"></button>
+        <button class="linkbtn" onclick="pasteClear()" id="p-clear"></button>
+        <button class="linkbtn" onclick="openLetter()" id="p-template"></button>
+      </div>
+      <p class="fineprint" id="p-fine" style="margin:14px 0 0"></p>
+    </div></details>
+    <section class="detect" id="p-result" hidden aria-live="polite"></section>
+  </main>
+
+  <!-- TASKS -->
+  <main class="view" id="v-tasks" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="task-head">
+      <div>
+        <p class="task-kind" id="t-kind"></p>
+        <h1 class="task-date" id="t-date"></h1>
+      </div>
+      <div class="task-meta" id="t-meta"></div>
+    </div>
+    <p class="banner" id="t-banner" hidden></p>
+    <p class="note" id="t-note"></p>
+    <div class="callrow" id="t-callrow"></div>
+
+    <section class="next" id="t-next" hidden></section>
+
+    <section class="group">
+      <div class="group-head"><h2 class="sec-label" id="t-list-h"></h2><span class="count" id="t-count"></span></div>
+      <ol class="schedule" id="t-list"></ol>
+    </section>
+
+    <section class="group">
+      <div class="group-head"><h2 class="sec-label" id="t-bring-h"></h2><span class="count" id="t-bring-count"></span></div>
+      <ul class="flatlist" id="t-bring"></ul>
+      <p class="fineprint" id="t-bring-hint" style="margin:10px 0 0"></p>
+    </section>
+
+    <section class="group" id="t-confirm-wrap">
+      <h2 class="sec-label" id="t-confirm-h"></h2>
+      <ul class="confirmlist" id="t-confirm"></ul>
+    </section>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="doPrint()" id="t-print"></button>
+      <button class="textbtn" onclick="copyFamily(this)" id="t-copy"></button>
+      <button class="textbtn" onclick="readAll(this)" id="t-read"></button>
+    </div>
+    <div class="more">
+      <span class="mlabel" id="t-more"></span>
+      <button class="textbtn" onclick="exportICS()" id="t-ics"></button>
+      <button class="textbtn" onclick="copyFamilyLink(this)" id="t-link"></button>
+      <button class="textbtn" onclick="saveNow(this)" id="t-save"></button>
+      <button class="textbtn" onclick="clearSaved()" id="t-clear"></button>
+    </div>
+    <p class="editline" id="t-edit"></p>
+    <div class="voice" id="t-voice"></div>
+    <p class="after" id="t-saved" hidden style="margin-top:12px;color:var(--green);font-size:.84em"></p>
+  </main>
+
+  <!-- CALL -->
+  <main class="view" id="v-call" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead"><h1 id="c-title"></h1><p class="lede" id="c-sub"></p></div>
+    <div class="script">
+      <span class="lab" id="c-open-k"></span>
+      <div class="say" id="c-offline"></div>
+    </div>
+    <div class="script">
+      <span class="lab" id="c-ask-k"></span>
+      <ul class="numlist" id="c-ask"></ul>
+      <div class="voice" id="c-voice"></div>
+      <div style="margin-top:14px;display:flex;gap:22px;flex-wrap:wrap"><button class="textbtn" onclick="readCall(this)" id="c-read"></button><button class="textbtn" onclick="printCallPage()" id="c-print"></button></div>
+    </div>
+    <div class="script">
+      <span class="lab" id="c-ans-k"></span>
+      <div class="qa" id="c-qa"></div>
+    </div>
+    <div class="script">
+      <span class="lab" id="c-write-k"></span>
+      <div id="c-write"></div>
+      <p class="fineprint" id="c-write-hint" style="margin-top:10px"></p>
+    </div>
+  </main>
+
+  <!-- SCAM -->
+  <main class="view" id="v-scam" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead"><h1 id="s-title"></h1><p class="lede" id="s-sub"></p></div>
+    <div id="s-panel" style="margin-top:20px"></div>
+    <div id="s-verdict"></div>
+    <div style="margin-top:18px"><button class="linkbtn" onclick="resetScam()" id="s-reset"></button></div>
+  </main>
+
+  <!-- HELP -->
+  <main class="view" id="v-help" hidden>
+    <button class="backlink" onclick="go('home')"><span aria-hidden="true">‹</span><span class="back-t"></span></button>
+    <div class="pagehead"><h1 id="hp-title"></h1><p class="lede" id="hp-sub"></p></div>
+    <section class="group" style="margin-top:28px"><h2 class="sec-label" id="hp-k1"></h2><ul class="helplist" id="hp-list"></ul></section>
+    <section class="group"><h2 class="sec-label" id="hp-k2"></h2><ul class="helplist" id="hp-who"></ul></section>
+    <p class="note" id="hp-note"></p>
+  </main>
+
+  <footer class="foot">
+    <span id="foot1"></span>
+    <span id="foot2"></span>
+  </footer>
+</div>
+
+<section id="printsheet" class="ps" aria-hidden="true"></section>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* 明白 v3 — a well-set errand sheet.
+   Offline, no account, no medical advice. Everything stays in this browser. */
+
+const T = {
+zh:{
+  tag:"办事助手",
+  sizeLabel:"字号", sizeStd:"标准", sizeLg:"大", sizeXl:"特大",
+  sDate:"11月20日", sPlace:"上午 · 社区服务中心",
+  when_today:"今天", when_d3:"前 3 天", when_d2:"前 2 天", when_d1:"前一天",
+  when_due:"截止日", when_appt:"预约日", when_follow:"复诊日",
+  eyebrow:"收到通知之后",
+  title:"办事不用急，<br>一件一件来。",
+  sub:"收到办事通知，不知道从哪里开始？明白帮您理清时间、材料和下一步，也方便家人一起看。",
+  start:"粘贴通知 →",
+  demo:"先看一份示例",
+  fine:"不用注册。识别可能出错，生成前请对照原文核对。",
+  promise:["本机识别","无需注册","免费使用","不问验证码"],
+  hTypes:"选择要办的事 →",
+  resumeT:"上次整理的：<b>{name}</b>{d}{p}",
+  resumeGo:"继续上次",
+  resumeNo:"不用了",
+  toolCall:"打电话前，先想好这几句",
+  toolScam:"这是不是骗局？5 个问题",
+  toolHelp:"这些情况请直接找真人",
+  sTag:"示例", sSheet:"照护评估",
+  sTitle:"照护评估",
+  sFirst:"先做",
+  s1:"确认评估的时间和地点",
+  s2:"带上病历和用药清单",
+  sBringH:"要带",
+  sBring:["病历","用药清单","身份证","医保卡"],
+  sFoot:"还有 2 项待确认，可以打印带走",
+  othersH:"其他 9 类通知",
+  howH:"三步整理一张清单",
+  how:[["把通知原文贴进来","粘贴短信或微信文字；纸质通知可手动输入"],["核对认出来的信息","日期、地点、电话、材料；认错就改，没认出就补"],["打印，带走照做","勾掉一项项；打完电话的把话记在纸上"]],
+  trustH:"不收费，也不问验证码。",
+  trustB:"识别在本机进行，最近一张清单保存在当前浏览器；新清单会替换它。分享链接包含清单信息，请只发给信任的人。打开网站需要联网；不提供医疗、用药或法律建议。",
+  aboutSum:"为什么这样设计 · 方法与局限",
+  back:"返回",
+  lTitle:"先看是哪一类通知",
+  lSub:"选一类，看看通常要准备什么，再把通知上的信息填进去。",
+  lNote:"下面这些是常见办理准备，供你核对。具体要求以通知原文和经办机构的确认为准。",
+  whatItIs:"这是什么",
+  stepsH:"通常要办的事",
+  bringH:"一般要带",
+  whoH:"一般找谁",
+  fDateK:"通知里的时间",
+  dtypes:[["deadline","最后提交期限","过了这个日期，可能就办不了"],["appoint","约好的办理时间","通知上写了哪天去"],["followup","复诊 / 复查","医院或评估机构约的时间"],["unknown","通知里没写清楚","先打电话问，再排日程"]],
+  fDateL:"日期", fDateH:"通知上写的日期；不确定就空着",
+  fKnownK:"通知里已经写了什么",
+  fKnownH:"勾上的标「已写明」；没勾的会提醒你先问清楚。",
+  known:[["time","写了时间和地点"],["docs","写了要带哪些材料"],["what","写了要办什么事"]],
+  fPlaceK:"去哪里、打哪个电话",
+  placeL:"地点", placeH:"窗口、社区中心或医院（可空）",
+  phoneL:"电话", phoneH:"通知上的电话，或当地服务热线（可空）",
+  go:"生成我的清单", skip:"先不填，直接看清单",
+  nextLab:"先做这一件",
+  nextAsk:"这件事需要先问清楚，再往下走。",
+  allDoneH:"清单完成", allDone:"都做完了。这张纸留着，电话里记的东西也在上面。",
+  listH:"接下来",
+  count:"已完成 {d} / {n}",
+  bringTitle:"要带的东西",
+  confirmH:"还没确认",
+  confirmQ:"要问",
+  tNote:"下面是这类事常见的办理准备，已按通知上的日期排好先后。具体要求以通知原文和经办机构的确认为准。",
+  tNoteTpl:"这类通知流程差别较大，这里只给通用准备，不排日期。具体步骤以通知为准。",
+  needDate:"还没填日期：补上后，清单才会自动排时间。",
+  unknownH:"时间还没定",
+  unknownSub:"先打电话问清楚时间和地点",
+  overdueH:"已过期",
+  overdueSub:"先打电话确认还能不能办",
+  daysLeft:"还有 {n} 天",
+  isToday:"就是今天",
+  isTomorrow:"明天",
+  print:"打印，带去窗口",
+  copy:"发给家人",
+  read:"朗读给我听",
+  readStop:"停止朗读",
+  more:"也可以",
+  ics:"加进手机日历",
+  link:"复制给家人的链接",
+  save:"存在这台设备",
+  clear:"清除我的数据",
+  saved:"已保存在本机浏览器",
+  edit:"日期、地点或电话填错了？回去改一改。",
+  editBtn:"修改信息",
+  bannerDemo:"这是一份示例，可以随便改。",
+  dismiss:"知道了",
+  fromFamily:"这是家人替你填好的清单",
+  icsDone:"日历文件已下载，打开就能导入", icsNoDate:"这份清单还没有具体日期，先确认时间",
+  linkCopied:"链接已复制，发给家人就能打开", linkFile:"链接要网页上线后才能分享；现在是本机文件",
+  copyOk:"已复制，可以粘到微信", copyFail:"复制失败，请长按下面的文字手动复制",
+  saveToast:"已保存到本机", clearToast:"已清除本机数据",
+  cTitle:"打电话之前，先想好这几句",
+  cSub:"照着念就行。对方是真人，不用紧张。",
+  cOpenK:"第一句：说明来意", cAskK:"然后问这五个问题", cRead:"朗读这一页", cPrint:"打印这一页",
+  cAnsK:"对方可能会问，你可以这样答", cWriteK:"边打边记",
+  cWriteHint:"打印这一页，用笔填。打电话时别只靠记忆。",
+  sTitle:"先查一下：这是不是骗局",
+  sSub:"五个问题。只要有一个「有」，就先停下来。",
+  yes:"有", no:"没有",
+  sBad:"停一下。这就是典型骗局的做法。挂断电话，用通知上或官方的号码回拨，先告诉家人：不要转账、不要点链接、不要给验证码。",
+  sGood:"五个问题都没有典型红旗。但涉及转账，仍然要用官方电话回拨核实。",
+  sTmp:"已回答 {n} / 5。",
+  sReset:"重新检查",
+  hpTitle:"这些情况，请直接找真人",
+  hpSub:"清单只能帮你把事排清楚，不能替你做决定。",
+  hpK1:"先停下来，找人", hpK2:"可以找谁",
+  hpNote:"如果一件事让你觉得「被催着做决定」，那多半不该现在做。可以先回家，明天再办。",
+  foot1:"明白 · 办事助手", foot2:"v4.0 · 2026",
+  timeL:"时间",
+  pTitle:"把通知贴进来",
+  pSub:"粘贴短信或微信里的文字；纸质通知请先输入文字。整理后，请逐项对照原文核对。",
+  pLab:"通知原文",
+  pEx:"试试这些示例：",
+  pEx1:"照护评估", pEx2:"医保报销", pEx3:"困难救助",
+  pGo:"整理成清单",
+  pClear:"清空",
+  pType:"没有原文？按类型选一类",
+  pFine:"识别只在这台设备上做，不上传；认错的、没认出的都能手动改。",
+  pEmpty:"先贴一段通知原文，再点「整理成清单」。也可以点上面的示例。",
+  dTitle:"认出来的信息",
+  dFound:"认出 {n} 项，请核对",
+  dNoneType:"没认出是哪一类事。请在下面选一类，别的不用重贴。",
+  dNoneDate:"没认出日期。可以手填，或者留空先打电话问。",
+  dType:"这是哪一类事",
+  dTypeHint:"自动判断，可以改",
+  dPickType:"先选一类：这是哪一类事。",
+  dPick:"请选择",
+  dDtype:"通知里的日期是",
+  dDate:"日期", dDateHint:"请核对年月日。通知没有写年份时，不会自动填日期；不确定请留空。",
+  dTime:"时间", dTimeHint:"例如 上午 9:30（可空）",
+  dPlace:"地点", dPlaceHint:"哪个中心、几楼、哪个窗口",
+  dPhone:"电话", dPhoneHint:"通知上的号码（可空）",
+  dMats:"要带的材料", dMatsHint:"点 × 删掉不对的；没认出的自己补",
+  dMatAdd:"补充一项材料", dAdd:"加上", dMatDel:"删除",
+  dMatLong:"一次加一项，最多 18 个字。",
+  dMatNone:"没认出材料。可以按这一类的常见材料先准备，也可以打电话问。",
+  dMiss:"没认出：{list}。可以先打电话问清楚，或留空后自己补。",
+  dMissItems:["日期","地点","电话","材料"],
+  dMake:"按这个生成清单",
+  dCheck:"请对照原文核对日期、时间、地点、电话和材料。可能漏认或认错；不确定的留空并向经办机构确认。",
+  dBack:"重新贴",
+  dNote:"日期近、材料多时，先打电话确认三件事：要带什么、几点到、能不能代办。",
+  dFoundToast:"认出 {n} 项，核对后点「按这个生成清单」。",
+  fromNotice:"按你贴的通知整理，请核对日期和材料。",
+  callNow:"打这个电话问",
+  copyPhone:"复制号码", phoneCopied:"号码已复制",
+  noPhone:"通知里没写电话：可以先打 12345 问，或到窗口问。",
+  callScript:"打电话怎么问（照着念）",
+  bringCount:"已带 {d} / {n}", bringGap:"还差 {n} 件", bringAll:"都带齐了",
+  bringSrc:"通知里写的",
+  bringHint:"出门前照着勾一遍。通知原文写的排在前面，其余是这类事常见的补充。",
+  status:{ok:"已写明",sug:"建议准备",ask:"待确认"},
+  askInline:"通知里可能没写，先打电话确认。",
+  overdueInline:"这个日期已经过了，先打电话确认还能不能办。",
+  noWhen:"时间确认后再排",
+  weekday:["星期日","星期一","星期二","星期三","星期四","星期五","星期六"],
+  vTitle:"朗读", vVoice:"声音", vRate:"语速", slow:"慢", normal:"正常", fast:"快一点", noVoice:"这台设备没有可用的语音",
+  printKicker:"办事清单 · 打印后带去窗口",
+  printFine:"本清单按你提供的通知原文整理。具体要求以通知原文和经办机构的确认为准。",
+  printA:"要带的东西", printB:"要办的事", printC:"要问的问题", printD:"记录",
+  printE:"防骗提醒", printF:"家人电话",
+  printWarn:"任何人让你转账、给验证码、点链接，先挂断，用官方电话回拨。",
+  printFoot:"办完把这张纸拍照留底。",
+  copyHeader:"【办事清单】", copyDue:"时间：", copyWhere:"地点：", copyTel:"电话：", copyToDo:"要做的：", copyAsk:"要问的：",
+  about:`<h4>它解决什么问题</h4><p>办事办不成，常常不是看不懂字，而是材料没带全、顺序记不住、被人催着做了错误决定。所以它不解释政策，只给你三样能用的东西：一张排好日期的清单、一段能照着念的电话稿、一张能打印能写字的纸。</p>
+<h4>通知是怎么变成清单的</h4><p>你把通知原文贴进来，网页在本机用一组规则把日期、时间、地点、电话、要带的材料挑出来，再按这一类事常见的办理顺序排成清单。整个过程不联网，也没有把文字发给任何服务器。认出来的字段都会显示出来让你核对，认错可以改，没认出可以补。</p>
+<h4>为什么每项都标状态</h4><p>规则只认字面，不懂政策。所以每项标：已写明 / 建议准备 / 待确认，提醒你对照原文，别把提示当规定。</p>
+<h4>视觉依据</h4><p>按工信部《互联网网站适老化通用设计规范》：不用阴影、透视、纹理；正文 18px 起，可放大到 25px；对比度不低于 4.5:1；点击区域不小于 44px；首页只留一个主按钮和一个示例。</p>
+<h4>它不做什么</h4><ul><li>不判断资格，不给用药、医疗或法律建议</li><li>不把通知原文或你填的内容发到网上，也不保存到服务器</li><li>不是联网的 AI：识别靠本机规则，可能漏认或认错，以通知原文为准</li><li>不替你做决定，也不代替窗口和医生</li></ul>
+<h4>已知局限</h4><p>能认十类常见通知，冷门写法会认不全；排期顺序是常识，不代表官方流程；语音取决于设备；家属链接需要网页已上线；还没有做真实用户的可用性测试。</p>`
+},
+en:{
+  tag:"paperwork, plain",
+  sizeLabel:"Size", sizeStd:"Standard", sizeLg:"Large", sizeXl:"Extra large",
+  sDate:"20 Nov", sPlace:"Morning · Community centre",
+  when_today:"Today", when_d3:"3 days before", when_d2:"2 days before", when_d1:"Day before",
+  when_due:"Deadline", when_appt:"Appointment", when_follow:"Follow-up",
+  eyebrow:"After the notice arrives",
+  title:"Paste the notice in,<br>leave with one sheet.",
+  sub:"The date, the time, the place and the papers to bring are pulled out of the text and turned into a list you can print and check. An SMS, a letter, a chat message — as it is.",
+  start:"Paste the notice",
+  demo:"See an example first",
+  fine:"No sign-up. Check the results against the original notice.",
+  promise:["On-device processing","No sign-up","Free","Never asks for a code"],
+  hTypes:"Choose a topic →",
+  resumeT:"Last time: <b>{name}</b>{d}{p}",
+  resumeGo:"Continue",
+  resumeNo:"Not now",
+  toolCall:"What to say before you call",
+  toolScam:"Is this a scam? 5 questions",
+  toolHelp:"When to talk to a person",
+  sTag:"Example", sSheet:"Care assessment",
+  sTitle:"Care assessment",
+  sFirst:"Do first",
+  s1:"Confirm the time and place",
+  s2:"Bring records and medication list",
+  sBringH:"Bring",
+  sBring:["Records","Medication list","ID card","Insurance card"],
+  sFoot:"2 items still to confirm — printable",
+  othersH:"Other kinds of notice (9 more)",
+  howH:"Three steps to a checklist",
+  how:[["Paste the notice","Paste an SMS or chat text, or type out a paper notice"],["Check what it found","Date, place, phone, papers. Fix, or add what is missing"],["Print and work through","Tick items off; write down what the call tells you"]],
+  trustH:"No fees, and it never asks for a verification code.",
+  trustB:"Processing happens on this device. The most recent list is saved in this browser and replaced by the next one. A family link contains checklist details; share only with someone you trust. Opening the site requires a connection. No medical, medication or legal advice.",
+  aboutSum:"Why it is built this way · method and limits",
+  back:"Back",
+  lTitle:"Which kind of notice is it?",
+  lSub:"Pick one to see what is usually needed, then copy the details from the notice.",
+  lNote:"These are common preparations to check against your notice. The notice and the office decide what actually applies.",
+  whatItIs:"What it is",
+  stepsH:"What is usually involved",
+  bringH:"What is usually needed",
+  whoH:"Who to ask",
+  fDateK:"The date on the notice",
+  dtypes:[["deadline","A final deadline","Miss it and the chance may be gone"],["appoint","A booked appointment","The notice gives a day to go"],["followup","A follow-up visit","Set by the hospital or assessor"],["unknown","The notice is not clear","Call first, then plan"]],
+  fDateL:"Date", fDateH:"As printed on the notice; leave empty if unsure",
+  fKnownK:"What the notice already says",
+  fKnownH:"Ticked items are marked \"stated\"; the rest remind you to confirm first.",
+  known:[["time","It gives the time and place"],["docs","It lists the documents"],["what","It says what to do"]],
+  fPlaceK:"Where to go, and which number",
+  placeL:"Place", placeH:"Office, community centre or hospital (optional)",
+  phoneL:"Phone", phoneH:"The number on the notice, or the local hotline (optional)",
+  go:"Build my list", skip:"Skip and show the list",
+  nextLab:"Do this first",
+  nextAsk:"This one needs a phone call before anything else.",
+  allDoneH:"All done", allDone:"Everything on the list is done. Keep the sheet — your notes from the call are on it.",
+  listH:"Then",
+  count:"{d} of {n} done",
+  bringTitle:"What to bring",
+  confirmH:"Still to confirm",
+  confirmQ:"Ask",
+  tNote:"These are usual preparations, ordered around the date on your notice. The notice and the office decide what applies.",
+  tNoteTpl:"Processes differ a lot for this kind of notice, so this is general preparation without dates. Follow the notice itself.",
+  needDate:"No date yet — add one and the list will schedule itself.",
+  unknownH:"Time not set",
+  unknownSub:"Call first to get the time and place",
+  overdueH:"Overdue",
+  overdueSub:"Call first to check whether it can still be done",
+  daysLeft:"in {n} days",
+  isToday:"today",
+  isTomorrow:"tomorrow",
+  print:"Print and take it",
+  copy:"Send to family",
+  read:"Read this aloud",
+  readStop:"Stop reading",
+  more:"Also",
+  ics:"Add to phone calendar",
+  link:"Copy a link for family",
+  save:"Save on this device",
+  clear:"Clear my data",
+  saved:"Saved in this browser",
+  edit:"Wrong date, place or number? Go back and change it.",
+  editBtn:"Edit details",
+  bannerDemo:"This is an example — change anything.",
+  dismiss:"Got it",
+  fromFamily:"Your family filled this in for you",
+  icsDone:"Calendar file downloaded — open it to import", icsNoDate:"No set date yet; confirm the time first",
+  linkCopied:"Link copied — send it to your family", linkFile:"Shareable links need a hosted page; this is a local file",
+  copyOk:"Copied — paste it into WeChat", copyFail:"Copy failed — long-press the text below",
+  saveToast:"Saved on this device", clearToast:"Local data cleared",
+  cTitle:"Before you call, have these lines ready",
+  cSub:"Read them out. The other side is a person; nothing to be nervous about.",
+  cOpenK:"Line one: why you are calling", cAskK:"Then ask these five questions", cRead:"Read this page aloud", cPrint:"Print this page",
+  cAnsK:"What they may ask, and what you can say", cWriteK:"Notes while you call",
+  cWriteHint:"Print this page and use a pen. Do not rely on memory during a call.",
+  sTitle:"First: is this a scam?",
+  sSub:"Five questions. If any answer is yes, stop.",
+  yes:"Yes", no:"No",
+  sBad:"Stop. This is how a classic scam works. Hang up, call back on the official number, tell your family first: no transfer, no links, no codes.",
+  sGood:"No classic red flags. Anything involving a transfer still needs a callback on the official number.",
+  sTmp:"{n} of 5 answered.",
+  sReset:"Check again",
+  hpTitle:"In these situations, talk to a person",
+  hpSub:"A list can organise the work. It cannot make the decision.",
+  hpK1:"Stop and find someone", hpK2:"Who to contact",
+  hpNote:"If a decision makes you feel rushed, it probably should not be made today. Go home; come back tomorrow.",
+  foot1:"明白 · paperwork, plain", foot2:"v4.0 · 2026",
+  timeL:"Time",
+  pTitle:"Paste the notice",
+  pSub:"Paste an SMS or chat text, or type out a paper notice. Check each result against the original.",
+  pLab:"The notice text",
+  pEx:"Try one:",
+  pEx1:"Care assessment", pEx2:"Insurance claim", pEx3:"Hardship grant",
+  pGo:"Sort it out",
+  pClear:"Clear",
+  pType:"No text? Pick a type instead",
+  pFine:"Recognition runs on this device only; nothing is uploaded. Fix anything it got wrong, add anything it missed.",
+  pEmpty:"Paste the notice first, then choose \"Sort it out\". Or try an example above.",
+  dTitle:"What it found",
+  dFound:"{n} found — please check",
+  dNoneType:"Could not tell which kind of notice this is. Pick a type below — no need to paste again.",
+  dNoneDate:"No date found. Add it here, or leave it empty and call to ask.",
+  dType:"What is this about",
+  dTypeHint:"Guessed; change it if wrong",
+  dPickType:"Pick the type first.",
+  dPick:"Choose",
+  dDtype:"On the notice, the date is",
+  dDate:"Date", dDateHint:"Check the date. If the notice omits the year, the date is left blank; leave it blank if unsure.",
+  dTime:"Time", dTimeHint:"e.g. 9:30 am (optional)",
+  dPlace:"Place", dPlaceHint:"Which centre, floor, counter",
+  dPhone:"Phone", dPhoneHint:"The number on the notice (optional)",
+  dMats:"Papers to bring", dMatsHint:"Tap × to remove; add anything it missed",
+  dMatAdd:"Add a paper", dAdd:"Add", dMatDel:"Remove",
+  dMatLong:"One item at a time, up to 18 characters.",
+  dMatNone:"No papers found. Prepare what is usual for this type, or call and ask.",
+  dMiss:"Not found: {list}. Call and ask, or leave it empty and fill it in yourself.",
+  dMissItems:["date","place","phone","papers"],
+  dMake:"Build my list",
+  dCheck:"Compare date, time, place, phone and papers with the original. The tool can miss or misread details; leave uncertain fields blank and ask the office.",
+  dBack:"Paste again",
+  dNote:"If the date is close, confirm three things by phone: what to bring, what time, and whether someone can go for you.",
+  dFoundToast:"{n} found — check, then build the list.",
+  fromNotice:"Built from the notice you pasted — check the date and papers.",
+  callNow:"Call this number",
+  copyPhone:"Copy number", phoneCopied:"Number copied",
+  noPhone:"No phone number on the notice. Call 12345, or ask at the counter.",
+  callScript:"What to say when you call",
+  bringCount:"{d} of {n} packed", bringGap:"{n} still to pack", bringAll:"All packed",
+  bringSrc:"from the notice",
+  bringHint:"Tick these before you leave. Items from the notice come first; the rest are usual additions for this kind of errand.",
+  status:{ok:"Stated",sug:"Suggested",ask:"To confirm"},
+  askInline:"The notice may not say this; call to confirm first.",
+  overdueInline:"This date has passed. Call first to check.",
+  noWhen:"Scheduled once the date is confirmed",
+  weekday:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+  vTitle:"Reading", vVoice:"Voice", vRate:"Speed", slow:"Slow", normal:"Normal", fast:"Faster", noVoice:"No voice on this device",
+  printKicker:"Things to do · print and take it with you",
+  printFine:"Built from the notice you pasted. The notice and the office decide what applies.",
+  printA:"What to bring", printB:"What to do", printC:"What to ask", printD:"Notes",
+  printE:"Scam check", printF:"Family phone",
+  printWarn:"If anyone asks you to transfer money, share a code or click a link: hang up and call the official number.",
+  printFoot:"Photograph this sheet after the visit.",
+  copyHeader:"[Things to do] ", copyDue:"When: ", copyWhere:"Where: ", copyTel:"Phone: ", copyToDo:"To do:", copyAsk:"To ask:",
+  about:`<h4>The problem</h4><p>Paperwork rarely fails because people cannot read. It fails because documents are missing, the order is forgotten, or a decision is made under pressure. So this tool does not explain policy. It gives three usable things: a dated list, a phone script, and a sheet you can print and write on.</p>
+<h4>How the notice becomes a list</h4><p>You paste the notice text. The page pulls out the date, time, place, phone number and papers using a set of rules that run on this device, then orders them the way this kind of errand usually goes. Nothing is sent anywhere. Every field it finds is shown for you to check; correct it or add what is missing.</p>
+<h4>Why every item has a status</h4><p>The rules read words, they do not understand policy. Each item is marked stated / suggested / to confirm — a reminder to check the original, not a rule.</p>
+<h4>Visual basis</h4><p>Follows China's MIIT accessibility guidance: no shadows, perspective or textures; body text from 18px up to 25px; contrast at or above 4.5:1; targets at least 44px; one primary button and one example on the home screen.</p>
+<h4>What it refuses to do</h4><ul><li>Does not decide eligibility or give medical, medication or legal advice</li><li>Does not send the notice or what you type anywhere, and stores nothing on a server</li><li>Is not a networked AI: recognition is local rules, so it can miss or misread. The notice wins.</li><li>Does not decide for you, and does not replace the counter or the doctor</li></ul>
+<h4>Known limits</h4><p>Covers ten common kinds of notice; unusual wording may be missed; the order is common practice, not official procedure; voice depends on the device; family links need a hosted page; no usability testing with real users yet.</p>`
+}};
+
+/* ---------------- scenarios ---------------- */
+const SCEN = {
+care:{
+  full:true,
+  zh:{name:"照护评估", short:"长期护理 / 失能评估", sum:"要你去做一次评估，或者通知你评估结果。", bring:["病历","用药清单","身份证","医保卡"], who:"社区服务中心 / 长护险经办机构",
+    steps:[{t:"确认评估的时间和地点",h:"通知上写了就抄下来；没写就打电话问",status:"ask"},
+           {t:"准备最近一年的病历和用药清单",h:"正在吃的药，连药名和剂量一起记"},
+           {t:"请家人陪同，写下三件「现在做不了」的事",h:"比如洗澡、做饭、一个人出门"},
+           {t:"带齐材料去评估",h:"把材料装进一个袋子，放在门口"}],
+    tasks:[{t:"确认评估的时间和地点",hint:"从通知上抄到这张清单上；没写就打电话问。",status:"ask",when:"today"},
+           {t:"准备最近一年的病历和用药清单",hint:"把正在吃的药盒拍照，或者把药名和剂量抄下来。",when:"d3"},
+           {t:"请家人陪同，并写下三件「现在做不了」的事",hint:"比如洗澡、做饭、一个人出门。写具体的事，不写「不方便」。",when:"d2"},
+           {t:"提前一天把材料装进一个袋子",hint:"病历、用药清单、身份证、医保卡，放在门口。",when:"d1"},
+           {t:"评估当天：把困难一条一条说清楚",hint:"说不清就说「这件事我做不了」，不需要解释原因。",when:"due"},
+           {t:"结束后：记下结论和下一步",hint:"问清楚：结果什么时候出、下一步找谁。",status:"ask",when:"due"}]},
+  en:{name:"Care assessment", short:"Long-term care assessment", sum:"Asks you to attend an assessment, or reports its result.", bring:["Medical records","Medication list","ID card","Insurance card"], who:"Community service centre / long-term care office",
+    steps:[{t:"Confirm the time and place",h:"Copy it from the notice; if missing, call",status:"ask"},
+           {t:"Gather the last year of records and medicines",h:"Note the names and doses you take"},
+           {t:"Ask a family member to come; write down three things you can no longer do",h:"Bathing, cooking, going out alone"},
+           {t:"Take the documents to the assessment",h:"One bag, left by the door"}],
+    tasks:[{t:"Confirm the time and place of the assessment",hint:"Copy it onto this list; call if the notice does not say.",status:"ask",when:"today"},
+           {t:"Gather the last year of records and a medication list",hint:"Photograph the boxes, or write down names and doses.",when:"d3"},
+           {t:"Ask a family member to come, and write down three things you can no longer do",hint:"Bathing, cooking, going out alone. Name the task, not \"it is difficult\".",when:"d2"},
+           {t:"The day before, put everything in one bag",hint:"Records, medication list, ID, insurance card — by the door.",when:"d1"},
+           {t:"On the day: state each difficulty, one at a time",hint:"If stuck, say \"I cannot do this any more\". No explanation needed.",when:"due"},
+           {t:"Afterwards: note the result and the next step",hint:"Ask when the result comes, and who to contact next.",status:"ask",when:"due"}]}
+},
+pension:{
+  full:true,
+  zh:{name:"养老金 / 退休金", short:"金额或发放时间有变化", sum:"告诉你每月发多少、从哪个月开始变。", bring:["身份证","社保卡","通知原件"], who:"当地社保中心 / 养老金经办窗口",
+    tasks:[{t:"核对通知金额和到账记录",hint:"打开手机银行或存折，对这一笔；差多少写在这张纸上。",status:"ask",when:"today"},
+           {t:"把通知、身份证、社保卡装进一个袋子",hint:"袋子放门口，出门不找。",when:"d3"},
+           {t:"写下要问的两个问题：怎么算的、哪天到账",hint:"写下来，窗口人多时不慌。",when:"d2"},
+           {t:"提前一天确认窗口办公时间",hint:"中午是否休息、周末是否开门。",when:"d1"},
+           {t:"办完记下答复和下次时间",hint:"谁说的、说了什么、下一步找谁。",when:"due"}]},
+  en:{name:"Pension", short:"Amount or payment date changed", sum:"How much is paid each month, and when a change starts.", bring:["ID card","Social security card","The original notice"], who:"Local pension office",
+    tasks:[{t:"Compare the notice with your bank record",hint:"Check the payment; write any difference on this sheet.",status:"ask",when:"today"},
+           {t:"Put the notice, ID and social security card in one bag",hint:"Leave the bag by the door.",when:"d3"},
+           {t:"Write down two questions: how it is worked out, which day it arrives",hint:"Written down, so the counter queue does not fluster you.",when:"d2"},
+           {t:"Check the opening hours the day before",hint:"Lunch closure, weekend opening.",when:"d1"},
+           {t:"Afterwards, note the answer and the next step",hint:"Who said it, what was said, who to contact next.",when:"due"}]}
+},
+medical:{
+  full:true,
+  zh:{name:"医保报销", short:"哪些报了、哪些自付", sum:"告诉你哪些费用报了、哪些要自己付。", bring:["发票","费用清单","出院记录"], who:"医保经办窗口 / 医院医保办",
+    tasks:[{t:"看清自付金额和自费项目",hint:"把数字抄在这张纸上，别只记在心里。",status:"ask",when:"today"},
+           {t:"收齐发票、费用清单、出院记录",hint:"按通知上的清单一样一样对；缺的打电话问能不能补。",when:"d3"},
+           {t:"问清报销范围和要补的材料",hint:"哪些能报、哪些不能，还差什么。",status:"ask",when:"d2"},
+           {t:"把所有票据装进一个袋子，留一份复印件",hint:"原件交出去之前先拍照。",when:"d1"},
+           {t:"窗口提交，拿回执并问多久到账",hint:"记下受理号和查询电话。",when:"due"}]},
+  en:{name:"Medical reimbursement", short:"What is covered, what you pay", sum:"Which costs were covered, and which you pay yourself.", bring:["Receipts","Itemised bill","Discharge record"], who:"Medical insurance office / hospital billing desk",
+    tasks:[{t:"Read your share and the excluded items",hint:"Write the numbers on this sheet, not just in your head.",status:"ask",when:"today"},
+           {t:"Collect receipts, itemised bill and discharge record",hint:"Check them against the notice; call if one is missing.",when:"d3"},
+           {t:"Ask what is covered and what is still missing",hint:"What can be claimed, what cannot, what to add.",status:"ask",when:"d2"},
+           {t:"Put every paper in one bag; keep a copy",hint:"Photograph the originals before handing them over.",when:"d1"},
+           {t:"Hand it in, get a receipt, ask when it arrives",hint:"Note the reference number and the query line.",when:"due"}]}
+},
+meds:{
+  full:true,
+  zh:{name:"用药调整", short:"药或剂量有变化", sum:"医生改了药或剂量。确认，但不要自己改。", bring:["现在的药盒","新旧药单"], who:"开药的医生 / 医院药师",
+    tasks:[{t:"把新旧药盒摆在一起，对一遍药名和剂量",hint:"不一样的写在纸上；不确定的圈出来。",status:"ask",when:"today"},
+           {t:"列出正在吃的全部药（包括保健品）",hint:"药名、剂量、一天几次，照药盒抄。",when:"d3"},
+           {t:"写下要问的三个问题：为什么换、怎么吃、何时复查",hint:"见面时照着念，不漏。",when:"d2"},
+           {t:"带上药盒和药单去见医生或药师",hint:"照片也可以，但带实物最清楚。",when:"d1"},
+           {t:"看完病记下怎么吃、下次什么时候来",hint:"写在药盒上，或者贴冰箱。",when:"due"}]},
+  en:{name:"Medication change", short:"A medicine or dose changed", sum:"A medicine or dose has changed. Confirm it, but do not adjust it yourself.", bring:["Current boxes","Old and new lists"], who:"Prescribing doctor / pharmacist",
+    tasks:[{t:"Put the old and new boxes side by side and compare",hint:"Write differences on paper; circle anything unclear.",status:"ask",when:"today"},
+           {t:"List every medicine you take, including supplements",hint:"Name, dose, times a day — copy from the boxes.",when:"d3"},
+           {t:"Write three questions: why, how to take it, when to review",hint:"Read them out at the appointment so nothing is missed.",when:"d2"},
+           {t:"Take the boxes and the list with you",hint:"Photos help, but the boxes are clearest.",when:"d1"},
+           {t:"Afterwards, note how to take it and the next visit",hint:"Write it on the box, or stick it on the fridge.",when:"due"}]}
+},
+discharge:{
+  full:true,
+  zh:{name:"出院 / 住院", short:"回家后要做什么", sum:"住院结束后的总结，以及回家后要做什么。", bring:["出院小结","出院带药","身份证"], who:"主治医生 / 社区护士",
+    tasks:[{t:"把出院小结读一遍，圈出复诊日期",hint:"找不到就问护士站。",status:"ask",when:"today"},
+           {t:"按出院带药清点一遍药",hint:"数数量，看吃法，记下吃完怎么办。",when:"d3"},
+           {t:"写下要问医生的三件事：伤口、饮食、什么情况要回医院",hint:"写具体，别只写「注意身体」。",when:"d2"},
+           {t:"把出院小结、药、身份证装进一个袋子",hint:"复诊时直接带走。",when:"d1"},
+           {t:"复诊或联系社区护士，记下答复",hint:"下次复查时间、找谁换药。",when:"due"}]},
+  en:{name:"Hospital stay / discharge", short:"What to do at home", sum:"A summary after a hospital stay, and what to do at home.", bring:["Discharge summary","Take-home medicines","ID card"], who:"Treating doctor / community nurse",
+    tasks:[{t:"Read the discharge summary and circle the follow-up date",hint:"Ask the nurses' station if it is not there.",status:"ask",when:"today"},
+           {t:"Count the take-home medicines",hint:"How many, how to take, what to do when they run out.",when:"d3"},
+           {t:"Write three things to ask: wound, food, when to go back",hint:"Be specific, not just \"take care\".",when:"d2"},
+           {t:"Put the summary, medicines and ID in one bag",hint:"Ready to take to the follow-up.",when:"d1"},
+           {t:"At the follow-up or nurse call, note the answer",hint:"Next review date, who changes the dressing.",when:"due"}]}
+},
+referral:{
+  full:true,
+  zh:{name:"社区照护转介", short:"日间照料 / 上门服务", sum:"转介到社区服务，比如日间照料或上门服务。", bring:["评估结果","身份证","医保卡"], who:"社区服务中心 / 社工",
+    tasks:[{t:"确认机构和联系人",hint:"记下名字和电话，别只记「社区」。",status:"ask",when:"today"},
+           {t:"准备评估结果、身份证、医保卡",hint:"缺材料先问社工能不能补。",when:"d3"},
+           {t:"写下最想先解决的两件事",hint:"比如洗澡、做饭、一个人出门。写具体的事。",when:"d2"},
+           {t:"打电话约第一次时间",hint:"约好日期、几点、谁接待。",status:"ask",when:"d1"},
+           {t:"服务后记下感受和下次时间",hint:"合适就继续，不合适就直说。",when:"due"}]},
+  en:{name:"Community care referral", short:"Day care or home help", sum:"A referral to community services such as day care or home help.", bring:["Assessment result","ID card","Insurance card"], who:"Community service centre / social worker",
+    tasks:[{t:"Confirm the office and the contact person",hint:"Write the name and number, not just \"the centre\".",status:"ask",when:"today"},
+           {t:"Prepare the assessment result, ID and insurance card",hint:"Ask the social worker if anything is missing.",when:"d3"},
+           {t:"Write the two things you most want help with",hint:"Bathing, cooking, going out alone — name the task.",when:"d2"},
+           {t:"Call and agree the first time",hint:"Date, time, who will meet you.",status:"ask",when:"d1"},
+           {t:"After the visit, note how it went and the next time",hint:"Keep it if it helps; say so if it does not.",when:"due"}]}
+},
+aid:{
+  full:true,
+  zh:{name:"低保 / 困难救助", short:"低保、临时救助、困难补助", sum:"申请或复核低保、临时救助、困难补助。", bring:["户口本","身份证","低保证","收入证明"], who:"街道 / 社区服务中心 民政窗口",
+    tasks:[{t:"读通知，把要交的证明抄下来",hint:"抄成一张清单，交一样划掉一样。",status:"ask",when:"today"},
+           {t:"准备户口本、身份证、低保证、收入证明",hint:"缺的先去社区问能不能后补。",when:"d3"},
+           {t:"写一段家里的困难情况，写具体",hint:"几口人、谁生病、每月固定花多少。不用写得多，写清楚就行。",when:"d2"},
+           {t:"材料装进一个袋子，复印一份留底",hint:"原件交出去之前先拍照。",when:"d1"},
+           {t:"到窗口提交，问公示时间和结果查询",hint:"拿好回执，记下受理人。",when:"due"}]},
+  en:{name:"Hardship grant / low-income support", short:"Low-income, emergency or hardship support", sum:"Applying for, or renewing, low-income or hardship support.", bring:["Household register","ID card","Low-income certificate","Proof of income"], who:"Street office / community centre, civil affairs desk",
+    tasks:[{t:"Read the notice and copy out the documents it asks for",hint:"Make one list; cross off each as you pack it.",status:"ask",when:"today"},
+           {t:"Prepare the household register, ID, certificate and income proof",hint:"Ask at the community desk whether missing items can follow.",when:"d3"},
+           {t:"Write a short, concrete account of your situation",hint:"How many people, who is ill, fixed monthly costs. Short and clear is enough.",when:"d2"},
+           {t:"Put the papers in one bag; keep copies",hint:"Photograph the originals before handing them over.",when:"d1"},
+           {t:"Submit at the desk; ask when it is published and how to check",hint:"Keep the receipt and the officer's name.",when:"due"}]}
+},
+disability:{
+  full:true,
+  zh:{name:"残疾证 / 残联", short:"评定、换证、补贴", sum:"残疾评定、换证，或者残联的补贴和服务。", bring:["残疾证","身份证","证件照","诊断证明"], who:"残联 / 指定评定医院",
+    tasks:[{t:"确认通知要办的是哪一项",hint:"评定、换证、补贴，材料不一样。",status:"ask",when:"today"},
+           {t:"准备残疾证、身份证、证件照、诊断证明",hint:"照片尺寸和底色按通知要求。",when:"d3"},
+           {t:"写下要问的问题：评定流程、有效期、补贴",hint:"写下来，到窗口照着问。",when:"d2"},
+           {t:"材料装进一个袋子",hint:"原件和复印件分开放。",when:"d1"},
+           {t:"到残联或指定医院办理，记下回执",hint:"下次什么时候来、找谁问结果。",when:"due"}]},
+  en:{name:"Disability certificate / federation", short:"Assessment, renewal or allowance", sum:"A disability assessment, renewal, or support from the disability federation.", bring:["Disability certificate","ID card","Passport photos","Medical certificate"], who:"Disability federation / designated assessment hospital",
+    tasks:[{t:"Confirm which item the notice is about",hint:"Assessment, renewal or allowance — different papers for each.",status:"ask",when:"today"},
+           {t:"Prepare the certificate, ID, photos and medical proof",hint:"Check the photo size and background on the notice.",when:"d3"},
+           {t:"Write down questions: process, validity, allowance",hint:"So you can read them at the counter.",when:"d2"},
+           {t:"Put the papers in one bag",hint:"Originals and copies in separate pockets.",when:"d1"},
+           {t:"Go to the federation or hospital; keep the receipt",hint:"Note when to return and who to ask for the result.",when:"due"}]}
+},
+card:{
+  full:true,
+  zh:{name:"社保卡 / 医保卡", short:"换卡、激活、挂失", sum:"换卡、领卡、激活，或者卡出了问题。", bring:["身份证","旧社保卡","通知原件"], who:"社保卡服务窗口 / 合作银行",
+    tasks:[{t:"确认要办的是哪一项",hint:"领卡、换卡、激活、挂失，先分清。",status:"ask",when:"today"},
+           {t:"找出身份证和旧社保卡",hint:"旧卡先别扔，可能还要用。",when:"d3"},
+           {t:"写下要问的问题：怎么激活、余额怎么办、挂失电话",hint:"三句话，窗口一次问完。",when:"d2"},
+           {t:"确认去哪个窗口或哪家银行",hint:"通知上写了就抄下来；没写就打 12333 问。",status:"ask",when:"d1"},
+           {t:"办完当场试一次，记下挂失电话",hint:"能刷、能查，才算办完。",when:"due"}]},
+  en:{name:"Social security / insurance card", short:"Replace, activate or report lost", sum:"Replacing, collecting or activating a card, or a problem with the card.", bring:["ID card","Old card","The original notice"], who:"Social security card desk / partner bank",
+    tasks:[{t:"Confirm which item it is",hint:"Collect, replace, activate or report lost.",status:"ask",when:"today"},
+           {t:"Find your ID and the old card",hint:"Do not throw the old card away yet.",when:"d3"},
+           {t:"Write three questions: activation, balance, lost-card line",hint:"Ask all three at the counter.",when:"d2"},
+           {t:"Confirm which desk or bank to go to",hint:"Copy it from the notice; if absent, call 12333.",status:"ask",when:"d1"},
+           {t:"Test the card there and then; note the lost-card number",hint:"It is only done when it pays and checks.",when:"due"}]}
+},
+service:{
+  full:true,
+  zh:{name:"助餐助浴 / 适老化改造", short:"上门服务、装扶手", sum:"社区助餐、助浴、上门服务，或者家里装扶手。", bring:["身份证","评估结果","医保卡"], who:"社区服务中心 / 服务商 / 社工",
+    tasks:[{t:"确认服务项目和联系人",hint:"记下机构名字和电话，别只记「社区」。",status:"ask",when:"today"},
+           {t:"准备身份证和评估结果",hint:"缺材料先问社工能不能补。",when:"d3"},
+           {t:"写下家里最需要改的两处",hint:"比如卫生间扶手、门槛、洗澡的椅子。写具体。",when:"d2"},
+           {t:"打电话约上门时间",hint:"约好哪天、几点、谁在家。",status:"ask",when:"d1"},
+           {t:"服务后记下费用和下次时间",hint:"合适就继续，不合适就直说。",when:"due"}]},
+  en:{name:"Meals, bathing help, home adaptation", short:"Home visits, grab bars", sum:"Community meals, bathing help, home visits, or grab bars at home.", bring:["ID card","Assessment result","Insurance card"], who:"Community service centre / provider / social worker",
+    tasks:[{t:"Confirm the service and the contact person",hint:"Write the name and number, not just \"the centre\".",status:"ask",when:"today"},
+           {t:"Prepare your ID and the assessment result",hint:"Ask the social worker if anything is missing.",when:"d3"},
+           {t:"Write the two most needed changes at home",hint:"Bathroom grab bar, doorstep, a chair for bathing. Be specific.",when:"d2"},
+           {t:"Call and agree the home visit",hint:"Day, time, who will be at home.",status:"ask",when:"d1"},
+           {t:"After the visit, note the cost and the next time",hint:"Keep it if it helps; say so if it does not.",when:"due"}]}
+}
+};
+
+const Q = [
+  {zh:"通知上写的具体要求是什么？",en:"What exactly does the notice require?"},
+  {zh:"时间、地点是哪一天、在哪里？",en:"When and where is it?"},
+  {zh:"我需要带哪些材料？",en:"Which documents do I need to bring?"},
+  {zh:"办公时间是几点到几点？",en:"What are your opening hours?"},
+  {zh:"可以请家人代办吗？要什么委托材料？",en:"Can a family member act for me? What authorisation is needed?"}
+];
+const CALLANS = [
+  {zh:["请说一下身份证号","我手边有身份证。号码我在窗口当面提供，电话里先不念。"],en:["Could you give me your ID number?","I have it with me. I will show it at the counter rather than read it over the phone."]},
+  {zh:["您是本人吗？","是本人。需要的话我可以带身份证到窗口。"],en:["Are you the person concerned?","Yes. I can bring my ID to the counter if needed."]},
+  {zh:["您具体要办哪一项？","我要办的是通知上写的那一项，名字我照着念给您。"],en:["Which item exactly?","The one named in the notice. Let me read the name to you."]},
+  {zh:["您方便什么时候来？","我可以在通知写的时间前来。具体哪天请您帮我确认。"],en:["When can you come?","I can come before the time on the notice. Please confirm which day."]}
+];
+const WRITE = [{zh:"对方姓名 / 工号",en:"Name / staff number"},{zh:"还要补什么材料",en:"Documents still missing"},{zh:"下次时间、地点",en:"Next time and place"}];
+const SCAMQ = [{zh:"对方让你把钱转到“安全账户”，或取现金交给某个人？",en:"Move money to a \"safe account\", or hand cash to someone?"},
+  {zh:"对方让你点一个链接、下载 App，或者共享手机屏幕？",en:"Click a link, install an app, or share your screen?"},
+  {zh:"对方说“不要告诉家人”，或者催你“今天必须办完”？",en:"\"Don't tell your family\", or \"finish today\"?"},
+  {zh:"对方自称社保、医保、公安或银行，却让你用手机银行操作？",en:"Claims to be an agency or bank, but wants you in your banking app?"},
+  {zh:"对方要你念短信验证码、银行卡密码，或拍身份证正反面？",en:"Asks for an SMS code, a card PIN, or photos of your ID?"}];
+const HELP = {
+  zh:{list:["涉及用药、剂量、副作用 → 医生或药师","涉及诊断、检查结果 → 医生","金额、资格、申诉 → 经办窗口或社工","有人催你转账、要验证码 → 先挂断，再核实"],
+      who:["社区服务中心：社工可以陪同办理，也能帮你填表","医院社工部 / 医务社工","当地政务服务热线（如 12345；社保 12333）","家人或信任的邻居，一起去"]},
+  en:{list:["Medication, dose or side effects → doctor or pharmacist","Diagnosis or test results → doctor","Amounts, eligibility or appeals → the counter officer or a social worker","Someone rushing you to pay or share a code → hang up, then verify"],
+      who:["Community service centre: a social worker can go with you","Hospital medical social work department","The local government hotline (e.g. 12345)","A family member or trusted neighbour, to come along"]}
+};
+
+/* ---------------- state ---------------- */
+const $ = id => document.getElementById(id);
+let lang = ((navigator.language||"zh").toLowerCase().startsWith("zh")) ? "zh" : "en";
+function freshState(){
+  return { scen:"care", dtype:"unknown", date:"", time:"", place:"", phone:"", materials:[], bring:{},
+           known:{}, checks:{}, scam:{}, fromFamily:false, voice:"", rate:0.92, demo:false, banner:null };
+}
+let state = freshState();
+let hadLocal = false, resumeDismissed = false, pending = null, editingExisting = false, choosingTopic = false, wizardStep = 0;
+const t = k => T[lang][k];
+const S = () => SCEN[state.scen][lang];
+const full = () => !!SCEN[state.scen].full;
+const pad2 = n => String(n).padStart(2, "0");
+
+function toast(m){ const el=$("toast"); el.textContent=m; el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),2800); }
+const THEME_KEY="mingbai.theme";
+const THEMES=["clay","ocean","forest","plum"];
+function setTheme(value,remember=true){
+  const choice=THEMES.includes(value)?value:"clay"; document.documentElement.dataset.theme=choice;
+  document.querySelectorAll("[data-theme-choice]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.themeChoice===choice)));
+  updateThemeLabel();
+  if(remember){try{localStorage.setItem(THEME_KEY,choice)}catch(e){}}
+}
+function updateThemeLabel(){ const choice=document.documentElement.dataset.theme||"clay"; const names=lang==="zh"?{clay:"暖红",ocean:"海蓝",forest:"松绿",plum:"梅紫"}:{clay:"Warm red",ocean:"Ocean blue",forest:"Pine green",plum:"Plum"}; $("theme-summary").textContent=lang==="zh"?"配色："+names[choice]+"（点击更换）":"Colour: "+names[choice]+" (change)"; }
+function restoreTheme(){let value="clay";try{value=localStorage.getItem(THEME_KEY)||"clay"}catch(e){}setTheme(value,false);}
+function setLang(l){ lang=l; document.documentElement.lang=(l==="zh"?"zh-CN":"en"); $("lzh").setAttribute("aria-pressed",l==="zh"); $("len").setAttribute("aria-pressed",l==="en"); paint(); }
+function setSize(v,btn){
+  if(v) document.documentElement.dataset.fs=v; else document.documentElement.removeAttribute("data-fs");
+  document.querySelectorAll(".controls [data-sz]").forEach(b=>b.setAttribute("aria-pressed","false"));
+  if(btn) btn.setAttribute("aria-pressed","true");
+}
+function go(v){
+  ["home","paste","letter","tasks","call","scam","help"].forEach(x=>{ $("v-"+x).hidden=(x!==v); });
+  if(v!=="tasks") $("printsheet").innerHTML="";
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+  const h=$("v-"+v).querySelector("h1"); if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
+  if(v==="home"){ if(!loadLocal()) state=freshState(); state.demo=false; renderResume(); }
+}
+function colon(){ return lang==="zh" ? "：" : ": "; }
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmtDate(d){ return lang==="zh" ? d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日" : d.getDate()+" "+MONTHS[d.getMonth()]+" "+d.getFullYear(); }
+function fmtWeekday(d){ return t("weekday")[d.getDay()]; }
+
+/* ---------------- paint ---------------- */
+function captureForm(){
+  // only capture while the user is actually editing the letter form
+  if($("v-letter").hidden || $("l-form").hidden) return;
+  if(state.dtype!=="unknown"){ const dv=$("f-date"); if(dv) state.date=dv.value||""; }
+  const tv=$("f-time"); if(tv) state.time=tv.value.trim();
+  const pv=$("f-place"); if(pv) state.place=pv.value.trim();
+  const hv=$("f-phone"); if(hv) state.phone=hv.value.trim();
+}
+function paint(){
+  captureForm();
+  document.title = lang==="zh" ? "明白 · 把通知贴进来，变成一张能带走的清单。" : "明白 · Paste the notice in, walk out with one sheet.";
+  $("tag").textContent=t("tag");
+  const w=lang==="zh"?{k:"明白 · 办事助手",title:"您好，我来帮您整理办事清单。",intro:"收到通知，不知道从哪里开始？我们一起把事情理清楚。",label:"先把通知给我看看",hint:"请粘贴短信或微信文字；纸质通知可以先输入文字。",inputLabel:"通知文字",submit:"下一步：核对信息",example:"没有现成的文字？先试试示例",privacy:"文字在这台设备上处理。请勿填写验证码或银行卡密码。",side:"接下来会做什么",s1:"先整理",d1:"从通知里找出时间、地点和材料。",s2:"再核对",d2:"识别可能出错，您可以修改或补充。",s3:"带走清单",d3:"勾选、打印，或分享给信任的家人。",note:"不确定的地方，可以留空后向经办机构询问。",mh:"没有通知文字？",md:"也可以选择要办的事，自己填写知道的信息。",mb:"按事项开始",help:"需要人帮忙或想先问清楚？"}:{k:"MINGBAI · ERRAND HELPER",title:"Hello, let’s make a checklist.",intro:"Have a notice and not sure where to begin? Let’s sort the details together.",label:"Start with the notice",hint:"Paste a text message or type out a paper notice.",inputLabel:"Notice text",submit:"Next: check the details",example:"No text handy? Try an example",privacy:"Text is processed on this device. Do not enter verification codes or bank passwords.",side:"WHAT HAPPENS NEXT",s1:"Organise",d1:"Find the time, place and papers in the notice.",s2:"Check",d2:"It can make mistakes. Correct or add details.",s3:"Take your list",d3:"Tick, print or share with someone you trust.",note:"If unsure, leave it blank and ask the office.",mh:"No notice text?",md:"Choose a topic and fill in what you know.",mb:"Choose a topic",help:"Need help or want to ask first?"};
+  [["ws-kicker",w.k],["ws-title",w.title],["ws-intro",w.intro],["notice-label",w.label],["notice-help",w.hint],["home-notice-label",w.inputLabel],["home-submit",w.submit],["home-example",w.example],["home-privacy",w.privacy],["side-label",w.side],["step1-title",w.s1],["step1-desc",w.d1],["step2-title",w.s2],["step2-desc",w.d2],["step3-title",w.s3],["step3-desc",w.d3],["side-note",w.note],["manual-heading",w.mh],["manual-desc",w.md],["manual-button",w.mb],["help-heading",w.help]].forEach(([id,value])=>$(id).textContent=value);
+  $("assistant-capability").textContent=lang==="zh"?"我用固定规则整理文字，可能认错或漏认；暂不能自由问答或替您办理。":"I use fixed rules and may miss or misread details. I cannot answer open-ended questions or complete errands for you.";
+  const pv=lang==="zh"?{label:"清单示意 · 不是识别结果",title:"办事便笺",caption:"整理好以后，您会得到这样一张清单。",time:"什么时候",timeValue:"核对通知后填写",place:"去哪里",placeValue:"核对地点和窗口",bring:"带什么",bringValue:"材料一项项核对",foot:"可以勾选、打印，也可以给家人看。"}:{label:"SAMPLE FORMAT · NOT A RESULT",title:"Your errand note",caption:"After checking the details, your checklist will look like this.",time:"When",timeValue:"Confirm from the notice",place:"Where",placeValue:"Check the office and counter",bring:"What to bring",bringValue:"Check each document",foot:"Tick it off, print it or share with family."};
+  [["preview-label",pv.label],["preview-title",pv.title],["preview-caption",pv.caption],["preview-time-label",pv.time],["preview-time-value",pv.timeValue],["preview-place-label",pv.place],["preview-place-value",pv.placeValue],["preview-bring-label",pv.bring],["preview-bring-value",pv.bringValue],["preview-foot",pv.foot]].forEach(([id,value])=>$(id).textContent=value);
+  $("quick-pension").textContent=lang==="zh"?"养老金 / 退休金":"Pensions"; $("quick-medical").textContent=lang==="zh"?"医保报销":"Insurance claims"; $("quick-care").textContent=lang==="zh"?"照护评估":"Care assessment";
+  $("home-notice").placeholder=lang==="zh"?"例如：请于11月20日前到社区服务中心办理……":"For example: Please visit the service centre before 20 November…";
+  $("h-tools").innerHTML=[["openCall","toolCall"],["openScam","toolScam"],["openHelp","toolHelp"]].map(x=>`<button onclick="${x[0]}()">${esc(t(x[1]))}</button>`).join("");
+  $("about-sum").textContent=t("aboutSum"); $("about-body").innerHTML=t("about");
+  $("sources-summary").textContent=lang==="zh"?"设计参考与来源":"Design references and sources";
+  $("sources-body").innerHTML=lang==="zh"?`<p>“明白”的分步引导和结果核对方式参考了以下英国公共服务与老年服务资源：</p><ul><li><a href="https://design-system.service.gov.uk/patterns/question-pages/" target="_blank" rel="noopener noreferrer">GOV.UK Design System：Question pages（提问页面）</a>：参考逐步提问、返回修改和避免重复填写的设计思路。</li><li><a href="https://www.ageuk.org.uk/information-advice/money-legal/benefits-entitlements/benefits-calculator/" target="_blank" rel="noopener noreferrer">Age UK：Benefits calculator（福利计算器）</a>：参考说明工具结果的局限、提示向有关机构确认的做法。</li><li><a href="https://www.ageuk.org.uk/information-advice/" target="_blank" rel="noopener noreferrer">Age UK：Information and advice（信息与建议）</a>：参考按生活事项组织入口和提供求助渠道。</li><li><a href="https://www.w3.org/WAI/older-users/" target="_blank" rel="noopener noreferrer">W3C：Older Users and Web Accessibility（老年用户与网页无障碍）</a>：参考文字对比、字号与易点击控件的建议。</li></ul><p>这些资料是设计参考，不是中国办事政策依据。具体要求以通知原文和当地经办机构确认为准。</p>`:`<p>Mingbai's guided questions and result-checking approach draw on these UK public and older-adult service resources:</p><ul><li><a href="https://design-system.service.gov.uk/patterns/question-pages/" target="_blank" rel="noopener noreferrer">GOV.UK Design System: Question pages</a>: ideas for step-by-step questions, going back and avoiding repeated entry.</li><li><a href="https://www.ageuk.org.uk/information-advice/money-legal/benefits-entitlements/benefits-calculator/" target="_blank" rel="noopener noreferrer">Age UK: Benefits calculator</a>: explaining the limits of a result and checking with the relevant organisation.</li><li><a href="https://www.ageuk.org.uk/information-advice/" target="_blank" rel="noopener noreferrer">Age UK: Information and advice</a>: organising topics around everyday needs and signposting help.</li><li><a href="https://www.w3.org/WAI/older-users/" target="_blank" rel="noopener noreferrer">W3C: Older Users and Web Accessibility</a>: guidance on contrast, text size and usable controls.</li></ul><p>These are design references, not sources of Chinese administrative requirements. Check the original notice and the local office.</p>`;
+
+  updateThemeLabel();
+  $("theme-description").textContent=lang==="zh"?"选择一种配色；选择只保存在此浏览器。":"Choose a colour theme; your choice stays in this browser.";
+  $("theme-clay").textContent=lang==="zh"?"暖红":"Warm red"; $("theme-ocean").textContent=lang==="zh"?"海蓝":"Ocean blue"; $("theme-forest").textContent=lang==="zh"?"松绿":"Pine green"; $("theme-plum").textContent=lang==="zh"?"梅紫":"Plum";
+  $("size-label").textContent=t("sizeLabel");
+  $("sz0").textContent=t("sizeStd"); $("sz1").textContent=t("sizeLg"); $("sz2").textContent=t("sizeXl");
+  const szLabels=lang==="zh"?["标准字号","大字号","特大字号"]:["Standard text size","Large text size","Extra large text size"];
+  document.querySelectorAll(".controls [data-sz]").forEach((b,i)=>b.setAttribute("aria-label",szLabels[i]));
+  $("lzh").setAttribute("aria-label","中文"); $("len").setAttribute("aria-label","English");
+  document.querySelectorAll(".back-t").forEach(b=>b.textContent=t("back"));
+  $("foot1").textContent=t("foot1"); $("foot2").textContent=t("foot2");
+
+  // letter
+  $("l-title").textContent=t("lTitle");
+  $("l-sub").textContent=t("lSub");
+  $("l-note").textContent=t("lNote");
+  $("f-date-k").textContent=t("fDateK");
+  $("f-known-k").textContent=t("fKnownK");
+  $("f-known-h").textContent=t("fKnownH");
+  $("f-place-k").textContent=t("fPlaceK");
+  $("f-date-l").textContent=t("fDateL");
+  $("f-date-h").textContent=t("fDateH");
+  $("f-time-l").textContent=t("timeL");
+  $("f-time-h").textContent=t("dTimeHint");
+  $("f-time").placeholder=t("dTimeHint");
+  $("f-place-l").textContent=t("placeL");
+  $("f-phone-l").textContent=t("phoneL");
+  $("f-place-h").textContent=t("placeH");
+  $("f-phone-h").textContent=t("phoneH");
+  $("f-go").textContent=t("go"); $("f-skip").textContent=t("skip");
+  $("f-place").setAttribute("aria-label",t("placeL"));
+  $("f-phone").setAttribute("aria-label",t("phoneL"));
+
+  // paste
+  $("p-title").textContent=(!$("p-result").hidden&&pending)?t("dTitle"):t("pTitle");
+  $("p-original-summary").textContent=lang==="zh"?"查看或修改通知原文":"View or edit the original notice";
+  $("p-sub").textContent=(!$("p-result").hidden&&pending)?(lang==="zh"?"请对照原文逐项核对，错误可以修改，不确定的可以留空。":"Compare each detail with the original. Correct mistakes or leave uncertain fields blank."):t("pSub");
+  $("p-lab").textContent=t("pLab");
+  $("p-text").setAttribute("aria-label",t("pLab"));
+  $("p-ex").textContent=t("pEx");
+  $("p-ex1").textContent="「"+t("pEx1")+"」";
+  $("p-ex2").textContent="「"+t("pEx2")+"」";
+  $("p-ex3").textContent="「"+t("pEx3")+"」";
+  $("p-go").textContent=t("pGo");
+  $("p-clear").textContent=t("pClear");
+  $("p-template").textContent=t("pType");
+  $("p-fine").textContent=t("pFine");
+
+  // tasks
+  $("t-list-h").textContent=t("listH");
+  $("t-bring-h").textContent=t("bringTitle");
+  $("t-confirm-h").textContent=t("confirmH");
+  $("t-print").textContent=t("print");
+  $("t-copy").textContent=t("copy");
+  $("t-read").textContent=t("read");
+  $("t-more").textContent=t("more");
+  $("t-ics").textContent=t("ics");
+  $("t-link").textContent=t("link");
+  $("t-save").textContent=t("save");
+  $("t-clear").textContent=t("clear");
+  $("t-edit").innerHTML=`${t("edit")} <button class="linkbtn" onclick="editDetails()">${t("editBtn")}</button>`;
+
+  // call
+  $("c-title").textContent=t("cTitle"); $("c-sub").textContent=t("cSub");
+  $("c-open-k").textContent=t("cOpenK"); $("c-ask-k").textContent=t("cAskK"); $("c-ans-k").textContent=t("cAnsK");
+  $("c-write-k").textContent=t("cWriteK"); $("c-read").textContent=t("cRead"); $("c-print").textContent=t("cPrint");
+  // scam / help
+  $("s-title").textContent=t("sTitle"); $("s-sub").textContent=t("sSub"); $("s-reset").textContent=t("sReset");
+  $("hp-title").textContent=t("hpTitle"); $("hp-sub").textContent=t("hpSub");
+  $("hp-k1").textContent=t("hpK1"); $("hp-k2").textContent=t("hpK2"); $("hp-note").textContent=t("hpNote");
+
+  renderVoice();
+  // re-render every dynamic block, in every view (not just the visible one), so a
+  // language switch can never leave a stale-language screen behind.
+  if(state.demo){ // the sample card is app-owned text, so it follows the language
+    state.place=lang==="zh"?"社区服务中心 2 楼":"Community service centre, 2F";
+    state.time=lang==="zh"?"上午 9:30":"9:30 am";
+  }
+  if(pending){ captureDetect(); renderDetect(); }
+  renderTypes(); renderDetail(); renderForm();
+  renderTasks();
+  renderCall(); renderScam(); renderHelp();
+  renderBanner();
+  if($("printsheet").innerHTML.trim()) buildPrintSheet();
+  const savedEl=$("t-saved"); if(savedEl){ savedEl.hidden=true; savedEl.textContent=""; }
+  renderResume();
+}
+
+/* ---------------- resume last list ---------------- */
+function resumeMeaningful(){
+  return !!(state.scen && SCEN[state.scen] && (state.date || state.place || state.phone || (state.materials||[]).length || Object.keys(state.checks||{}).length || Object.keys(state.bring||{}).length));
+}
+function renderResume(){
+  const el=$("h-resume"); if(!el) return;
+  if(!hadLocal || resumeDismissed || !resumeMeaningful()){ el.hidden=true; return; }
+  const d=SCEN[state.scen][lang];
+  const total=(SCEN[state.scen][lang].tasks||[]).length;
+  const done=Object.keys(state.checks||{}).filter(k=>state.checks[k]).length;
+  const dt=parseDate(state.date);
+  const prog=total ? t("count").replace("{d}",done).replace("{n}",total) : "";
+  $("h-resume-t").innerHTML=t("resumeT")
+    .replace("{name}",esc(d.name))
+    .replace("{d}", dt ? " · "+fmtDate(dt) : "")
+    .replace("{p}", prog ? " · "+prog : "");
+  $("h-resume-go").textContent=t("resumeGo");
+  $("h-resume-no").textContent=t("resumeNo");
+  el.hidden=false;
+}
+function resumeLast(){ if(state.demo) loadLocal(); state.demo=false; renderTasks(); go("tasks"); }
+function dismissResume(){ resumeDismissed=true; $("h-resume").hidden=true; }
+function jumpTypes(){ const el=document.getElementById("h-others"); if(el) el.scrollIntoView({block:"center"}); }
+
+/* ---------------- letter ---------------- */
+function startNew(){ openLetter(); }
+function startWith(k){ openLetter(k); }
+function openLetter(k){ state=freshState(); state.scen=k||"care"; editingExisting=false; choosingTopic=!k; wizardStep=0; renderTypes(); renderDetail(); renderForm(); $("type-picker").open=!k; $("l-form").hidden=!k; $("selected-type").hidden=!k; $("guide-section").hidden=!k; go("letter"); }
+function editDetails(){ editingExisting=true; choosingTopic=false; renderTypes(); renderDetail(); renderForm(); $("type-picker").open=false; $("selected-type").hidden=false; $("guide-section").hidden=false; go("letter"); }
+function renderTypes(){
+  $("l-types").innerHTML=Object.keys(SCEN).map((k,i)=>{
+    const d=SCEN[k][lang];
+    return `<li><button aria-pressed="${!choosingTopic&&state.scen===k}" onclick="pick('${k}')"><span class="toc-no">${String(i+1).padStart(2,"0")}</span><span><span class="toc-name">${d.name}</span><span class="toc-desc">${d.short}</span></span></button></li>`;
+  }).join("");
+}
+function pick(k){ choosingTopic=false; wizardStep=0; captureForm(); if(state.scen!==k){ state.scen=k; state.checks={}; state.bring={}; } renderTypes(); renderDetail(); renderForm(); $("type-picker").open=false; $("selected-type").hidden=false; $("guide-section").hidden=false; $("selected-type").scrollIntoView({block:"start"}); }
+function statusTag(s){ return `<span class="status ${s||"sug"}">${t("status")[s||"sug"]}</span>`; }
+function renderDetail(){
+  const d=S();
+  const steps=(d.steps&&d.steps.length)?d.steps:(d.tasks||[]).slice(0,4).map(x=>({t:x.t,h:x.hint,status:x.status}));
+  const stepsHtml=`<ul class="numlist">${steps.map(x=>`<li>${statusTag(x.status)}${x.t}<span class="sub">${x.h}</span></li>`).join("")}</ul>`;
+  $("l-detail").innerHTML=`
+    <div class="typebody">
+      <h2>${t("whatItIs")}</h2>
+      <p class="quiet" style="margin:0"><b>${d.name}</b> · ${d.sum}</p>
+    </div>
+    <div class="typebody">
+      <h2>${t("stepsH")}</h2>${stepsHtml}
+    </div>
+    <div class="typebody">
+      <h2>${t("bringH")}</h2>
+      <p class="quiet" style="margin:0">${d.bring.join(lang==="zh"?" · ":" · ")}</p>
+      <p class="fineprint" style="margin:10px 0 0">${t("whoH")}：${d.who}</p>
+    </div>`;
+}
+function renderForm(){
+  $("selected-type").textContent=(lang==="zh"?"已选事项：":"Selected: ")+S().name;
+  $("type-picker-summary").textContent=lang==="zh"?"选择或更换事项":"Choose or change the topic";
+  $("guide-summary").textContent=lang==="zh"?"查看这类事项的常见步骤和材料":"See the usual steps and documents";
+  $("l-form").hidden=choosingTopic;
+  $("f-dtypes").innerHTML=t("dtypes").map(x=>`<label class="opt"><input type="radio" name="dtype" value="${x[0]}" ${state.dtype===x[0]?"checked":""} onchange="setDtype('${x[0]}')"><span><b>${x[1]}</b><span class="d">${x[2]}</span></span></label>`).join("");
+  $("f-known").innerHTML=t("known").map(x=>`<label class="opt"><input type="checkbox" ${state.known[x[0]]?"checked":""} onchange="setKnown('${x[0]}',this.checked)"><span><b>${x[1]}</b></span></label>`).join("");
+  $("f-date-wrap").hidden=(state.dtype==="unknown");
+  $("f-date").value=state.date;
+  $("f-time").value=state.time||""; $("f-place").value=state.place||""; $("f-phone").value=state.phone||"";
+  renderWizard();
+}
+function renderWizard(){
+  const blocks=["wizard-date","wizard-known","wizard-contact"];
+  blocks.forEach((id,i)=>$(id).hidden=!editingExisting&&i!==wizardStep);
+  $("wizard-progress").hidden=editingExisting;
+  $("wizard-progress").textContent=lang==="zh"?"第 "+(wizardStep+1)+" / 3 步 · 不知道的可以留空":"Step "+(wizardStep+1)+" / 3 · Leave anything you do not know blank";
+  $("wizard-back").hidden=editingExisting||wizardStep===0; $("wizard-back").textContent=lang==="zh"?"上一步":"Previous";
+  $("wizard-next").hidden=editingExisting||wizardStep===2; $("wizard-next").textContent=lang==="zh"?"下一步":"Next";
+  $("f-go").hidden=!editingExisting&&wizardStep!==2;
+  $("f-skip").hidden=editingExisting||wizardStep===2; $("f-skip").textContent=lang==="zh"?"暂时不填，直接生成清单":"Skip and create the list";
+}
+function wizardMove(delta){ captureForm(); wizardStep=Math.max(0,Math.min(2,wizardStep+delta)); renderWizard(); $("wizard-progress").setAttribute("tabindex","-1"); $("wizard-progress").focus({preventScroll:true}); $("wizard-progress").scrollIntoView({block:"start"}); }
+function setDtype(v){ state.dtype=v; $("f-date-wrap").hidden=(v==="unknown"); }
+function setKnown(k,v){ state.known[k]=v; }
+function makeTasks(){
+  state.date = state.dtype==="unknown" ? "" : ($("f-date").value||"");
+  state.time=$("f-time").value.trim();
+  state.place=$("f-place").value.trim();
+  state.phone=$("f-phone").value.trim();
+  if(!editingExisting){ state.checks={}; state.bring={}; } state.demo=false; state.banner=null; saveLocal(); renderTasks(); go("tasks");
+}
+function skipForm(){ state.dtype=state.dtype||"unknown"; makeTasks(); }
+
+/* ================= notice → list (local rules, no network) ================= */
+const DOCS = {
+  zh:["身份证","医保卡","社保卡","户口本","低保证","残疾证","病历","出院小结","出院记录","用药清单","诊断证明","费用清单","发票","银行卡","证件照","委托书","评估结果","收入证明","居住证明","检查报告"],
+  en:["ID card","insurance card","social security card","household register","low-income certificate","disability certificate","medical records","discharge summary","discharge record","medication list","diagnosis","itemised bill","receipts","bank card","passport photos","authorisation","assessment result","proof of income","residence proof","test report"]
+};
+/* Type scoring. Generic papers that almost every notice asks you to bring
+   (ID card, insurance card, social security card, household register, records)
+   deliberately do NOT appear here — they are extracted as materials, not used
+   as type evidence. The card type only fires on card-specific actions. */
+const TYPE_WORDS = [
+  ["care", ["照护评估","护理评估","能力评估","失能","长护险","长护","长期护理","护理保险","护理等级","照护","护理","评估机构","评估结果","参加评估","评估室","上门评估","入住评估","机构评估","评估","care assessment","long-term care","care needs","care level","assessment","care home"]],
+  ["pension", ["养老金","退休金","养老待遇","退休待遇","待遇资格","领取待遇","资格认证","养老金认证","待遇资格认证","养老金发放","养老保险","养老认证","退休","pension","superannuation","retirement pay","monthly payment","retirement"]],
+  ["medical", ["医保报销","医疗费用","医保结算","医保窗口","医保待遇","费用清单","门诊统筹","报销","自付","自费","住院费用","医保","医疗","特病","慢病","病种","门诊","reimbursement","medical insurance","health insurance","itemised bill","covered cost","outpatient","claim"]],
+  ["meds", ["用药调整","调整用药","用药方案","用药计划","剂量","处方","换药","停药","药品","用药","药量","取药","药房","配药","服药","药师","medication","prescription","pharmacy","tablets","dose"]],
+  ["discharge", ["出院小结","出院带药","出院记录","出院","住院","复诊","复查","随访","discharge","hospital stay","admitted","follow-up visit","follow up"]],
+  ["referral", ["社区照护转介","日间照料","上门服务","居家养老","照护服务","居家照护","转介","referral","day care","home help","home care"]],
+  ["aid", ["困难救助","临时救助","困难补助","救助申请","社会救助","困难家庭","低收入","低保","特困","救助","hardship","low-income","welfare","emergency grant","social assistance"]],
+  ["disability", ["残疾证","残疾评定","残疾等级","残疾补贴","残疾人","残联","残疾","disability certificate","disability federation","disability assessment","disability allowance","disability"]],
+  ["card", ["办理社保卡","办理医保卡","社保卡激活","社保卡换卡","社保卡补卡","社保卡挂失","社保卡换发","社保卡补办","医保卡激活","医保卡挂失","医保卡换卡","医保卡补卡","医保卡补办","卡片激活","金融功能","金融账户","挂失","补办","补卡","换卡","换发","激活","绑定","领卡","replace the card","report it lost","activate the card","card activation","lost card","new card"]],
+  ["service", ["适老化改造","无障碍改造","社区食堂","长者食堂","家庭养老床位","助餐服务","助浴服务","上门照护","居家改造","助餐","助浴","适老化","老年餐","装扶手","meals on wheels","bathing help","home adaptation","grab bar","home visit","meal delivery","home modification"]]
+];
+function normNotice(s){
+  return String(s||"")
+    .replace(/[\uFF10-\uFF19]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+    .replace(/[\uFF1A]/g, ":").replace(/[\uFF0C\u3001]/g, ",").replace(/[\u3000]/g, " ")
+    .replace(/\r\n?/g, "\n").replace(/[ \t]+/g, " ");
+}
+function cnSmall(s){
+  const D={零:0,"〇":0,一:1,二:2,两:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9};
+  if(!s) return NaN;
+  if(/^\d+$/.test(s)) return +s;
+  let total=0, last=0;
+  for(const ch of s){
+    if(ch==="十"){ last = last||1; total += last*10; last=0; }
+    else if(D[ch]!==undefined){ last=D[ch]; }
+    else return NaN;
+  }
+  return total+last;
+}
+function cnYear(s){ return parseInt([...s].map(c=>cnSmall(c)).join(""),10); }
+function isoDate(y,m,d){
+  if(!(y>=1900&&y<=2200&&m>=1&&m<=12&&d>=1&&d<=31)) return "";
+  const dt=new Date(y,m-1,d);
+  if(dt.getMonth()!==m-1||dt.getDate()!==d) return "";
+  return y+"-"+pad2(m)+"-"+pad2(d);
+}
+function inferYear(m,d){
+  const now=today0(); let y=now.getFullYear();
+  const dt=new Date(y,m-1,d);
+  if(dt.getTime()-now.getTime() < -180*864e5) y+=1;
+  return y;
+}
+function dateKind(text, idx, end){
+  const before=text.slice(Math.max(0,idx-14),idx), after=text.slice(end,end+16);
+  if(/复诊|复查|随访/.test(before+after)) return "followup";
+  if(/(截止|截至|不晚于|期限|最迟|务必于)/.test(before) || /^[)）]?\s*(前|之前|以前|前完成|为止|截止)/.test(after)) return "deadline";
+  return "";
+}
+function parseNoticeDate(text){
+  // full date with a year: 2026-11-20 / 2026/11/20 / 2026年11月20日
+  let m=text.match(/(\d{4})\s*(?:年|[-/.])\s*(\d{1,2})\s*(?:月|[-/.])\s*(\d{1,2})\s*[日号]?/);
+  if(m){
+    const iso=isoDate(+m[1],+m[2],+m[3]);
+    if(iso){
+      const rest=text.slice(m.index+m[0].length), r=rest.match(/^\s*(?:至|到|—|–|~|-)\s*(\d{4})\s*(?:年|[-/.])\s*(\d{1,2})\s*(?:月|[-/.])\s*(\d{1,2})/);
+      if(r){ const iso2=isoDate(+r[1],+r[2],+r[3]); if(iso2) return {date:iso2, kind:"deadline"}; }
+      return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)};
+    }
+  }
+  m=text.match(/([零〇一二三四五六七八九]{4})\s*年\s*([一二三四五六七八九十]{1,3})\s*月\s*([一二三四五六七八九十]{1,3})\s*[日号]/);
+  if(m){ const iso=isoDate(cnYear(m[1]),cnSmall(m[2]),cnSmall(m[3])); if(iso) return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)}; }
+  // month-day: 11月20日 / 11月20号
+  m=text.match(/(\d{1,2})\s*月\s*(\d{1,2})\s*[日号]/);
+  if(m){
+    const mo=+m[1], dd=+m[2], iso=isoDate(inferYear(mo,dd),mo,dd);
+    if(iso){
+      const rest=text.slice(m.index+m[0].length), r=rest.match(/^\s*(?:至|到|—|–|~|-)\s*(\d{1,2})\s*月\s*(\d{1,2})\s*[日号]/);
+      if(r){ const iso2=isoDate(inferYear(+r[1],+r[2]),+r[1],+r[2]); if(iso2) return {date:iso2, kind:"deadline"}; }
+      return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)};
+    }
+  }
+  const EM={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+  m=text.match(/\b(\d{1,2})\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?,?\s*(\d{4})?/i);
+  if(m){ const mo=EM[m[2].toLowerCase()], dd=+m[1], y=m[3]?+m[3]:inferYear(mo,dd), iso=isoDate(y,mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)}; }
+  m=text.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s*(\d{4})?/i);
+  if(m){ const mo=EM[m[1].toLowerCase()], dd=+m[2], y=m[3]?+m[3]:inferYear(mo,dd), iso=isoDate(y,mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)}; }
+  // bare numeric date, only when nothing else was found
+  m=text.match(/(?:^|[^\d])(\d{1,2})\s*\/\s*(\d{1,2})(?!\s*\/)/);
+  if(m){ const mo=+m[1], dd=+m[2]; if(mo>=1&&mo<=12&&dd>=1&&dd<=31){ const iso=isoDate(inferYear(mo,dd),mo,dd); if(iso) return {date:iso, kind:dateKind(text,m.index,m.index+m[0].length)}; } }
+  return null;
+}
+function parseNoticeTime(text){
+  let m=text.match(/(上午|下午|晚上|早上|中午|夜里)?\s*(\d{1,2})\s*[:：点]\s*(\d{2})?\s*(分|半)?\s*(am|pm)?/i);
+  if(m){
+    let ap=m[1]||"", h=+m[2], mi=m[3]!==undefined?+m[3]:(m[4]==="半"?30:0);
+    if((/下午|晚上|夜里/.test(ap)||(m[5]&&/pm/i.test(m[5])))&&h<12) h+=12;
+    if(m[5]&&/am/i.test(m[5])&&h===12) h=0;
+    if(h<=23&&mi<=59) return pad2(h)+":"+pad2(mi);
+  }
+  // 下午两点半 / 上午九点
+  m=text.match(/(上午|下午|晚上|早上|中午|夜里)?\s*([一二三四五六七八九十两]{1,3})\s*点\s*(半|[一二三四五六七八九十]{1,3}\s*分?)?/);
+  if(m){
+    const ap=m[1]||""; let h=cnSmall(m[2]);
+    if(/下午|晚上|夜里/.test(ap)&&h<12) h+=12;
+    if(h>=0&&h<=23){
+      let mi=0;
+      if(m[3]==="半") mi=30;
+      else if(m[3]){ const x=cnSmall(String(m[3]).replace(/\s*分$/,"")); if(x>=0&&x<60) mi=x; }
+      return pad2(h)+":"+pad2(mi);
+    }
+  }
+  // 9:30 am (English notices)
+  m=text.match(/\b(\d{1,2})\s*[:.]\s*(\d{2})\s*(am|pm)\b/i);
+  if(m){ let h=+m[1], mi=+m[2]; if(/pm/i.test(m[3])&&h<12) h+=12; if(h<=23&&mi<=59) return h+":"+pad2(mi)+" "+m[3].toLowerCase(); }
+  return "";
+}
+function cleanPlace(s){
+  return String(s||"").trim()
+    .replace(/^[请于到在往位于的:：\s]+/,"")
+    .replace(/(参加|办理|提交|进行|领取|报到|签字|开会|开会地点|集合)[^，,。；;]{0,12}$/,"")
+    .replace(/[。；;，,、\s]+$/,"").slice(0,40);
+}
+function roomAfter(text, endIndex){
+  const tail=text.slice(endIndex, endIndex+16);
+  const m=tail.match(/^\s*([\u4e00-\u9fa5]{1,8}(?:室|厅|窗口|号窗口|台))/);
+  return m?m[1]:"";
+}
+function enPlace(text){
+  const m=text.match(/((?:[A-Za-z][A-Za-z0-9'&.-]*\s+){0,4}(?:centre|center|hospital|clinic|office))/i);
+  if(!m) return "";
+  let p=m[1].replace(/^(?:at|to|in|the|and|please|bring|your)\s+/i,"").trim();
+  p=p.replace(/^(?:the|at|to|in)\s+/i,"").trim();
+  if(p.length<5) return "";
+  const after=text.slice(m.index+m[0].length, m.index+m[0].length+18);
+  const fl=after.match(/^\s*,?\s*(?:the\s+)?(\d{1,2}(?:st|nd|rd|th)?|ground|first|second|third|fourth)\s*(?:floor)/i);
+  if(fl) p+=", "+fl[1]+(/\d|st|nd|rd|th/i.test(fl[1])?" floor":" floor");
+  return p.slice(0,40);
+}
+function floorText(num){
+  if(!num) return "";
+  return /^\d+$/.test(num) ? " "+num+" 楼" : num+"楼"; // 3 楼 / 二楼 (no stray space in 二楼)
+}
+function parseNoticePlace(text){
+  let m=text.match(/(?:办理地点|受理地点|活动地点|报到地点|评估地点|办理地址|地点|地址)\s*[:：]\s*([^\n。；;]{2,50})/);
+  if(m){ const p=cleanPlace(m[1]); if(p) return p; }
+  const VENUE="(?:社区服务中心|社区卫生服务中心|街道便民服务中心|政务服务中心|市民服务中心|党群服务中心|社保中心|医保中心|残联|服务中心|人民医院|医院|门诊部|服务站|服务大厅|居委会|村委会)";
+  m=text.match(new RegExp("(?:到|在|前往|位于|至)\\s*([\\u4e00-\\u9fa5A-Za-z0-9]{1,20}?"+VENUE+")(?:\\s*([0-9一二三四五六七八九十]{1,3})\\s*(?:楼|层))?"));
+  if(m) return m[1]+floorText(m[2])+(m[2]?roomAfter(text,m.index+m[0].length):"");
+  m=text.match(new RegExp("([\\u4e00-\\u9fa5A-Za-z0-9]{1,20}?"+VENUE+")(?:\\s*([0-9一二三四五六七八九十]{1,3})\\s*(?:楼|层))?"));
+  if(m){ const p=(m[1]+floorText(m[2])+(m[2]?roomAfter(text,m.index+m[0].length):"")).replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+/,""); if(p.length>=3) return cleanPlace(p); }
+  m=text.match(/(?:到|在|前往|位于)\s*([^\n。，,；;]{3,30})/);
+  if(m){ const p=cleanPlace(m[1]); if(p && p.length>=3) return p; }
+  // English: a named centre / hospital / office
+  m=text.match(/((?:[A-Za-z][A-Za-z0-9'&.-]*\s+){0,4}(?:centre|center|hospital|clinic|office))/i);
+  if(m){ const p=enPlace(text); if(p) return p; }
+  return "";
+}
+function parseNoticePhone(text){
+  const pats=[/\b(1[3-9]\d{9})\b/, /\b(0\d{2,3}[-\s]?\d{3,4}[-\s]?\d{4})\b/, /\b(0\d{2,3}[-\s]?\d{7,8})\b/, /\b(400[-\s]?\d{3}[-\s]?\d{4})\b/, /\b(12345|12333|12315|12348|12349|12385|12320)\b/];
+  let best=null;
+  for(const p of pats){
+    const m=text.match(p);
+    if(m && (best===null || m.index<best.index)) best={v:m[0].replace(/\s+/g,""), index:m.index};
+  }
+  return best?best.v:"";
+}
+function docTokens(seg){
+  return seg.split(/[,、;；]|(?:\s+and\s+)|和|及|与|等/).map(s=>s.trim()).filter(Boolean);
+}
+function parseMaterials(text){
+  const out=[];
+  const triggers=/(?:携带|带齐|带上|带好|需带|请带|自备|提交|提供|准备|携带材料|所需材料|材料|证件|资料)\s*[:：]?\s*([^\n。；;]{2,100})/g;
+  let m;
+  while((m=triggers.exec(text))){
+    docTokens(m[1]).forEach(raw=>{
+      let s=raw.trim()
+        .replace(/^(材料|证件|资料|所需|携带)\s*[:：]?/,"")
+        .replace(/^(请|需|要|并|和|及|与|带|携带|提交|提供|准备|包括)+/,"")
+        .replace(/(等材料|等证件|等资料|等)$/,"").replace(/[。.、,;；:：\s]+$/,"").trim();
+      if(s.length<2||s.length>18) return;
+      if(/[0-9]{3,}/.test(s)) return;
+      if(/到|去|前往|参加|办理|领取|窗口|楼|评估室|中心|时间|地点|电话|日期|地址|通知|要求|截止|上午|下午|受理|逾期|不予|为准|注意/.test(s)) return;
+      if(/^(材料|证件|资料|原件|复印件|本人|上面|以下|如下)$/.test(s)) return;
+      out.push(s);
+    });
+  }
+  // whitelist scan in both languages, so a Chinese notice works with an English UI and the other way round
+  [["zh",text],["en",text.toLowerCase()]].forEach(pair=>{
+    DOCS[pair[0]].forEach(doc=>{
+      const needle=pair[0]==="zh"?doc:doc.toLowerCase();
+      if(pair[1].indexOf(needle)>=0 && !out.some(x=>x.indexOf(doc)>=0||doc.indexOf(x)>=0)) out.push(doc);
+    });
+  });
+  // de-duplicate: 身份证 / 身份证原件 → keep one
+  const uniq=[];
+  out.forEach(x=>{
+    const k=x.replace(/(原件|复印件|正反面|及复印件)/g,"").trim();
+    if(uniq.some(u=>u.replace(/(原件|复印件|正反面|及复印件)/g,"").trim()===k)) return;
+    uniq.push(x);
+  });
+  return uniq.slice(0,12);
+}
+function guessScenario(text){
+  const low=text.toLowerCase();
+  let best="", bestScore=0;
+  for(const [key,words] of TYPE_WORDS){
+    let score=0;
+    for(const w of words){ if(low.indexOf(w.toLowerCase())>=0) score+=w.length; }
+    if(score>bestScore){ bestScore=score; best=key; }
+  }
+  return bestScore>=3?best:"";
+}
+function guessDtype(text, dateInfo){
+  if(/复诊|复查|随访/.test(text)) return "followup";
+  if(dateInfo && dateInfo.kind==="deadline") return "deadline";
+  if(/(截止|截至|不晚于|期限|最迟|之前|以前|前完成|逾期|请于[^\n]{0,24}前)/.test(text)) return "deadline";
+  if(/\b(deadline|due by|no later than|before \d|lates?|late applications?|by \d{1,2}\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))/i.test(text)) return "deadline";
+  if(/(预约|请于|准时|指定时间|按通知时间)/.test(text)) return "appoint";
+  if(/\b(appointment|booked|please come|please attend|visit us|scheduled)\b/i.test(text)) return "appoint";
+  return dateInfo&&dateInfo.kind ? dateInfo.kind : (dateInfo ? "appoint" : "unknown");
+}
+function extractNotice(raw){
+  const text=normNotice(raw);
+  const di=parseNoticeDate(text);
+  const hasYear=/(?:\d{4}\s*(?:年|[-/.])|[零〇一二三四五六七八九]{4}\s*年|\b(?:19|20)\d{2}\b)/.test(text);
+  return {
+    scen:guessScenario(text),
+    dtype:guessDtype(text,di),
+    date:di&&hasYear?di.date:"",
+    time:parseNoticeTime(text),
+    place:parseNoticePlace(text),
+    phone:parseNoticePhone(text),
+    mats:parseMaterials(text),
+    raw:text
+  };
+}
+function foundCount(e){ return (e.scen?1:0)+(e.date?1:0)+(e.time?1:0)+(e.place?1:0)+(e.phone?1:0)+e.mats.length; }
+
+/* ---------------- paste UI ---------------- */
+function clearHomeError(){ $("home-error").hidden=true; $("home-notice").removeAttribute("aria-invalid"); }
+function homeSample(){ $("home-notice").value=SAMPLES[lang][0]; clearHomeError(); $("home-notice").focus(); }
+function startHomeNotice(){
+  const raw=$("home-notice").value.trim();
+  if(!raw){ $("home-error").textContent=lang==="zh"?"请先粘贴或输入通知文字，或者选择下面的示例。":"Paste or type a notice first, or try the example below."; $("home-error").hidden=false; $("home-notice").setAttribute("aria-invalid","true"); $("home-notice").focus(); return; }
+  $("p-text").value=raw; pending=null; $("p-result").hidden=true; go("paste"); runExtract();
+}
+function openPaste(){
+  pending=null; $("p-result").hidden=true; $("p-original").open=true; $("p-title").textContent=t("pTitle"); go("paste");
+  if(!window.matchMedia || !window.matchMedia("(pointer: coarse)").matches) $("p-text").focus();
+}
+function editOriginal(){ $("p-original").open=true; $("p-result").hidden=true; $("p-title").textContent=t("pTitle"); $("p-sub").textContent=t("pSub"); $("p-text").focus(); }
+function noticeChanged(){ if(pending){ pending=null; $("p-result").hidden=true; $("p-title").textContent=t("pTitle"); } }
+function pasteClear(){ $("p-text").value=""; $("p-result").hidden=true; pending=null; $("p-text").focus(); }
+function fillSample(i){
+  const s=SAMPLES[lang][i];
+  if(!s) return;
+  $("p-text").value=s;
+  $("p-result").hidden=true; pending=null;
+  $("p-text").focus();
+}
+function runExtract(){
+  const raw=$("p-text").value.trim();
+  if(!raw){ toast(t("pEmpty")); $("p-text").focus(); return; }
+  pending=extractNotice(raw);
+  renderDetect();
+  $("p-result").hidden=false;
+  $("p-original").open=false; $("p-title").textContent=t("dTitle"); $("p-sub").textContent=lang==="zh"?"请对照原文逐项核对，错误可以修改，不确定的可以留空。":"Compare each detail with the original. Correct mistakes or leave uncertain fields blank.";
+  toast(t("dFoundToast").replace("{n}",foundCount(pending)));
+  $("p-result").scrollIntoView({block:"start"});
+  if(!pending.date) $("p-date").focus({preventScroll:true});
+}
+function captureDetect(){
+  if(!pending||$("p-result").hidden) return;
+  pending.scen=$("p-type").value;
+  pending.dtype=$("p-dtype").value;
+  pending.date=$("p-date").value||"";
+  pending.time=$("p-time").value.trim();
+  pending.place=$("p-place").value.trim();
+  pending.phone=$("p-phone").value.trim();
+}
+function renderMats(){
+  const box=$("p-mats"); if(!box||!pending) return;
+  box.innerHTML=pending.mats.map((x,i)=>`<span class="chip">${esc(matLabel(x))}<button type="button" onclick="removeMat(${i})" aria-label="${esc(t("dMatDel"))} ${esc(matLabel(x))}">×</button></span>`).join("");
+  if(!pending.mats.length) box.innerHTML=`<span class="fineprint">${esc(t("dMatNone"))}</span>`;
+}
+function removeMat(i){ if(!pending) return; pending.mats.splice(i,1); renderMats(); }
+function addMat(){
+  if(!pending) return;
+  const el=$("p-matinput"); if(!el) return;
+  const v=el.value.trim().replace(/[。，,、；;]+$/,"");
+  if(!v) return;
+  if(v.length>18){ toast(t("dMatLong")); return; }
+  if(!pending.mats.some(x=>x===v)) pending.mats.push(v);
+  el.value=""; renderMats(); el.focus();
+}
+function renderDetect(){
+  if(!pending) return;
+  const miss=[];
+  if(!pending.date) miss.push(t("dMissItems")[0]);
+  if(!pending.place) miss.push(t("dMissItems")[1]);
+  if(!pending.phone) miss.push(t("dMissItems")[2]);
+  if(!pending.mats.length) miss.push(t("dMissItems")[3]);
+  const typeOpts=(pending.scen?"":`<option value="" selected>— ${esc(t("dPick"))} —</option>`)+Object.keys(SCEN).map(k=>`<option value="${k}"${ (pending.scen||"")===k?" selected":""}>${esc(SCEN[k][lang].name)}</option>`).join("");
+  const dtypeOpts=t("dtypes").map(x=>`<option value="${x[0]}"${pending.dtype===x[0]?" selected":""}>${esc(x[1])}</option>`).join("");
+  $("p-result").innerHTML=`
+    <div class="dhead">
+      <h2>${esc(t("dTitle"))}</h2>
+      <span class="found">${esc(t("dFound").replace("{n}",foundCount(pending)))}</span>
+    </div>
+    ${ !pending.scen ? `<p class="fineprint" style="margin:0 0 4px">${esc(t("dNoneType"))}</p>` : (!pending.date ? `<p class="fineprint" style="margin:0 0 4px">${esc(t("dNoneDate"))}</p>` : "") }
+    <div class="dgrid">
+      <div class="dfield"><label for="p-type">${esc(t("dType"))}</label><select id="p-type">${typeOpts}</select><span class="dhint">${esc(t("dTypeHint"))}</span></div>
+      <div class="dfield"><label for="p-dtype">${esc(t("dDtype"))}</label><select id="p-dtype">${dtypeOpts}</select></div>
+      <div class="dfield${pending.date?"":" bad"}"><label for="p-date">${esc(t("dDate"))}</label><input id="p-date" type="date" value="${esc(pending.date)}"><span class="dhint">${esc(t("dDateHint"))}</span></div>
+      <div class="dfield"><label for="p-time">${esc(t("dTime"))}</label><input id="p-time" type="text" autocomplete="off" value="${esc(pending.time)}" placeholder="${esc(t("dTimeHint"))}"></div>
+      <div class="dfield"><label for="p-place">${esc(t("dPlace"))}</label><input id="p-place" type="text" autocomplete="off" value="${esc(pending.place)}" placeholder="${esc(t("dPlaceHint"))}"></div>
+      <div class="dfield"><label for="p-phone">${esc(t("dPhone"))}</label><input id="p-phone" type="tel" inputmode="tel" autocomplete="off" value="${esc(pending.phone)}" placeholder="${esc(t("dPhoneHint"))}"></div>
+    </div>
+    <div class="mats">
+      <div class="dfield" style="display:block"><span style="display:block;font-size:.78em;font-weight:600;color:var(--ink2)">${esc(t("dMats"))}</span><span class="dhint">${esc(t("dMatsHint"))}</span></div>
+      <div class="chips" id="p-mats"></div>
+      <div class="chip-add"><input id="p-matinput" type="text" autocomplete="off" aria-label="${esc(t("dMatAdd"))}" placeholder="${esc(t("dMatAdd"))}" onkeydown="if(event.key==='Enter'){event.preventDefault();addMat();}"><button class="btn-quiet" type="button" onclick="addMat()">${esc(t("dAdd"))}</button></div>
+    </div>
+    ${ miss.length ? `<p class="missnote">${esc(t("dMiss").replace("{list}",miss.join(lang==="zh"?"、":"/"))) }</p>` : "" }
+    <p class="note" style="margin-top:14px">${esc(t("dNote"))}</p>
+    <div class="detect-foot">
+      <p class="fineprint">${esc(t("dCheck"))}</p>
+      <button class="btn-primary" type="button" onclick="makePasteTasks()">${esc(t("dMake"))}</button>
+      <button class="linkbtn" type="button" onclick="editOriginal()">${esc(t("dBack"))}</button>
+    </div>`;
+  renderMats();
+}
+function makePasteTasks(){
+  captureDetect();
+  if(!pending.scen){ toast(t("dPickType")); $("p-type").focus(); return; }
+  state.scen=pending.scen;
+  state.dtype=pending.dtype||"unknown";
+  state.date=pending.date||"";
+  state.time=pending.time||"";
+  state.place=pending.place||"";
+  state.phone=pending.phone||"";
+  state.materials=pending.mats.slice(0,12);
+  state.bring={}; state.checks={}; state.fromFamily=false; state.demo=false;
+  state.known={time:!!(state.date||state.place), docs:state.materials.length>0, what:true};
+  saveLocal();
+  renderTasks(); go("tasks");
+  setBanner("notice");
+}
+const SAMPLES = {
+  zh:[
+`【幸福里社区服务中心】您好，您申请的长期护理保险照护评估已安排。请于2026年11月20日（星期五）上午9:30，携带身份证、医保卡、最近一年的病历和用药清单，到社区服务中心3楼评估室参加评估。咨询电话：021-6543 2100。如不能按时参加，请提前1个工作日致电说明。`,
+`关于开展城乡居民基本医疗保险报销申报工作的通知
+受理时间：2026-11-05 至 2026-11-25
+办理地点：区政务服务中心一楼 医保窗口（地址：XX区XX路88号）
+需提交材料：身份证、医保卡、住院发票原件、费用清单、出院记录。
+咨询电话：12333
+请在截止日期前提交，逾期不予受理。`,
+`通知：请于１１月２０日前，带好户口本、低保证、身份证、收入证明等材料，到幸福里社区服务中心 2 楼办理临时救助申请。联系人：王老师 电话 13800138000。`
+  ],
+  en:[
+`[Hill Community Centre] Your long-term care assessment has been booked. Please come on 20 November 2026 at 9:30 am, bring your ID card, insurance card, the last year of medical records and a medication list, to the assessment room, 3rd floor, community service centre. Enquiries: 021-6543 2100.`,
+`Notice: medical insurance reimbursement
+Date: 5-25 November 2026
+Place: District service centre, 1st floor, medical insurance counter
+Please submit: ID card, insurance card, original hospital receipts, itemised bill, discharge record.
+Enquiries: 12333
+Submit before the deadline; late applications cannot be accepted.`,
+`Notice: please bring your household register, low-income certificate, ID card and proof of income to the community service centre, 2nd floor, before 20 November to apply for hardship support. Contact: Mr Wang, 13800138000.`
+  ]
+};
+
+
+/* ---------------- scheduling ---------------- */
+function today0(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+function parseDate(s){ if(!s) return null; const d=new Date(s+"T00:00:00"); return isNaN(d)?null:d; }
+function offsetDate(base,days){ const d=new Date(base); d.setDate(d.getDate()+days); return d; }
+function schedule(when){
+  if(!full() || state.dtype==="unknown") return null;
+  if(when==="today") return today0();
+  const due=parseDate(state.date); if(!due) return null;
+  const map={d3:-3,d2:-2,d1:-1,due:0}; const off=map[when];
+  if(off===undefined) return null;
+  return offsetDate(due,off);
+}
+function whenLabel(when){
+  const d=schedule(when);
+  const base = when==="due" ? (state.dtype==="appoint"?t("when_appt"):state.dtype==="followup"?t("when_follow"):t("when_due")) : (t("when_"+when)||"");
+  if(!d) return base;
+  return base;
+}
+function whenDate(when){
+  const d=schedule(when);
+  if(!d) return "";
+  return fmtDate(d);
+}
+function isToday(when){ const d=schedule(when); if(!d) return false; const x=new Date(d); x.setHours(0,0,0,0); return x.getTime()===today0().getTime(); }
+function isOverdue(when){ const d=schedule(when); if(!d) return false; const t0=today0(); d.setHours(0,0,0,0); return d.getTime()<t0.getTime(); }
+function daysUntil(d){ const t0=today0(); const x=new Date(d); x.setHours(0,0,0,0); return Math.round((x-t0)/86400000); }
+
+/* ---------------- tasks ---------------- */
+function taskList(){
+  const out=S().tasks.map(x=>({t:x.t,hint:x.hint,status:x.status||"sug",when:x.when}));
+  if(state.dtype==="unknown") out.forEach(o=>{ o.when=null; });
+  return out;
+}
+function resolved(x){
+  if(x.status!=="ask") return true;
+  if(x.when==="today") return !!state.known.time;
+  if(x.when==="d3") return !!state.known.docs;
+  return false;
+}
+function normMat(s){ return String(s||"").replace(/[（(]?(原件|复印件|正反面|及复印件)[)）]?/g,"").trim().toLowerCase(); }
+const MAT_EN={
+  "身份证":"ID card","医保卡":"insurance card","社保卡":"social security card","户口本":"household register",
+  "低保证":"low-income certificate","残疾证":"disability certificate","病历":"medical records","出院小结":"discharge summary",
+  "出院记录":"discharge record","用药清单":"medication list","诊断证明":"diagnosis","费用清单":"itemised bill","发票":"receipts",
+  "银行卡":"bank card","证件照":"passport photos","委托书":"authorisation","评估结果":"assessment result","收入证明":"proof of income",
+  "居住证明":"residence proof","检查报告":"test report"
+};
+function matLabel(s){
+  const str=String(s||""), low=str.toLowerCase();
+  if(lang==="zh"){
+    for(const zh in MAT_EN){ if(low===MAT_EN[zh].toLowerCase()) return zh; }
+    return str;
+  }
+  for(const zh in MAT_EN){ if(str.indexOf(zh)>=0) return MAT_EN[zh]; }
+  return str;
+}
+function bringList(){
+  const out=[];
+  (state.materials||[]).forEach(m=>{
+    const label=matLabel(m), k=normMat(label); if(!k) return;
+    if(out.some(x=>{ const a=normMat(x.t); return a.includes(k)||k.includes(a); })) return;
+    out.push({t:label, src:"notice"});
+  });
+  (S().bring||[]).forEach(b=>{
+    const label=matLabel(b), k=normMat(label); if(!k) return;
+    if(out.some(x=>{ const a=normMat(x.t); return a.includes(k)||k.includes(a); })) return;
+    out.push({t:label, src:"common"});
+  });
+  return out;
+}
+function toggleBring(btn){
+  const k=btn.getAttribute("data-k");
+  if(state.bring[k]) delete state.bring[k]; else state.bring[k]=true;
+  saveLocal(); renderTasks();
+}
+function bannerText(){
+  if(!state.banner) return "";
+  if(state.banner==="demo") return t("bannerDemo");
+  if(state.banner==="notice") return t("fromNotice");
+  if(state.banner==="family"){
+    const fd=parseDate(state.date);
+    return t("fromFamily")+" · "+S().name+(fd?" · "+fmtDate(fd):"");
+  }
+  return "";
+}
+function renderBanner(){
+  const b=$("t-banner"); if(!b) return;
+  if(!state.banner){ b.hidden=true; b.innerHTML=""; return; }
+  b.hidden=false;
+  b.innerHTML=`<span>${esc(bannerText())}</span><button onclick="dismissBanner()">${esc(t("dismiss"))}</button>`;
+}
+function setBanner(kind){ state.banner=kind; renderBanner(); }
+function dismissBanner(){ state.banner=null; const b=$("t-banner"); if(b){ b.hidden=true; b.innerHTML=""; } }
+function renderCallRow(){
+  const box=$("t-callrow"); if(!box) return;
+  const tel=(state.phone||"").replace(/[^\d+]/g,"");
+  const bits=[];
+  if(tel) bits.push(`<a class="btn-quiet" href="tel:${esc(tel)}">${esc(t("callNow"))}${state.phone?" · "+esc(state.phone):""}</a>`);
+  bits.push(`<button class="textbtn" onclick="openCall()">${esc(t("callScript"))}</button>`);
+  if(!tel) bits.push(`<span class="fineprint">${esc(t("noPhone"))}</span>`);
+  else bits.push(`<button class="textbtn" onclick="copyPhone(this)">${esc(t("copyPhone"))}</button>`);
+  box.innerHTML=bits.join("");
+}
+function copyPhone(btn){
+  const tel=(state.phone||"").replace(/[^\d+]/g,"");
+  copyText(tel).then(ok=>{ toast(ok?t("phoneCopied"):t("copyFail")); });
+}
+function renderTasks(){
+  const d=S(), list=taskList(), total=list.length;
+  const doneCount=list.filter((_,i)=>state.checks[i]).length;
+
+  // head
+  $("t-kind").textContent=d.name;
+  const due=parseDate(state.date);
+  const titleEl=$("t-date");
+  const over = due ? (()=>{const x=new Date(due); x.setHours(0,0,0,0); return x.getTime()<today0().getTime();})() : false;
+  const hasDate = full() && state.dtype!=="unknown" && !!due;
+  const subLine = !hasDate ? t("unknownSub")
+    : (()=>{
+        const n=daysUntil(due);
+        const when = n===0 ? t("isToday") : n===1 ? t("isTomorrow") : t("daysLeft").replace("{n}",n);
+        return (over ? t("overdueH")+" · " : "") + fmtWeekday(due) + " · " + (over ? t("overdueSub") : when);
+      })();
+  titleEl.textContent = hasDate ? fmtDate(due) : t("unknownH");
+  const subEl=document.createElement("small");
+  subEl.textContent=subLine;
+  titleEl.appendChild(subEl);
+  titleEl.classList.toggle("over", over);
+
+  // meta
+  const metaBits=[];
+  if(state.time) metaBits.push(`<span><span class="lab">${t("timeL")}</span><strong>${esc(state.time)}</strong></span>`);
+  if(state.place) metaBits.push(`<span><span class="lab">${t("placeL")}</span><strong>${esc(state.place)}</strong></span>`);
+  if(state.phone) metaBits.push(`<span><span class="lab">${t("phoneL")}</span><strong>${esc(state.phone)}</strong></span>`);
+  if(!metaBits.length) metaBits.push(`<span class="fineprint">${t("fine")}</span>`);
+  $("t-meta").innerHTML=metaBits.join("");
+  renderCallRow();
+
+  $("t-note").textContent=(full()?t("tNote"):t("tNoteTpl"))+((full()&&state.dtype!=="unknown"&&!state.date)?" "+t("needDate"):"");
+
+  // partition: next action / confirm items / rest
+  const idx=list.map((x,i)=>i);
+  const nextIdx=idx.find(i=>!state.checks[i]) ?? -1;
+  const confirmIdx=idx.filter(i=>!state.checks[i] && i!==nextIdx && !resolved(list[i]));
+  const restIdx=idx;
+
+  // next block
+  const nb=$("t-next");
+  if(nextIdx>=0){
+    const x=list[nextIdx];
+    const over2=isOverdue(x.when);
+    const nxDate = x.when ? (isToday(x.when) ? t("when_today") : whenDate(x.when)) : "";
+    nb.hidden=false; nb.classList.remove("done");
+    nb.innerHTML=`<span class="lab">${t("nextLab")}${nxDate?`<span class="when">${nxDate}</span>`:""}</span>
+      <h2>${esc(x.t)}</h2>
+      <p>${esc(x.hint)}</p>`;
+  } else {
+    nb.hidden=false; nb.classList.add("done");
+    nb.innerHTML=`<span class="lab">${t("allDoneH")}</span><p>${t("allDone")}</p>`;
+  }
+
+  // schedule list (rest)
+  $("t-count").textContent=t("count").replace("{d}",doneCount).replace("{n}",total);
+  $("t-list").innerHTML=restIdx.map(i=>{
+    const x=list[i];
+    const when = x.when ? whenDate(x.when) : (full()&&state.dtype==="unknown" ? t("noWhen") : (full()?"":  ""));
+    const over3=isOverdue(x.when);
+    return `<li class="sched-item ${state.checks[i]?"done":""}">
+      <input class="hidden-box" type="checkbox" id="tk${i}" ${state.checks[i]?"checked":""} onchange="toggleTask(${i},this.checked)">
+      <label class="sched-when ${over3?"over":""}" for="tk${i}">${x.when?(when||whenLabel(x.when)):(full()?t("noWhen"):"")}</label>
+      <div class="sched-body">
+        <label class="sched-title" for="tk${i}"><span class="tick ${state.checks[i]?"on":""}" aria-hidden="true"></span><span>${esc(x.t)}</span></label>
+        <span class="sched-hint">${esc(x.hint)}</span>
+        ${x.status==="ask"&&!state.checks[i]?`<span class="sched-note">${t("askInline")}</span>`:""}
+      </div></li>`;
+  }).join("");
+
+  // bring
+  const blist=bringList();
+  const packed=blist.filter(b=>state.bring[b.t]).length;
+  $("t-bring-count").textContent = packed===blist.length ? t("bringAll") : t("bringCount").replace("{d}",packed).replace("{n}",blist.length);
+  $("t-bring").innerHTML=blist.map(b=>{
+    const on=!!state.bring[b.t];
+    return `<li><button class="bringitem" aria-pressed="${on}" data-k="${esc(b.t)}" onclick="toggleBring(this)">
+      <span class="tick ${on?"on":""}" aria-hidden="true"></span>
+      <span>${esc(b.t)}</span>
+      ${b.src==="notice"?`<span class="src">${esc(t("bringSrc"))}</span>`:""}
+    </button></li>`;
+  }).join("");
+  const gap=blist.length-packed;
+  $("t-bring-hint").textContent=t("bringHint")+(gap>0?" · "+t("bringGap").replace("{n}",gap):"");
+
+  // confirm
+  $("t-confirm-wrap").hidden=true;
+
+  renderVoice();
+}
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function toggleTask(i,on){ state.checks[i]=on; renderTasks(); saveLocal(); }
+
+/* ---------------- print ---------------- */
+function buildPrintSheet(){
+  const d=S(), list=taskList();
+  const pd=parseDate(state.date);
+  const dstr = pd ? fmtDate(pd) : "＿＿＿＿＿＿";
+  const tstr = [dstr, state.time||""].filter(Boolean).join("  ");
+  const rows=[[t("copyDue").replace(/[：: ].*$/,""), tstr],[t("placeL"), state.place||"＿＿＿＿＿＿"],[t("phoneL"), state.phone||"＿＿＿＿＿＿"]];
+  const bring=bringList();
+  $("printsheet").innerHTML=`
+    <div class="kicker">${t("printKicker")}</div>
+    <h1>${esc(d.name)}</h1>
+    <div class="fine">${t("printFine")}</div>
+    ${rows.map(r=>`<div class="psrow"><b>${r[0]}</b>${esc(r[1])}</div>`).join("")}
+    <h2>${t("printA")}</h2><ul class="bring">${bring.map(x=>`<li><span class="bx ${state.bring[x.t]?"checked":""}"></span>${esc(x.t)}</li>`).join("")}</ul>
+    <h2>${t("printB")}</h2><ul>${list.map((x,i)=>`<li><span class="bx ${state.checks[i]?"checked":""}"></span>${esc(x.t)}<span class="h"> · ${esc(x.hint)}</span></li>`).join("")}</ul>
+    <h2>${t("printC")}</h2><ul>${Q.map(q=>`<li><span class="bx"></span>${esc(q[lang])}</li>`).join("")}</ul>
+    <h2>${t("printD")}</h2><div class="lines"><div></div><div></div><div></div></div>
+    <div class="warnbox"><b>${t("printE")}${colon()}</b>${t("printWarn")}<br><br><b>${t("printF")}${colon()}</b>＿＿＿＿＿＿＿＿＿＿</div>
+    <div class="footline">${t("printFoot")}</div>`;
+}
+function doPrint(){ buildPrintSheet(); window.print(); }
+function printCallPage(){ window.print(); }
+
+/* ---------------- copy ---------------- */
+function familyText(){
+  const d=S(), list=taskList();
+  const dt=parseDate(state.date);
+  const meta=[dt?t("copyDue")+fmtDate(dt)+(state.time?" "+state.time:""):"",state.place?t("copyWhere")+state.place:"",state.phone?t("copyTel")+state.phone:""].filter(Boolean).join("  ");
+  return t("copyHeader")+d.name+"\n"+meta+"\n"+t("bringTitle")+"："+bringList().map(x=>x.t).join("、")+"\n\n"+t("copyToDo")+"\n"+list.map(x=>"· "+x.t).join("\n")+"\n\n"+t("copyAsk")+"\n"+Q.slice(0,4).map(q=>"· "+q[lang]).join("\n");
+}
+function copyText(txt){
+  return new Promise(resolve=>{
+    const fallback=()=>{ try{ const ta=document.createElement("textarea"); ta.value=txt; ta.setAttribute("readonly","");
+      ta.style.position="fixed"; ta.style.left="-9999px"; document.body.appendChild(ta); ta.select();
+      const ok=document.execCommand("copy"); ta.remove(); resolve(!!ok); }catch(e){ resolve(false); } };
+    if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(txt).then(()=>resolve(true)).catch(fallback); }
+    else fallback();
+  });
+}
+function copyFamily(btn){
+  copyText(familyText()).then(ok=>{
+    toast(ok?t("copyOk"):t("copyFail"));
+    const old=btn.textContent; btn.textContent=ok?t("copyOk"):t("copyFail"); setTimeout(()=>{btn.textContent=old;},1800);
+    if(!ok){ const box=document.createElement("div"); box.className="note"; box.style.marginTop="14px";
+      const ta=document.createElement("textarea"); ta.value=familyText(); ta.style.width="100%"; ta.style.minHeight="150px"; ta.style.font="inherit";
+      box.appendChild(ta); btn.parentElement.parentElement.appendChild(box); ta.select(); box.scrollIntoView({block:"nearest"}); }
+  });
+}
+
+/* ---------------- family link ---------------- */
+function b64e(s){ const b=new TextEncoder().encode(s); let bin=""; b.forEach(x=>bin+=String.fromCharCode(x)); return btoa(bin); }
+function b64d(x){ const bin=atob(x); const b=Uint8Array.from(bin,c=>c.charCodeAt(0)); return new TextDecoder().decode(b); }
+function encodeState(){
+  const o={v:3,l:state.scen,dt:state.dtype,d:state.date,p:state.place,t:state.phone,k:state.known};
+  if(state.time) o.tm=state.time;
+  if((state.materials||[]).length) o.m=state.materials;
+  return b64e(JSON.stringify(o));
+}
+function validState(o){
+  if(!o||typeof o!=="object") return false;
+  if(!SCEN[o.l]) return false;
+  if(["deadline","appoint","followup","unknown"].indexOf(o.dt)<0) return false;
+  if(o.d && !/^\d{4}-\d{2}-\d{2}$/.test(o.d)) return false;
+  if(typeof o.p==="string" && o.p.length>60) return false;
+  if(typeof o.t==="string" && o.t.length>40) return false;
+  if(o.tm!==undefined && (typeof o.tm!=="string" || o.tm.length>20)) return false;
+  if(o.m!==undefined && (!Array.isArray(o.m) || o.m.length>12 || o.m.some(x=>typeof x!=="string"||x.length>40))) return false;
+  return true;
+}
+function loadFromHash(){
+  const m=location.hash.match(/#f=([^&]+)/); if(!m) return false;
+  try{
+    const o=JSON.parse(b64d(decodeURIComponent(m[1])));
+    if(!validState(o)) return false;
+    state.scen=o.l; state.dtype=o.dt; state.date=o.d||""; state.place=(o.p||"").slice(0,60); state.phone=(o.t||"").slice(0,40);
+    state.time=typeof o.tm==="string"?o.tm.slice(0,20):"";
+    state.materials=Array.isArray(o.m)?o.m.map(x=>String(x).slice(0,40)).filter(Boolean).slice(0,12):[];
+    state.known=o.k||{}; state.checks={}; state.fromFamily=true;
+    try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+    saveLocal(); return true;
+  }catch(e){ return false; }
+}
+function copyFamilyLink(btn){
+  if(location.protocol==="file:"){ toast(t("linkFile")); return; }
+  if(!confirm(lang==="zh" ? "链接包含清单中的日期、地点、电话和材料，拿到链接的人可以查看。请只分享给信任的人。继续复制吗？" : "This link contains the date, place, phone and materials. Anyone with the link can read them. Share only with someone you trust. Copy it?")) return;
+  const url=location.href.split("#")[0]+"#f="+encodeURIComponent(encodeState());
+  copyText(url).then(ok=>{ toast(ok?t("linkCopied"):t("copyFail")); if(ok){ const o=btn.textContent; btn.textContent=t("linkCopied"); setTimeout(()=>{btn.textContent=o;},1800); } });
+}
+
+/* ---------------- calendar ---------------- */
+function pad(n){ return String(n).padStart(2,"0"); }
+function ymd(d){ return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate()); }
+function icsText(s){ return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
+function fold(line){ const enc=new TextEncoder(); let out="",buf="",n=0;
+  for(const ch of line){ const b=enc.encode(ch).length; if(n+b>70){ out+=buf+"\r\n "; buf=ch; n=b; } else { buf+=ch; n+=b; } }
+  return out+buf; }
+function exportICS(){
+  if(!full()||state.dtype==="unknown"||!state.date){ toast(t("icsNoDate")); return; }
+  const d=S(), list=taskList();
+  const evs=list.map(x=>({x,dt:schedule(x.when)})).filter(e=>e.dt);
+  if(!evs.length){ toast(t("icsNoDate")); return; }
+  const stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+  const parsedTime=parseNoticeTime(state.time||"");
+  const timeMatch=parsedTime.match(/^(\d{2}):(\d{2})$/);
+  let out="BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Mingbai//v4.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n";
+  evs.forEach((e,i)=>{ const dt=ymd(e.dt);
+    out+="BEGIN:VEVENT\r\n"+fold("UID:mingbai-"+dt+"-"+i+"@mingbai.local")+"\r\nDTSTAMP:"+stamp+"\r\n";
+    if(timeMatch && e.x.when==="due" && (state.dtype==="appoint"||state.dtype==="followup")){
+      const start=new Date(e.dt); start.setHours(+timeMatch[1],+timeMatch[2],0,0);
+      const end=new Date(start.getTime()+30*60000);
+      out+="DTSTART:"+ymd(start)+"T"+pad(start.getHours())+pad(start.getMinutes())+"00\r\nDTEND:"+ymd(end)+"T"+pad(end.getHours())+pad(end.getMinutes())+"00\r\n";
+    } else { out+="DTSTART;VALUE=DATE:"+dt+"\r\nDTEND;VALUE=DATE:"+ymd(offsetDate(e.dt,1))+"\r\n"; }
+    out+=fold("SUMMARY:"+icsText(e.x.t))+"\r\n"+fold("DESCRIPTION:"+icsText(d.name+" · "+e.x.hint))+"\r\n";
+    if(state.place) out+=fold("LOCATION:"+icsText(state.place))+"\r\n";
+    out+="BEGIN:VALARM\r\nTRIGGER:-PT30M\r\nACTION:DISPLAY\r\n"+fold("DESCRIPTION:"+icsText(d.name))+"\r\nEND:VALARM\r\nEND:VEVENT\r\n";
+  });
+  out+="END:VCALENDAR\r\n";
+  const blob=new Blob([out],{type:"text/calendar;charset=utf-8"}), url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="mingbai-tasks.ics"; document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url); a.remove();},600); toast(t("icsDone"));
+}
+
+/* ---------------- speech ---------------- */
+let voices=[], speaking=false;
+function loadVoices(){ if(!("speechSynthesis" in window)) return; voices=window.speechSynthesis.getVoices()||[]; renderVoice(); }
+if("speechSynthesis" in window){ loadVoices(); window.speechSynthesis.onvoiceschanged=loadVoices; }
+function bestVoice(){ if(state.voice){ const f=voices.find(v=>v.name===state.voice); if(f) return f; }
+  const want=lang==="zh"?["zh-CN","zh-HK","zh"]:["en-US","en-GB","en"];
+  for(const w of want){ const f=voices.find(v=>(v.lang||"").toLowerCase().startsWith(w.toLowerCase())); if(f) return f; }
+  return voices[0]||null; }
+function renderVoice(){
+  const want = lang==="zh" ? /^(zh|yue)/i : /^en/i;
+  let list=voices.filter(v=>want.test(v.lang||""));
+  if(!list.length) list=voices;
+  const opts=list.map(v=>`<option value="${v.name.replace(/"/g,"&quot;")}"${state.voice===v.name?" selected":""}>${v.name}${v.lang?" · "+v.lang:""}</option>`).join("");
+  document.querySelectorAll(".voice").forEach(bar=>{
+    bar.innerHTML=`<span>${t("vTitle")}</span>
+      <label>${t("vVoice")} <select class="vsel">${opts||"<option>"+t("noVoice")+"</option>"}</select></label>
+      <label>${t("vRate")} <select class="rsel"><option value="0.8"${state.rate===0.8?" selected":""}>${t("slow")}</option><option value="0.92"${state.rate===0.92?" selected":""}>${t("normal")}</option><option value="1.05"${state.rate===1.05?" selected":""}>${t("fast")}</option></select></label>`;
+    const vs=bar.querySelector(".vsel"), rs=bar.querySelector(".rsel");
+    if(vs) vs.onchange=()=>{state.voice=vs.value;};
+    if(rs) rs.onchange=()=>{state.rate=parseFloat(rs.value);};
+  });
+}
+function speak(text,btn,labelKey){
+  const back=labelKey||"read";
+  if(!("speechSynthesis" in window)){ toast(t("noVoice")); return; }
+  if(speaking){ window.speechSynthesis.cancel(); speaking=false; if(btn) btn.textContent=t(back); return; }
+  const u=new SpeechSynthesisUtterance(text), v=bestVoice();
+  if(v) u.voice=v; u.lang=v?v.lang:(lang==="zh"?"zh-CN":"en-US"); u.rate=state.rate||0.92;
+  u.onend=()=>{ speaking=false; if(btn) btn.textContent=t(back); };
+  window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); speaking=true; if(btn) btn.textContent=t("readStop");
+}
+function readAll(btn){
+  const d=S(), list=taskList();
+  const stop=lang==="zh"?"。":". ", sepc=lang==="zh"?"，":", ", sep=lang==="zh"?"、":", ";
+  const parts=[d.name];
+  const dt=parseDate(state.date);
+  if(dt) parts.push(fmtDate(dt)+(state.time?" "+state.time:""));
+  if(state.place) parts.push(t("placeL")+sepc+state.place);
+  if(state.phone) parts.push(t("phoneL")+sepc+state.phone);
+  const bl=bringList();
+  if(bl.length) parts.push(t("bringTitle")+sepc+bl.map(x=>x.t).join(sep));
+  list.forEach((x,i)=>parts.push((i+1)+sep+x.t+stop+x.hint));
+  speak(parts.join(stop)+stop,btn,"read");
+}
+function readCall(btn){
+  const d=S();
+  const offline=$("c-offline").textContent||"";
+  const qs=[...$("c-ask").querySelectorAll("li")].map(li=>li.textContent).join(lang==="zh"?"。":". ");
+  const ans=[...$("c-qa").querySelectorAll(".qaitem")].map(x=>x.textContent).join(lang==="zh"?"。":". ");
+  const stop=lang==="zh"?"。":". ";
+  speak(d.name+stop+offline+stop+qs+stop+ans,btn,"cRead");
+}
+
+/* ---------------- call ---------------- */
+function openCall(){ renderCall(); go("call"); }
+function renderCall(){
+  const d=S();
+  const dt=parseDate(state.date);
+  const when=dt?fmtDate(dt)+(state.time?" "+state.time:""):"";
+  $("c-offline").innerHTML = lang==="zh"
+    ? `您好，我想咨询<b>${d.name}</b>的事。我收到一份通知，想确认要带什么材料、去哪里办。${when?"时间是 <b>"+esc(when)+"</b>。":""}${state.place?"地点是 <b>"+esc(state.place)+"</b>。":""}`
+    : `Hello, I would like to ask about <b>${d.name}</b>. I received a notice and want to confirm what to bring and where to go.${when?" The date is <b>"+esc(when)+"</b>.":""}${state.place?" Place: <b>"+esc(state.place)+"</b>.":""}`;
+  $("c-ask").innerHTML=Q.map(q=>`<li>${q[lang]}</li>`).join("");
+  $("c-qa").innerHTML=CALLANS.map(a=>`<div class="qaitem"><b>${a[lang][0]}</b><span>${a[lang][1]}</span></div>`).join("");
+  $("c-write").innerHTML=WRITE.map(w=>`<div class="wlabel">${w[lang]}</div><div class="wline"></div>`).join("");
+  $("c-write-hint").textContent=t("cWriteHint");
+}
+
+/* ---------------- scam ---------------- */
+function openScam(){ renderScam(); go("scam"); }
+function renderScam(){
+  $("s-panel").innerHTML=SCAMQ.map((q,i)=>`
+    <div class="scamq"><div class="q"><span class="qn">${pad(i+1)}</span><span class="text">${q[lang]}</span>
+      <span class="yn">
+        <button class="${state.scam[i]===true?"bad":""}" aria-pressed="${state.scam[i]===true}" onclick="answerScam(${i},true,this)">${t("yes")}</button>
+        <button aria-pressed="${state.scam[i]===false}" onclick="answerScam(${i},false,this)">${t("no")}</button>
+      </span></div></div>`).join("");
+  renderVerdict();
+}
+function answerScam(i,v,btn){
+  state.scam[i]=v;
+  btn.parentElement.querySelectorAll("button").forEach(b=>{ b.setAttribute("aria-pressed","false"); b.classList.remove("bad"); });
+  btn.setAttribute("aria-pressed","true"); if(v) btn.classList.add("bad");
+  renderVerdict();
+}
+function renderVerdict(){
+  const answered=Object.keys(state.scam).length;
+  const anyYes=Object.values(state.scam).some(v=>v===true);
+  if(anyYes){ $("s-verdict").innerHTML=`<div class="verdict bad">${t("sBad")}</div>`; return; }
+  if(answered===0){ $("s-verdict").innerHTML=""; return; }
+  if(answered<SCAMQ.length){ $("s-verdict").innerHTML=`<div class="verdict tmp">${t("sTmp").replace("{n}",answered)}</div>`; return; }
+  $("s-verdict").innerHTML=`<div class="verdict good">${t("sGood")}</div>`;
+}
+function resetScam(){ state.scam={}; renderScam(); }
+
+/* ---------------- help ---------------- */
+function openHelp(){ renderHelp(); go("help"); }
+function renderHelp(){ $("hp-list").innerHTML=HELP[lang].list.map(x=>`<li>${x}</li>`).join(""); $("hp-who").innerHTML=HELP[lang].who.map(x=>`<li>${x}</li>`).join(""); }
+
+/* ---------------- storage ---------------- */
+const KEY="mingbai.v3"; // keep the old key: existing users' data must keep loading
+function cleanMats(a){
+  if(!Array.isArray(a)) return [];
+  return a.filter(x=>typeof x==="string" && x.trim()).map(x=>x.trim().slice(0,40)).slice(0,12);
+}
+function saveLocal(){
+  if(state.demo) return;
+  try{
+    localStorage.setItem(KEY,JSON.stringify({
+      scen:state.scen, dtype:state.dtype, date:state.date, time:state.time,
+      place:state.place, phone:state.phone, known:state.known, checks:state.checks,
+      materials:state.materials, bring:state.bring
+    }));
+    hadLocal=true;
+  }catch(e){}
+}
+function loadLocal(){
+  try{
+    const raw=localStorage.getItem(KEY); if(!raw) return false;
+    const o=JSON.parse(raw); if(!o||!SCEN[o.scen]) return false;
+    state.scen=o.scen;
+    state.dtype=["deadline","appoint","followup","unknown"].indexOf(o.dtype)>=0?o.dtype:"unknown";
+    state.date=(typeof o.date==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(o.date))?o.date:"";
+    state.time=typeof o.time==="string"?o.time.slice(0,20):"";
+    state.place=typeof o.place==="string"?o.place.slice(0,60):"";
+    state.phone=typeof o.phone==="string"?o.phone.slice(0,40):"";
+    state.materials=cleanMats(o.materials);
+    state.known=(o.known&&typeof o.known==="object")?o.known:{};
+    state.checks=(o.checks&&typeof o.checks==="object")?o.checks:{};
+    state.bring=(o.bring&&typeof o.bring==="object")?o.bring:{};
+    return true;
+  }catch(e){ return false; }
+}
+function saveNow(){ saveLocal(); const st=$("t-saved"); st.hidden=false; st.textContent=t("saved"); setTimeout(()=>{st.hidden=true;},2600); toast(t("saveToast")); }
+function clearSaved(){
+  if(!confirm(lang==="zh"?"确定删除这台设备上保存的清单吗？":"Delete the checklist saved on this device?")) return;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  state=freshState(); hadLocal=false;
+  toast(t("clearToast")); go("home"); paint();
+}
+
+/* ---------------- demo ---------------- */
+function loadDemo(){
+  state.scen="care"; state.dtype="appoint"; state.date="2026-11-20";
+  state.time=lang==="zh"?"上午 9:30":"9:30 am";
+  state.place=lang==="zh"?"社区服务中心 2 楼":"Community service centre, 2F";
+  state.phone="12333"; state.known={time:true,docs:true,what:true}; state.checks={}; state.bring={}; state.materials=[];
+  state.demo=true; state.fromFamily=false;
+  renderTasks(); go("tasks");
+  setBanner("demo");
+}
+
+/* ---------------- init ---------------- */
+window.addEventListener("beforeprint", () => { try{ if(!$("v-tasks").hidden) buildPrintSheet(); }catch(e){} });
+restoreTheme();
+const fromFamily=loadFromHash();
+if(!fromFamily) hadLocal=loadLocal();
+setLang(lang);
+if(fromFamily){
+  renderTasks(); go("tasks");
+  setBanner("family");
+} else go("home");
+
+</script>
+</body>
+</html>
