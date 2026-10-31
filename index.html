@@ -536,6 +536,21 @@
  @media(max-width:360px){.quick-actions{grid-template-columns:1fr}}
 }
 
+
+/* Optional colour themes: text labels and selected state do not rely on colour. */
+@media screen{
+ :root,:root[data-theme="clay"]{--theme:#973b2c;--theme-dark:#782a20;--theme-soft:#f5e9db;--blue:#973b2c;--blue-ink:#782a20;--blue-wash:#faf0e9;--blue-line:#dfb9a9}
+ :root[data-theme="ocean"]{--theme:#205776;--theme-dark:#173e56;--theme-soft:#e9f1f4;--blue:#205776;--blue-ink:#173e56;--blue-wash:#e9f1f4;--blue-line:#afc8d3}
+ :root[data-theme="forest"]{--theme:#285d49;--theme-dark:#1e4637;--theme-soft:#eaf1e9;--blue:#285d49;--blue-ink:#1e4637;--blue-wash:#eaf1e9;--blue-line:#b5cbbb}
+ :root[data-theme="plum"]{--theme:#63416f;--theme-dark:#4c3056;--theme-soft:#f0ebf3;--blue:#63416f;--blue-ink:#4c3056;--blue-wash:#f0ebf3;--blue-line:#cbbbd1}
+ .brand .wordmark,.assistant-intro .workspace-kicker,.preview-top,.preview-stamp,.ctl[aria-pressed="true"],.type-picker summary,.details-guide summary,.assistant-progress summary,.example-link,.help-buttons button,a,.linkbtn{color:var(--theme-dark)}
+ .ctl[aria-pressed="true"]::after,.assistant-avatar,.btn-primary,.sample::before,.pasteform::before,.detect::before{background:var(--theme)}.btn-primary{border-color:var(--theme);color:#fff}.btn-primary:hover{background:var(--theme-dark);border-color:var(--theme-dark)}.btn-quiet,.quick-action,.all-topics{color:var(--theme-dark);border-color:var(--theme)}.quick-action:hover,.btn-quiet:hover,.ctl:hover{color:var(--theme-dark);border-color:var(--theme);background:var(--theme-soft)}
+ .message-body{background:var(--theme-soft);border-left-color:var(--theme)}.paper-preview{border-top-color:var(--theme)}.preview-stamp{border-color:var(--theme)}.selected-type,.wizard-progress{color:var(--theme-dark);background:var(--theme-soft)}.wizard-progress,.next{border-left-color:var(--theme)}.task-head,.actions{background:var(--theme-soft)}.chip{color:var(--theme-dark);background:var(--theme-soft);border-color:var(--blue-line)}.detect .found{color:var(--theme-dark)}.side-steps li>span{color:var(--theme-dark);border-color:var(--theme)}
+ :focus-visible,#home-notice:focus-visible,.ctl:focus-visible{outline-color:var(--theme)}
+ .theme-chooser{border-bottom:1px solid #ded6ca;padding:8px 0 10px}.theme-chooser>summary{cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--ink2);font-size:.9em;font-weight:600;list-style:none}.theme-chooser>summary::-webkit-details-marker{display:none}.theme-chooser>summary::before{content:"＋";color:var(--theme);font-size:1.15em}.theme-chooser[open]>summary::before{content:"−"}.theme-description{font-size:.84em;color:var(--ink2);margin:0 0 10px}.theme-options{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:6px}.theme-option{display:inline-flex;gap:8px;align-items:center;justify-content:center;min-height:48px;padding:8px 13px;background:#fffefa;border:1px solid #b9b4aa;border-radius:4px;color:#292623;font:inherit;font-size:.9em;cursor:pointer}.theme-option:hover{border-color:var(--theme)}.theme-option[aria-pressed="true"]{border:2px solid var(--theme);font-weight:700;padding:7px 12px}.theme-option[aria-pressed="true"]::after{content:"✓";color:var(--theme);font-weight:700}.theme-swatch{width:17px;height:17px;border-radius:50%;background:var(--swatch);flex:none}.theme-option[data-theme-choice="clay"]{--swatch:#973b2c}.theme-option[data-theme-choice="ocean"]{--swatch:#205776}.theme-option[data-theme-choice="forest"]{--swatch:#285d49}.theme-option[data-theme-choice="plum"]{--swatch:#63416f}
+ @media(max-width:760px){.theme-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.theme-option{justify-content:flex-start}}
+}
+
 </style>
 </head>
 <body>
@@ -558,6 +573,7 @@
       </span>
     </div>
   </header>
+  <details class="theme-chooser" id="theme-chooser"><summary id="theme-summary"></summary><p class="theme-description" id="theme-description"></p><div class="theme-options" role="group" aria-labelledby="theme-summary"><button class="theme-option" type="button" data-theme-choice="clay" aria-pressed="true" onclick="setTheme('clay')"><span class="theme-swatch" aria-hidden="true"></span><span id="theme-clay"></span></button><button class="theme-option" type="button" data-theme-choice="ocean" aria-pressed="false" onclick="setTheme('ocean')"><span class="theme-swatch" aria-hidden="true"></span><span id="theme-ocean"></span></button><button class="theme-option" type="button" data-theme-choice="forest" aria-pressed="false" onclick="setTheme('forest')"><span class="theme-swatch" aria-hidden="true"></span><span id="theme-forest"></span></button><button class="theme-option" type="button" data-theme-choice="plum" aria-pressed="false" onclick="setTheme('plum')"><span class="theme-swatch" aria-hidden="true"></span><span id="theme-plum"></span></button></div></details>
 
   <!-- HOME: guided assistant -->
   <main class="view" id="v-home">
@@ -1304,6 +1320,16 @@ const full = () => !!SCEN[state.scen].full;
 const pad2 = n => String(n).padStart(2, "0");
 
 function toast(m){ const el=$("toast"); el.textContent=m; el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),2800); }
+const THEME_KEY="mingbai.theme";
+const THEMES=["clay","ocean","forest","plum"];
+function setTheme(value,remember=true){
+  const choice=THEMES.includes(value)?value:"clay"; document.documentElement.dataset.theme=choice;
+  document.querySelectorAll("[data-theme-choice]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.themeChoice===choice)));
+  updateThemeLabel();
+  if(remember){try{localStorage.setItem(THEME_KEY,choice)}catch(e){}}
+}
+function updateThemeLabel(){ const choice=document.documentElement.dataset.theme||"clay"; const names=lang==="zh"?{clay:"暖红",ocean:"海蓝",forest:"松绿",plum:"梅紫"}:{clay:"Warm red",ocean:"Ocean blue",forest:"Pine green",plum:"Plum"}; $("theme-summary").textContent=lang==="zh"?"配色："+names[choice]+"（点击更换）":"Colour: "+names[choice]+" (change)"; }
+function restoreTheme(){let value="clay";try{value=localStorage.getItem(THEME_KEY)||"clay"}catch(e){}setTheme(value,false);}
 function setLang(l){ lang=l; document.documentElement.lang=(l==="zh"?"zh-CN":"en"); $("lzh").setAttribute("aria-pressed",l==="zh"); $("len").setAttribute("aria-pressed",l==="en"); paint(); }
 function setSize(v,btn){
   if(v) document.documentElement.dataset.fs=v; else document.documentElement.removeAttribute("data-fs");
@@ -1348,6 +1374,9 @@ function paint(){
   $("sources-summary").textContent=lang==="zh"?"设计参考与来源":"Design references and sources";
   $("sources-body").innerHTML=lang==="zh"?`<p>“明白”的分步引导和结果核对方式参考了以下英国公共服务与老年服务资源：</p><ul><li><a href="https://design-system.service.gov.uk/patterns/question-pages/" target="_blank" rel="noopener noreferrer">GOV.UK Design System：Question pages（提问页面）</a>：参考逐步提问、返回修改和避免重复填写的设计思路。</li><li><a href="https://www.ageuk.org.uk/information-advice/money-legal/benefits-entitlements/benefits-calculator/" target="_blank" rel="noopener noreferrer">Age UK：Benefits calculator（福利计算器）</a>：参考说明工具结果的局限、提示向有关机构确认的做法。</li><li><a href="https://www.ageuk.org.uk/information-advice/" target="_blank" rel="noopener noreferrer">Age UK：Information and advice（信息与建议）</a>：参考按生活事项组织入口和提供求助渠道。</li><li><a href="https://www.w3.org/WAI/older-users/" target="_blank" rel="noopener noreferrer">W3C：Older Users and Web Accessibility（老年用户与网页无障碍）</a>：参考文字对比、字号与易点击控件的建议。</li></ul><p>这些资料是设计参考，不是中国办事政策依据。具体要求以通知原文和当地经办机构确认为准。</p>`:`<p>Mingbai's guided questions and result-checking approach draw on these UK public and older-adult service resources:</p><ul><li><a href="https://design-system.service.gov.uk/patterns/question-pages/" target="_blank" rel="noopener noreferrer">GOV.UK Design System: Question pages</a>: ideas for step-by-step questions, going back and avoiding repeated entry.</li><li><a href="https://www.ageuk.org.uk/information-advice/money-legal/benefits-entitlements/benefits-calculator/" target="_blank" rel="noopener noreferrer">Age UK: Benefits calculator</a>: explaining the limits of a result and checking with the relevant organisation.</li><li><a href="https://www.ageuk.org.uk/information-advice/" target="_blank" rel="noopener noreferrer">Age UK: Information and advice</a>: organising topics around everyday needs and signposting help.</li><li><a href="https://www.w3.org/WAI/older-users/" target="_blank" rel="noopener noreferrer">W3C: Older Users and Web Accessibility</a>: guidance on contrast, text size and usable controls.</li></ul><p>These are design references, not sources of Chinese administrative requirements. Check the original notice and the local office.</p>`;
 
+  updateThemeLabel();
+  $("theme-description").textContent=lang==="zh"?"选择一种配色；选择只保存在此浏览器。":"Choose a colour theme; your choice stays in this browser.";
+  $("theme-clay").textContent=lang==="zh"?"暖红":"Warm red"; $("theme-ocean").textContent=lang==="zh"?"海蓝":"Ocean blue"; $("theme-forest").textContent=lang==="zh"?"松绿":"Pine green"; $("theme-plum").textContent=lang==="zh"?"梅紫":"Plum";
   $("size-label").textContent=t("sizeLabel");
   $("sz0").textContent=t("sizeStd"); $("sz1").textContent=t("sizeLg"); $("sz2").textContent=t("sizeXl");
   const szLabels=lang==="zh"?["标准字号","大字号","特大字号"]:["Standard text size","Large text size","Extra large text size"];
@@ -2369,6 +2398,7 @@ function loadDemo(){
 
 /* ---------------- init ---------------- */
 window.addEventListener("beforeprint", () => { try{ if(!$("v-tasks").hidden) buildPrintSheet(); }catch(e){} });
+restoreTheme();
 const fromFamily=loadFromHash();
 if(!fromFamily) hadLocal=loadLocal();
 setLang(lang);
