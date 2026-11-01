@@ -1307,7 +1307,7 @@ const HELP = {
 
 /* ---------------- state ---------------- */
 const $ = id => document.getElementById(id);
-let lang = ((navigator.language||"zh").toLowerCase().startsWith("zh")) ? "zh" : "en";
+let lang = new URLSearchParams(location.search).get("lang")==="en" ? "en" : (((navigator.language||"zh").toLowerCase().startsWith("zh")) ? "zh" : "en");
 function freshState(){
   return { scen:"care", dtype:"unknown", date:"", time:"", place:"", phone:"", materials:[], bring:{},
            known:{}, checks:{}, scam:{}, fromFamily:false, voice:"", rate:0.92, demo:false, banner:null };
