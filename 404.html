@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>没有找到这张纸 · 明白 Mingbai</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1e4b3d">
+<style>
+:root{--hairline:#d3cbc0;--accent:#c8402a;--ink:#2b2b2b;--muted:#4a4a4a;--paper:#f7f3ea;--paper-2:#fffdf8;
+ --f-display:"Noto Serif SC","Songti SC",serif;
+ --f-body:"Noto Sans SC","Source Han Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;display:grid;place-items:center;background:var(--paper);color:var(--ink);font-family:var(--f-body);line-height:1.75;padding:32px}
+main{width:min(680px,100%);background:var(--paper-2);border:1px solid var(--hairline);box-shadow:0 10px 30px rgba(75,54,39,.12);padding:clamp(28px,6vw,56px)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:22px}
+.code{font-family:var(--f-display);font-size:clamp(54px,11vw,88px);line-height:1;color:var(--accent);margin:22px 0 10px;font-variant-numeric:tabular-nums}
+h1{font-family:var(--f-display);font-size:clamp(24px,4vw,34px);line-height:1.35;margin:0 0 12px;letter-spacing:-.01em}
+p{margin:0 0 24px;color:var(--muted);max-width:52ch;font-size:18px}
+nav{display:flex;flex-wrap:wrap;gap:12px}
+a{display:inline-flex;align-items:center;min-height:52px;padding:10px 20px;border:2px solid var(--hairline);border-radius:4px;color:var(--ink);text-decoration:none;font-weight:700;transition:background-color .3s cubic-bezier(.22,1,.36,1),border-color .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1)}
+a:hover{background:#f3e9df;border-color:#b8aa99;transform:translateY(-1px)}
+a:active{transform:translateY(1px)}
+a.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+a.primary:hover{background:#a8331f}
+a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){a{transition:none}a:hover{transform:none}}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">明白 Mingbai</div>
+  <p class="code">404</p>
+  <h1>没有找到这张纸</h1>
+  <p>可能是链接过期了，或者这张办事纸没有保存下来。你可以回到首页重新写一张，也可以先看看示例。</p>
+  <nav>
+    <a class="primary" href="/mingbai/">回到首页</a>
+    <a href="/mingbai/#topics">选一个事项</a>
+    <a href="/mingbai/legacy.html">完整示例纸</a>
+  </nav>
+</main>
+</body>
+</html>
